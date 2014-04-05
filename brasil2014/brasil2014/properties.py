@@ -3,7 +3,9 @@
 
 from datetime import datetime
 
-PROJECT_TITLE = 'Brasil2014 Bet Game'
+PROJECT_TITLE = 'Brasil 2014 Bet Game'
+
+ADMINS = [ 'admin', 'mb' ]
 
 SCORINGS = [{   # [0]
     'exacthit': 12,
@@ -64,10 +66,20 @@ SCORINGS = [{   # [0]
     'onescore': 1,
     'onefinalist': 20,
     'twofinalists': 50,
+    },
+    {           # [6], like [4] but with smaller numbers
+    'exacthit': 5,
+    'outcome': 3,
+    'missed': 1,
+    'sumgoals': 3,
+    'goaldiff': 2,
+    'onescore': 1,
+    'onefinalist': 5,
+    'twofinalists': 10,
     }]
 
 # bet values
-BET_POINTS = SCORINGS[4]
+BET_POINTS = SCORINGS[6]
 
 # iterable list of group ids
 GROUP_IDS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H') 
@@ -75,6 +87,6 @@ GROUP_IDS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
 # the final's match id
 FINAL_ID = 64
 
-# deadline for final tips (the beginning of the first quarter final)
+# deadline for final tips (the beginning of the second stage)
 FINAL_DEADLINE = datetime(2014, 6, 28, 18, 00)
 

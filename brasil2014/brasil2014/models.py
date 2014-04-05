@@ -26,7 +26,7 @@ from pyramid.security import (
     Allow
     )
 
-from properties import FINAL_ID
+from properties import FINAL_ID, ADMINS
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
@@ -37,11 +37,16 @@ class RootFactory(object):
     __acl__ = [
         (Allow, Everyone, 'view'),
         (Allow, Authenticated, 'post'),
-        (Allow, Authenticated, 'update')
+        (Allow, 'group:admins', 'update')
     ]
 
     def __init__(self, request):
         pass  # pragma: no cover
+
+def groupfinder(userid, request):
+    if userid in ADMINS:
+        return ['group:admins']
+    return []
 
 def hash_password(password):
     return unicode(crypt.encode(password))
@@ -90,7 +95,7 @@ class Player(Base):
 
     @classmethod
     def get_by_unit(cls, unit):
-        return DBSession.query(cls).filter(cls.d_unit == unit).order_by(cls.d_points.desc()) #.all()
+        return DBSession.query(cls).filter(cls.d_unit == unit).order_by(cls.d_points.desc())
 
     @classmethod
     def get_groups(cls):
@@ -110,8 +115,8 @@ class Category(Base):
         self.d_name = name
 
     @classmethod
-    def get_all(cls):
-        return DBSession.query(cls).order_by(cls.d_name).all()
+    def option_list(cls):
+        return [(c.d_alias, c.d_name) for c in DBSession.query(cls).order_by(cls.d_name)]
 
 
 class Team(Base):
@@ -195,11 +200,11 @@ class Match(Base):
         return DBSession.query(cls).filter(cls.d_score1 != None).filter(cls.d_score2 != None)
 
 
-class MatchGroup:
-    def __init__(self, id, matches=[]):
-        """ Associate a list of matches with a group id. """
-        self.group_id = id
-        self.matches = matches
+#class MatchGroup:
+#    def __init__(self, id, matches=[]):
+#        """ Associate a list of matches with a group id. """
+#        self.group_id = id
+#        self.matches = matches
 
 
 class Tip(Base):
