@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import os
 import sys
@@ -44,8 +44,13 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
 
+    # register the 'admin' user
     with transaction.manager:
-        DBSession.add(Category(alias="B+S",         name="Operation&Support"))
+        DBSession.add(Player(alias="admin", password="None", name="Admin", mail="office@rolotec.ch", unit="Administration"))
+
+    # player categories (org. units)
+    with transaction.manager:
+        DBSession.add(Category(alias="B+S",         name="Operation & Support"))
         DBSession.add(Category(alias="Marketing",   name="Marketing"))
         DBSession.add(Category(alias="Projects",    name="Projects"))
         DBSession.add(Category(alias="Products",    name="Products"))
@@ -62,6 +67,7 @@ def main(argv=sys.argv):
         DBSession.add(Category(alias="SrvAppProc",  name="Server App. Processing"))
         DBSession.add(Category(alias="Terminals",   name="Payment Terminals"))
 
+    # teams/groups
     with transaction.manager:
         DBSession.add(Team(id='BRA', name=u'Brazil',      group='A'))
         DBSession.add(Team(id='CRO', name=u'Croatia',     group='A'))
@@ -103,6 +109,7 @@ def main(argv=sys.argv):
         DBSession.add(Team(id='RUS', name=u'Russia',      group='H'))
         DBSession.add(Team(id='KOR', name=u'Korea Rep.',  group='H'))
 
+    # tournament schedule
     with transaction.manager:
         DBSession.add(Match(id= 1, begin=datetime(2014,6,12, 22,00), team1='BRA', team2='CRO'))
         DBSession.add(Match(id= 2, begin=datetime(2014,6,13, 18,00), team1='MEX', team2='CMR'))
