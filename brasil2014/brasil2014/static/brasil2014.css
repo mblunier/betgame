@@ -156,7 +156,7 @@ h4 {
 
 
 html, body {
-	width: 1280px; 
+	width: 1080px; 
 	height: 100%;
 	//background-image: url("background.jpg");
 	//background-repeat: repeat-y;
@@ -212,7 +212,7 @@ td.flag {
 
 
 .flagsp {
-        background: transparent url("/static/flagsp.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+        background: transparent url("/static/flagsp.png") no-repeat scroll;
         border: 1px solid #CCCCCC;
         display: inline-block;
         height: 13px;
@@ -254,8 +254,17 @@ td.flag {
 .flagsp_URU { background-position: -133px -247px; }
 .flagsp_USA { background-position: -152px -247px; }
 
+.trnLink {
+    display: block;
+    height: 58px;
+    left: 0;
+    position: absolute;
+    top: 10px;
+    width: 1002px;
+}
+
 #message {
-        background-color: #00e000;
+        background-color: #00d0f0;
         border: #000000 1px solid;
         margin: 2px 2px 2px 240px;
 	padding: 2px 2px 2px 10px;
@@ -507,7 +516,7 @@ ul.links li {
 
 .highlight-player {
 	border: 1px dotted #e0c61b;
-	background-color: #819ff7;
+	background-color: #cef6f5;
 	/*font-style: italic;*/
 	font-weight: bold;
 }
@@ -543,7 +552,7 @@ input[type=submit] {
 
 .error li {
 	font-size: smaller;
-	color: #E0E000;
+	color: #00E0E0;
 	margin: 0;
 	padding: 0;
 }
