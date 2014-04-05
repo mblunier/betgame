@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+    This is the unofficial bet game for the <a href="http://www.fifa.com/worldcup/" target="_blank">BRASIL2014</a>.
+  </p>
+  <p style="margin-bottom: 30px">
+    Based on the <a href="http://docs.pylonshq.com" target="_blank">Pyramid</a> web framework.
+  </p>
+  <h3>References</h3>
+  <ul class="align-left">
+    <li><a href="http://docs.python.org/2.7/" target="_blank">Python v2.7 Documentation</a></li>
+    <li><a href="http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/index.html" target="_blank">The Pyramid Web Application Development Framework</a></li>
+    <li><a href="http://docs.sqlalchemy.org/en/rel_0_9/index.html" target="_blank">SQLAlchemy Documentation</a></li>
+    <li><a href="http://chameleon.repoze.org/docs/latest/reference.html" target="_blank">Chameleon Documentation</a></li>
+    <li><a href="http://packages.python.org/pyramid_simpleform/index.html" target="_blank">pyramid_simpleform — Simple form library</a></li>
+    <li><a href="http://www.formencode.org/en/latest/index.html" target="_blank">FormEncode Documentation</a></li>
+    <li><a href="https://webhelpers.readthedocs.org/en/latest/" target="_blank">WebHelpers documentation</a></li>
+    <li><a href="http://de.selfhtml.org/navigation/html.htm" target="_blank">SELFHTML: Kurzreferenz: HTML</a></li>
+    <li><a href="http://de.selfhtml.org/navigation/css.htm" target="_blank">SELFHTML: Kurzreferenz: CSS</a></li>
+  </ul>
+  <div id="footer">
+    <p>
+      &copy; Copyleft 2014, Clueless Gaming Ltd.
+    </p>
+  </div>
+</tal:block>
+
+</html>
+

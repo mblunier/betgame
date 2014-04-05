@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+    <b>${match.d_team1} : ${match.d_team2}</b><br />
+    <span tal:condition="match.d_score1 is None or match.d_score2 is None">
+      <span tal:content="match.d_begin.strftime('%d.%m.%Y %H:%M')">Kickoff</span>
+    </span>
+    <span tal:condition="match.d_score1 is not None and match.d_score2 is not None">
+      <b>${match.d_score1} : ${match.d_score2}</b>
+    </span>
+  </p>
+  <table id="tip-list">
+  <tr>
+    <th>Player</th>
+    <th>Tip</th>
+    <th>Points</th>
+  </tr>
+  <tr tal:repeat="bet tips">
+    <td tal:condition="bet.tip.d_player == viewer_username" class="highlight-player">
+      <a href="${request.route_url('view_player_tips', player=bet.tip.d_player)}">${bet.tip.d_player}</a>
+    </td>
+    <td tal:condition="bet.tip.d_player != viewer_username">
+      <a href="${request.route_url('view_player_tips', player=bet.tip.d_player)}">${bet.tip.d_player}</a>
+    </td>
+    <td>
+      <span tal:condition="match.d_score1 == bet.tip.d_score1 and match.d_score2 == bet.tip.d_score2">
+        <b>${bet.tip.d_score1} : ${bet.tip.d_score2}</b>
+      </span>
+      <span tal:condition="match.d_score1 != bet.tip.d_score1 or match.d_score2 != bet.tip.d_score2">
+        ${bet.tip.d_score1} : ${bet.tip.d_score2}
+      </span>
+    </td>
+    <td>${bet.points}</td>
+  </tr>
+  </table>
+  <span tal:replace="tips.pager('$link_first $link_previous ~3~ $link_next $link_last')" />
+  <p class="align-right"><!-- input type="button" onClick="history.go(-2)" value=" Back " --><a href="/matches">Back</a> </p>
+</tal:block>
+
+</html>

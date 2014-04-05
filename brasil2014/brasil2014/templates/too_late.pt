@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+    Too late, sorry!
+  </p>
+  <p style=".align-left">
+    Match tips can only be entered until the respective match has begun.
+  </p>
+  <p style=".align-left">
+    The final tip is due before the start of the quarter finals; i.e. <span tal:content="final_deadline.strftime('%d.%m.%Y %H:%M')" />.
+  </p>
+  <p class="align-right"><input type="button" onClick="history.back()" value=" Back "></p>
+</tal:block>
+
+</html>
+

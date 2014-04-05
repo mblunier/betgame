@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <h3>Scoring</h3>
+  <ol class="align-left">
+    <li>A correct outcome (1|X|2) gives ${scoring['outcome']} points, with
+        an additional <span tal:replace="scoring['exacthit'] - scoring['outcome']"> points for the exact score.</li>
+    <li>A mispredicted outcome earns ${scoring['missed']} points.</li>
+<!-- scoring mb:
+    <li>The following points are then added independently:</li>
+    <ul>
+      <li>Correct total number of goals: +${scoring['sumgoals']} points.</li>
+      <li>Correct goal difference: +${scoring['goaldiff']} points.</li>
+      <li>Matching number of goals: +${scoring['onescore']} point per match.</li>
+    </ul>
+ -->
+    <li>Then, for each score the total number of shot goals minus the absolute difference between tipped and shot goals is added;
+        i.e. a match score of 4:1 and a tip of 2:3 would add (4 + 1) - abs(4 - 2) - abs(1 - 3) = (5 - 2 - 2) = 1 point.
+	It is intentional, that a sufficiently bad tip will result in negative points!</li>
+    <li>The final tip is evaluated as follows:</li>
+    <ul>
+      <li>Predicting both finalists scores ${scoring['twofinalists']} points.</li>
+      <li>If only one participiant is correct: ${scoring['onefinalist']} points.</li>
+      <li>The final score is evaluated like any other match.</li>
+    </ul>
+    <li>All matches, that are decided by a penalty shootout are scored with one additional goal for the winner.</li>
+<!-- scoring mb:
+    <li>The maximum number of points is ${num_matches} x (${scoring['exacthit']} + ${scoring['sumgoals']} + ${scoring['goaldiff']} + ${scoring['onescore']}
+        + ${scoring['onescore']}) + ${scoring['twofinalists']} =
+	<span tal:replace="num_matches * (scoring['exacthit'] + scoring['sumgoals'] + scoring['goaldiff'] + scoring['onescore'] + scoring['onescore']) + scoring['twofinalists']" /> points.
+ 	<b>Everybody reaching this score will be automatically excluded from further bet games</b>.</li>
+ -->
+
+    <li><a href="/scoretable">Click here</a> to see the scoring table.</li>
+  </ol>
+</tal:block>
+
+</html>

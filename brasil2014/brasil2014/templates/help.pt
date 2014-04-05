@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <h3>Troubleshooting</h3>
+  <dl class="align-left">
+    <dt>How do I register?</dt>
+    <dd>To register you need a unique alias consisting of letters, numbers and optionally underscores. Avoid any special characters.
+        The password prevents, that somebody may enter tips in your name, but don't use a precious password.
+     <b>Make sure to remember your password since a forgotten password cannot be restored and setting
+        a new one is currently not possible...</b>
+        Entering a mail address is optional, but I promise it won't be abused beyond usual spamming.
+        For statistical purposes each player may select its organizational unit.
+        </dd>
+    <dt>I can not register myself.</dt>
+    <dd>Do you see an <span class="error">error</span> message? Follow it.
+        No message? Follow it anyway.
+        </dd>
+    <dt>I can not log in.</dt>
+    <dd>Does your browser accept cookies? If not, you should let it accept cookies at least from this site.</dd>
+    <dt>What's this browser thing?<br>
+    <dd>In contrast to common understanding a browser is not intended to display internet pages, but merely to
+        recognize people with lots of spare time and willing to participate in games like this one.
+        By visiting this site you have unmasked yourself and you will be spammed from now on with similar offers.
+        Resistance is futile, you have been assimilated.</dd>
+    <dt>Something seems not work correctly.</dt>
+    <dd>First, <a href="http://jargonwiki.com/wiki/RTFM">do this</a>, then assert, that the reason is not
+        <a href="http://jargonwiki.com/wiki/PEBKAC">this kind</a> of problem.
+        Despite the utmost care and although only the <a href="http://www.vim.org">most advanced technology</a> were
+	used for the development of this game - not to speak about the ridiculous consumption of resources - there
+	remains an extremely tiny chance of errors.
+        In this case you may trustingly contact the <a href="mailto:markus.blunier@rolotec.ch?subject=BRASIL2014">helpdesk</a>,
+        where your issues will be answered with well-pretended sympathy and - in exceptional cases - solved.</dd>
+  </dl>
+</tal:block>
+
+</html>

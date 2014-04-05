@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+    Registration
+  </p>
+  <p class="align-center">
+    (All fields are mandatory)
+  </p>
+  ${form.begin(request.route_url('register'))}
+    <fieldset>
+    ${form.csrf_token()}
+    <table>
+      <tr>
+        <td align="right">
+          ${form.label('username', 'Alias')}
+	</td>
+        <td align="left">
+          ${form.text('alias', size=25)}
+	</td>
+        <td align="left">
+	  ${form.errorlist('alias')}
+	</td>
+      </tr>
+      <tr>
+        <td align="right">
+          ${form.label('initial_password', 'Password')}
+	</td>
+        <td align="left">
+          ${form.password('initial_password', size=25)} (DO NOT FORGET!!!)
+	</td>
+        <td align="left">
+          ${form.errorlist('initial_password')}
+      </tr>
+      <tr>
+        <td align="right">
+          ${form.label('confirm_password', 'Confirm password')}
+	</td>
+        <td align="left">
+          ${form.password('confirm_password', size=25)}
+	</td>
+        <td align="left">
+          ${form.errorlist('confirm_password')}
+      </tr>
+      <tr>
+        <td align="right">
+          ${form.label('name', 'Name')}
+	</td>
+        <td align="left">
+          ${form.text('name', size=25)}
+	</td>
+        <td align="left">
+          ${form.errorlist('name')}
+      </tr>
+      <tr>
+        <td align="right">
+          ${form.label('email', 'Email')}
+	</td>
+        <td align="left">
+          ${form.text('mail', size=25)}
+	</td>
+        <td align="left">
+          ${form.errorlist('mail')}
+      </tr>
+      <tr>
+        <td align="right">
+          ${form.label('category', 'Category')}
+	</td>
+        <td align="left">
+          ${form.select('category', options=categories)}
+	</td>
+        <td align="left">
+          ${form.errorlist('category')}
+	</td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          ${form.submit('form.submitted', ' Register ', class_='submit')}
+	</td>
+      </tr>
+    </table>
+  </fieldset>
+  ${form.end()}
+</tal:block>
+
+</html>

@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+    <span class="app-name">${player.d_alias}'s</span> tips.
+  </p>
+  <table id="player-tips">
+  <tr>
+    <th colspan="2">Match</th>
+    <th>Result</th>
+    <th>Tip</th>
+    <th>Points</th>
+  </tr>
+  <tr tal:repeat="bet tips">
+    <!-- Final match: show teams -->
+    <td tal:condition="hasattr(bet.tip, 'd_team1') and hasattr(bet.tip, 'd_team2')">
+      ${bet.match.d_team1} : ${bet.match.d_team2}
+    </td>
+    <td tal:condition="hasattr(bet.tip, 'd_team1') and hasattr(bet.tip, 'd_team2')">
+      <a href="${request.route_url('view_final_tips')}">${bet.tip.d_team1} : ${bet.tip.d_team2}</a>
+    </td>
+    <!-- Normal match: show id -->
+    <td tal:condition="not hasattr(bet.tip, 'd_team1') or not hasattr(bet.tip, 'd_team2')">
+      ${bet.match.d_id}
+    </td>
+    <td tal:condition="not hasattr(bet.tip, 'd_team1') or not hasattr(bet.tip, 'd_team2')">
+      <a href="${request.route_url('view_match_tips', match=bet.match.d_id)}">${bet.match.d_team1} : ${bet.match.d_team2}</a>
+    </td>
+    <!-- Result -->
+    <td tal:condition="bet.match.d_score1 is not None and bet.match.d_score2 is not None">
+        ${bet.match.d_score1} : ${bet.match.d_score2}
+    </td>
+    <td tal:condition="bet.match.d_score1 is None or bet.match.d_score2 is None">
+      ? : ?
+    </td>
+    <!-- Tip -->
+    <td tal:condition="bet.tip.d_player == viewer_username and (not hasattr(bet.tip, 'd_team1') or not hasattr(bet.tip, 'd_team2'))">
+      <a href="${request.route_url('match_bet', match=bet.match.d_id)}">${bet.tip.d_score1} : ${bet.tip.d_score2}</a>
+    </td>
+    <td tal:condition="bet.tip.d_player != viewer_username or hasattr(bet.tip, 'd_team1') or hasattr(bet.tip, 'd_team2')">
+      <span tal:condition="bet.match.d_score1 == bet.tip.d_score1 and bet.match.d_score2 == bet.tip.d_score2">
+        <b>${bet.tip.d_score1} : ${bet.tip.d_score2}</b>
+      </span>
+      <span tal:condition="bet.match.d_score1 != bet.tip.d_score1 or bet.match.d_score2 != bet.tip.d_score2">
+        ${bet.tip.d_score1} : ${bet.tip.d_score2}
+      </span>
+    </td>
+    <td>${bet.points}</td>
+  </tr>
+  <tr id="total">
+    <td colspan="3">&nbsp;</td>
+    <td>Total</td>
+    <td>${player.d_points}</td>
+  </table>
+  <p class="align-right"><input type="button" onClick="history.back()" value=" Back "></p>
+</tal:block>
+
+</html>

@@ -1,0 +1,63 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+ <table id="match-list">
+   <tr>
+     <th>Id</th>
+     <th>Date</th>
+     <th>Match</th>
+     <th>Result</th>
+     <th colspan="2">Tip</th>
+   </tr>
+   <tr tal:repeat="match matches">
+     <!-- ${match} -->
+     <td tal:condition="match.d_id != final_id">${match.d_id}</td>
+     <td tal:condition="match.d_id == final_id">Final</td>
+     <td tal:content="match.d_begin.strftime('%d.%m.%Y %H:%M')">Kickoff</td>
+     <td><span class="flagsp flagsp_${match.d_team1}"> </span>&nbsp;${match.d_team1} 
+          : ${match.d_team2}&nbsp;<span class="flagsp flagsp_${match.d_team2}"> </span>
+     </td>
+     <td tal:condition="match.d_score1 is not None and match.d_score2 is not None">${match.d_score1} : ${match.d_score2}</td>
+     <td tal:condition="match.d_score1 is None or match.d_score2 is None">- : -</td>
+     <td>
+       <span tal:condition="match.d_id == final_id">
+         <span tal:condition="viewer_username and match.tip is not None">
+	   ${match.tip.d_score1} : ${match.tip.d_score2}
+	 </span>
+         <span tal:condition="viewer_username and final_deadline > now and match.tip is None">
+           <a href="${request.route_url('final_bet')}"> Add </a>
+         </span>
+       </span>
+       <span tal:condition="match.d_id != final_id">
+         <span tal:condition="viewer_username and now < match.d_begin">
+           <a tal:condition="match.tip" href="${request.route_url('match_bet', match=match.d_id)}">
+	     ${match.tip.d_score1} : ${match.tip.d_score2}
+	   </a>
+           <a tal:condition="not match.tip" href="${request.route_url('match_bet', match=match.d_id)}">
+	     Add 
+	   </a>
+         </span>
+         <span tal:condition="viewer_username and now >= match.d_begin">
+           <span tal:condition="match.tip" href="${request.route_url('match_bet', match=match.d_id)}">
+	     ${match.tip.d_score1} : ${match.tip.d_score2}
+	   </span>
+           <span tal:condition="not match.tip">
+	     Missed 
+	   </span>
+         </span>
+       </span>
+     </td>
+     <td tal:condition="match.d_id == final_id">
+         <a href="${request.route_url('view_final_tips')}"> View </a>
+     </td>
+     <td tal:condition="match.d_id != final_id">
+         <a href="${request.route_url('view_match_tips', match=match.d_id)}"> View </a>
+     </td>
+   </tr>
+ </table>
+</tal:block>
+
+</html>

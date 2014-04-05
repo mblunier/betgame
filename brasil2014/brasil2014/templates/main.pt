@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+    Welcome to the <span class="app-name">${project}</span>.
+  </p>
+
+  <p>
+    Please read the following sections carefully.
+  </p>
+
+  <h3>How to play</h3>
+  <ul class="align-left">
+    <li tal:condition="viewer_username is None">
+      First, you must <a href="${request.route_url('register')}">register</a> yourself (it's free).
+      Once registered you can log in anytime to enter or modify your bets.
+    </li>
+    <li>
+      <b>Enter your bets on time.</b> Each bet must be entered before the beginning of the respective
+      match and may be modified until then. 
+    </li>
+    <li>
+      For the profitable final bet you also have to select the teams that will reach the final.
+      It is due until <b tal:content="final_deadline.strftime('%d.%m.%Y %H:%M')"></b>
+      (the beginning of the first quarter final) <b>and cannot be modified</b>.
+    </li>
+    <li>
+      The <a href="${request.route_url('scoring')}">scoring</a> page describes how many points you
+      can earn with a single bet.
+    </li>
+    <li>
+      To get additional help <a href="${request.route_url('help')}">click here</a>.
+    </li>
+    <li>
+      In case you are not interested in playing please follow <a href="http://www.warmduscher-abc.ch/">this link</a>.
+    </li>
+  </ul>
+
+</tal:block>
+
+</html>

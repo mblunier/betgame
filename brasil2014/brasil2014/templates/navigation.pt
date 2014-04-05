@@ -1,0 +1,34 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal" 
+     id="navigation">
+  <ul>
+    <li><a href="${request.route_url('home')}">Home</a></li>
+    <li><a href="${request.route_url('view_team_groups')}">Teams</a></li>
+    <li><a href="${request.route_url('view_matches')}">Matches</a></li>
+    <li><a href="${request.route_url('view_players')}">Players</a></li>
+    <li><a href="${request.route_url('view_player_groups')}">Categories</a></li>
+  <!--
+    <li><span tal:condition="not viewer_username">Tips</span>
+        <span tal:condition="viewer_username">
+          <a href="${request.route_url('view_player_tips', player=viewer_username)}">Tips</a>
+        </span>
+    </li>
+  -->
+    <li style="margin-left: 80px"><a href="${request.route_url('about')}">About</a></li>
+  </ul>
+</div>
+<div id="user-info" tal:condition="viewer_username">
+  Welcome, <b>${viewer_username}</b>.
+  <a href="${request.route_url('logout')}">Logout</a>.
+</div>
+<div id="user-info" tal:condition="not viewer_username">
+  <tal::replace content="structure login_form" />
+  <div class="align-right">
+    Not a bettor yet? <a href="${request.route_url('register')}">Register here</a>.
+  </div>
+</div>
+<div id="message" tal:condition="request.session.peek_flash()">
+   <p tal:repeat="message request.session.pop_flash()">
+     ${message}
+   </p>
+</div>

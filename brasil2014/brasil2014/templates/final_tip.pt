@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+    <span class="app-name">${tip.d_player}'s</span> final tip.
+  </p>
+  <div class="app-welcome">
+  <p>
+    <b>${tip.d_team1} : ${tip.d_team2}</b>
+  </p>
+  <p>
+    ${tip.d_score1} : ${tip.d_score2}
+  </p>
+  </div>
+  <p class="align-right"><input type="button" onClick="history.go(-2)" value=" Back "></p>
+</tal:block>
+
+</html>

@@ -1,0 +1,212 @@
+import logging
+
+log = logging.getLogger(__name__)
+
+from properties import (
+    FINAL_DEADLINE, 
+    BET_POINTS 
+    )
+
+from .models import (
+    DBSession,
+    Team,
+    Player,
+    Final,
+    Match,
+    Tip
+    )
+
+def sign(num):
+    if num < 0:
+        return -1
+    elif num > 0:
+        return 1
+    return 0
+
+class MatchTip:
+    """ Associate a match tip with the respective match and calculate the resulting points. """
+    def __init__(self, match, tip):
+        self.match = match
+        self.tip = tip
+        self.points = evaluate_match_tip(match, tip)
+
+class FinalTip:
+    """ Associate a final tip with the respective match and calculate the resulting points. """
+    def __init__(self, final, tip):
+        self.match = final
+        self.tip = tip
+        self.points = evaluate_final_tip(final, tip)
+
+
+def score_points_MB(initial, match, tip):
+    """ Calculate score points the traditional way. """
+    points = 0
+    if (tip.d_score1 + tip.d_score2) == (match.d_score1 + match.d_score2):
+       points += BET_POINTS['sumgoals']
+    if abs(tip.d_score1 - tip.d_score2) == abs(match.d_score1 - match.d_score2):
+       points += BET_POINTS['goaldiff']
+    if tip.d_score1 in [match.d_score1, match.d_score2]:
+       points += BET_POINTS['onescore']
+    if tip.d_score2 in [match.d_score1, match.d_score2]:
+       points += BET_POINTS['onescore']
+    return points
+
+def score_points_NO(initial, match, tip):
+    """ Calculate score points the new way. """
+    diff1 = abs(match.d_score1 - tip.d_score1)
+    diff2 = abs(match.d_score2 - tip.d_score2)
+    return initial + (match.d_score1 + match.d_score2) - (diff1 + diff2) * BET_POINTS['onescore']
+
+def score_points_NO2(initial, match, tip):
+    """ Calculate score points the new way. """
+    diff = abs(sign(match.d_score1 - match.d_score2) + sign(tip.d_score1 - tip.d_score2))
+    return initial + diff * BET_POINTS['onescore']
+
+# select the scoring function
+score_points = score_points_NO
+
+def evaluate_match_tip(match, tip):
+    """ Calculate score points for a single match. """
+    if match.d_score1 is None or match.d_score2 is None:
+        # match has not been played yet
+        return 0
+
+    if tip.d_score1 is None or tip.d_score2 is None:
+        # the tip is invalid (this shouldn't occur)
+        log.error('invalid tip: player %s, match %d (%s:%s)', 
+                   tip.d_player, tip.d_match, tip.d_score1, tip.d_score2)
+        return 0
+
+    if match.d_score1 == tip.d_score1 and match.d_score2 == tip.d_score2:
+        return score_points(BET_POINTS['exacthit'], match, tip)
+    elif sign(match.d_score1 - match.d_score2) == sign(tip.d_score1 - tip.d_score2):
+        return score_points(BET_POINTS['outcome'], match, tip)
+    else:
+        return score_points(BET_POINTS['missed'], match, tip)
+
+def evaluate_final_tip(final, final_tip):
+    """ Calculate score points for the final team bet. """
+    finalists = 0
+    if final_tip.d_team1 in [final.d_team1, final.d_team2]:
+        finalists += 1
+    if final_tip.d_team2 in [final.d_team1, final.d_team2]:
+        finalists += 1
+    if finalists == 1:
+        points = BET_POINTS['onefinalist']
+    elif finalists == 2:
+        points = BET_POINTS['twofinalists']
+    else:
+        points = 0
+
+    match = Match(final.d_id, begin=final.d_begin,
+                  team1=final.d_team1, team2=final.d_team2, 
+                  score1=final.d_score1, score2=final.d_score2)
+    tip = Tip(player=final_tip.d_player, match=final.d_id,
+              score1=final_tip.d_score1, score2=final_tip.d_score2)
+    return points + evaluate_match_tip(match, tip)
+
+
+def refresh_points():
+    """ Update the points for all teams and players at once. """
+
+    log.info('===== updating all points & scores')
+
+    def find_team(team_id, teams):
+        """ Find a team in a list of teams. """
+        for team in teams:
+            if team.d_id == team_id:
+                return team
+        return None
+
+    # retrieve all teams to clear their points & scores
+    teams = DBSession.query(Team)
+    for team in teams:
+        team.d_played = 0
+        team.d_points = 0
+        team.d_shot = 0
+        team.d_rcvd = 0
+
+    def find_player(player_id, players):
+        """ Find a player in a list of players. """
+        for player in players:
+            if player.d_alias == player_id:
+                return player
+        return None
+
+    final = Match.get_final()
+
+    # retrieve all players to initialize their points,
+    # apply the final tip immediately, if present and
+    # the final result is available
+    players = DBSession.query(Player)
+    for player in players:
+        if final:
+            final_tip = Final.get_player_tip(player.d_alias)
+            if final_tip:
+                player.d_points = evaluate_final_tip(final, final_tip)
+                log.info('player "%s" scored %d points for final tip %s:%s %s:%s',
+                          player.d_alias, player.d_points,
+                          final_tip.d_team1, final_tip.d_team2,
+                          final_tip.d_score1, final_tip.d_score2)
+            else:
+                # player forgot to enter a final bet...
+                log.info('player "%s" forgot to enter a final tip', player.d_alias)
+                player.d_points = 0
+        else:   
+            # the final has not been played yet...
+            player.d_points = 0
+        log.debug('player "%s" starts with %d points', 
+                   player.d_alias, player.d_points)
+
+    for match in Match.get_played():
+        # update all team points & scores, provided the match took place before the quarter finals
+        if match.d_begin < FINAL_DEADLINE:
+            log.debug('match %d (%s:%s) with score %d:%d --> updating team scores', 
+                       match.d_id, match.d_team1, match.d_team2, 
+                       match.d_score1, match.d_score2)
+            team1 = find_team(match.d_team1, teams)
+            team1.d_played += 1
+            team1.d_shot += match.d_score1
+            team1.d_rcvd += match.d_score2
+            team2 = find_team(match.d_team2, teams)
+            team2.d_played += 1
+            team2.d_shot += match.d_score2
+            team2.d_rcvd += match.d_score1
+            if match.d_score1 > match.d_score2:
+                # home team wins
+                team1.d_points += 3
+            elif match.d_score1 < match.d_score2:
+                # away team wins
+                team2.d_points += 3
+            else:
+                # draw
+                team1.d_points += 1
+                team2.d_points += 1
+        else:
+            log.debug('match %d (%s:%s) starts after %s --> skip team update', 
+                       match.d_id, match.d_team1, match.d_team2, FINAL_DEADLINE)
+
+        # the final tip has been evaluated already
+        if final and match is final:
+            log.debug('skipping final match %d (%s:%s)', 
+                       match.d_id, match.d_team1, match.d_team2)
+            continue
+
+        # evaluate all player tips for the current match
+        for tip in Tip.get_match_tips(match.d_id):
+            player = find_player(tip.d_player, players)
+            if player:
+                tip_points = evaluate_match_tip(match, tip)
+                log.debug('player "%s" tip %s:%s for match %d (%s:%s) with score %d:%d --> %d points', 
+                           player.d_alias, tip.d_score1, tip.d_score2, 
+                           match.d_id, match.d_team1, match.d_team2, 
+                           match.d_score1, match.d_score2,
+                           tip_points)
+                player.d_points += tip_points
+            else:
+                # a tip from an unknown player?!
+                log.error('unknown player "%s" entered tip (%s:%s) for match %d, %s:%s',
+                           tip.d_player, tip.d_score1, tip.d_score2,
+                           match.d_id, match.d_team1, match.d_team2)
+
+    log.info('===== updated all points & scores')
