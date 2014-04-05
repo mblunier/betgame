@@ -19,7 +19,7 @@ def main(global_config, **settings):
 
     session_factory = session_factory_from_settings(settings)
 
-    authn_policy = AuthTktAuthenticationPolicy('s0secret', callback=groupfinder)
+    authn_policy = AuthTktAuthenticationPolicy('s0secret', callback=groupfinder, hashalg='md5')
     #authn_policy = AuthTktAuthenticationPolicy('s0secret')
     authz_policy = ACLAuthorizationPolicy()
 
