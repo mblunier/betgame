@@ -58,7 +58,7 @@ def score_points_NO(initial, match, tip):
     return initial + (match.d_score1 + match.d_score2) - (diff1 + diff2) * BET_POINTS['onescore']
 
 def score_points_NO2(initial, match, tip):
-    """ Calculate score points the new way. """
+    """ Calculate score points the newer way. """
     diff = abs(sign(match.d_score1 - match.d_score2) + sign(tip.d_score1 - tip.d_score2))
     return initial + diff * BET_POINTS['onescore']
 

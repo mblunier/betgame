@@ -96,7 +96,9 @@ $ cd betgame
 $ source bin/activate
 (betgame)$ easy_install path/to/brasil2014-x.y.tar.gz
 
-Extract and adapt the production.ini file from the archive and adapt it as desired
+Edit the categories in scripts/
+
+Extract the production.ini file from the archive and adapt it as desired
 (as port 80 is reserved for root the default port is 8080).
 
 Import initial database content:
