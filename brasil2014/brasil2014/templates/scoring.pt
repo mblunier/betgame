@@ -8,7 +8,7 @@
   <ol class="align-left">
     <li>A correct outcome (1|X|2) gives ${scoring['outcome']} points, with
         an additional <span tal:replace="scoring['exacthit'] - scoring['outcome']"> points for the exact score.</li>
-    <li>A mispredicted outcome earns ${scoring['missed']} points.</li>
+    <li>A mispredicted outcome earns ${scoring['missed']} points just for entering a bet.</li>
 <!-- scoring mb:
     <li>The following points are then added independently:</li>
     <ul>
