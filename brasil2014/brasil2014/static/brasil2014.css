@@ -545,8 +545,8 @@ input {
 	width: 205px;
 }
 
-input[type=submit] {
-	background-color: #ddd;
+input[type=button], input[type=submit] {
+	background-color: #00E0F0;
 	font-weight:bold;
 }
 
