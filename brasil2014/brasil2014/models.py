@@ -26,7 +26,7 @@ from pyramid.security import (
     Allow
     )
 
-from properties import FINAL_ID, ADMINS
+from properties import FINAL_DEADLINE, FINAL_ID, ADMINS
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
@@ -104,6 +104,10 @@ class Player(Base):
                                func.count(cls.d_alias).label('n_players'), 
                                func.sum(cls.d_points).label('n_points')).group_by(cls.d_unit)
 
+    @classmethod
+    def ranking(cls):
+        return DBSession.query(cls).order_by(cls.d_points.desc(), cls.d_alias)
+
 
 class Category(Base):
     __tablename__ = 't_category'
@@ -137,6 +141,10 @@ class Team(Base):
         self.d_points = 0
         self.d_shot = 0
         self.d_rcvd = 0
+
+    @classmethod
+    def get_all(cls):
+        return DBSession.query(cls).order_by(cls.d_name)
 
     @classmethod
     def get_by_id(cls, id):
@@ -179,6 +187,10 @@ class Match(Base):
         return '{0} {1}:{2} {3}:{4}'.format(self.d_id, self.d_team1, self.d_team2, self.d_score1, self.d_score2)
 
     @classmethod
+    def get_all(cls):
+        return DBSession.query(cls).order_by(cls.d_begin).all()
+
+    @classmethod
     def get_by_id(cls, match_id):
         return DBSession.query(cls).filter(cls.d_id == match_id).first()
 
@@ -193,6 +205,11 @@ class Match(Base):
     def get_final(cls):
         """ Retrieve final match, but make sure it has already been played. """
         return DBSession.query(cls).filter(cls.d_id == FINAL_ID).first()    # .one()
+
+    @classmethod
+    def get_stage2(cls):
+        """ Retrieve the list of stage 2 matches. """
+        return DBSession.query(cls).filter(cls.d_begin >= FINAL_DEADLINE)
 
     @classmethod
     def get_played(cls):
@@ -219,6 +236,10 @@ class Tip(Base):
         self.d_match = match
         self.d_score1 = score1
         self.d_score2 = score2
+
+    @classmethod
+    def get_all(cls):
+        return DBSession.query(cls).order_by(cls.d_player)
 
     @classmethod
     def get_match_tips(cls, match):
@@ -248,6 +269,10 @@ class Final(Base):
         self.d_team2 = team2
         self.d_score1 = score1
         self.d_score2 = score2
+
+    @classmethod
+    def get_all(cls):
+        return DBSession.query(cls)
 
     @classmethod
     def get_player_tip(cls, player):

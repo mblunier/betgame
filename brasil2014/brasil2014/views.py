@@ -1,3 +1,5 @@
+import json
+
 from datetime import datetime
 from properties import (
     PROJECT_TITLE,
@@ -47,10 +49,10 @@ from scoring import (
     MatchTip,
     FinalTip,
     refresh_points,
+    apply_results,
     sign
     )
 
-    
 def get_page_param(request, param='page'):
     """ @return Numerical value of the 'page' parameter. """
     try:
@@ -64,7 +66,6 @@ def login_form_view(request):
                   request)
 
 def navigation_view(request):
-    #print ">>>>>>>>>>> Navigation: authenticated_userid=%s, " % request.authenticated_userid
     return render('templates/navigation.pt',
                   { 'viewer_username': request.authenticated_userid,
                     'login_form': login_form_view(request) },
@@ -116,6 +117,17 @@ def too_late(request):
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
+@view_config(permission='view', route_name='results', renderer='json')
+def results(request):
+    """ Generate a list of scores for all played matches and the stage 2 team names. """
+    matches = {}
+    for match in Match.get_stage2():
+        matches[match.d_id] = { "team1": match.d_team1, "team2": match.d_team2 }
+    scores = {}
+    for match in Match.get_played():
+        scores[match.d_id] = { "score1": match.d_score1, "score2": match.d_score2 }
+    return {'matches': matches,
+            'scores': scores }
 
 # ----- Player views -----
 
@@ -178,7 +190,7 @@ def logout(request):
 def view_players(request):
     url = webhelpers.paginate.PageURL_WebOb(request)
     page = get_page_param(request)
-    players = webhelpers.paginate.Page(DBSession.query(Player).order_by(Player.d_points.desc(), Player.d_alias),
+    players = webhelpers.paginate.Page(Player.ranking(),
                                        page=page,
                                        url=url,
                                        items_per_page=15)
@@ -224,8 +236,7 @@ def view_player_groups(request):
 @view_config(permission='view', route_name='view_teams',
              renderer='templates/teams.pt')
 def view_teams(request):
-    teams = DBSession.query(Team).all()
-    return { 'teams': teams,
+    return { 'teams': Team.get_all(),
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_team_groups',
@@ -243,7 +254,7 @@ def view_team_groups(request):
 def view_matches(request):
     player = request.authenticated_userid
     #matches = Match.get_played()
-    matches = DBSession.query(Match).order_by(Match.d_begin).all()
+    matches = Match.get_all()
     for match in matches:
         if match.d_id == FINAL_ID:
             final_tip = Final.get_player_tip(player)
@@ -310,8 +321,7 @@ def match_bet(request):
 @view_config(permission='view', route_name='view_tips',
              renderer='templates/tips.pt', http_cache=0)
 def view_tips(request):
-    tips = DBSession.query(Tip).all()
-    return { 'tips': tips,
+    return { 'tips': Tip.get_all(),
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
@@ -383,7 +393,7 @@ def final_bet(request):
         DBSession().add(final_tip)
         return HTTPFound(location=route_url('view_final_tip', request, player=player))
 
-    teams = [(team.d_id,team.d_name) for team in DBSession.query(Team).order_by(Team.d_name)]
+    teams = [(team.d_id,team.d_name) for team in Team.get_all()]
 
     return { 'tip': final_tip,
              'form': FormRenderer(form),
@@ -394,7 +404,7 @@ def final_bet(request):
              renderer='templates/final_tips.pt', http_cache=0)
 def view_final_tips(request):
     final = Match.get_final()
-    tips = [FinalTip(final, tip) for tip in DBSession.query(Final)]
+    tips = [FinalTip(final, tip) for tip in Final.get_all()]
     return { 'final': final,
              'tips': tips,
              'viewer_username': request.authenticated_userid,
@@ -445,5 +455,8 @@ def set_score(request):
 
 @view_config(permission='update', route_name='update')
 def update(request):
-    refresh_points()
+    data = json.dumps(results(request))
+    apply_results(data)
+    #refresh_points()
     return HTTPFound(location=route_url('view_players', request))
+
