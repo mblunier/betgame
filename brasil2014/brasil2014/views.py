@@ -239,7 +239,7 @@ def view_team_groups(request):
 # ----- Match views -----
 
 @view_config(permission='view', route_name='view_matches',
-             renderer='templates/matches.pt')
+             renderer='templates/matches.pt', http_cache=0)
 def view_matches(request):
     player = request.authenticated_userid
     #matches = Match.get_played()
@@ -261,7 +261,7 @@ def view_matches(request):
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_group_matches',
-             renderer='templates/group_matches.pt')
+             renderer='templates/group_matches.pt', http_cache=0)
 def view_group_matches(request):
     player = request.authenticated_userid
     group_id = request.matchdict['group']
@@ -308,7 +308,7 @@ def match_bet(request):
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_tips',
-             renderer='templates/tips.pt')
+             renderer='templates/tips.pt', http_cache=0)
 def view_tips(request):
     tips = DBSession.query(Tip).all()
     return { 'tips': tips,
@@ -316,7 +316,7 @@ def view_tips(request):
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_match_tips',
-             renderer='templates/match_tips.pt')
+             renderer='templates/match_tips.pt', http_cache=0)
 def view_match_tips(request):
     match_id = request.matchdict['match']
     match = Match.get_by_id(match_id)
@@ -333,7 +333,7 @@ def view_match_tips(request):
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_player_tips',
-             renderer='templates/player_tips.pt')
+             renderer='templates/player_tips.pt', http_cache=0)
 def view_player_tips(request):
     player_id = request.matchdict['player']
     player = Player.get_by_username(player_id)
@@ -391,7 +391,7 @@ def final_bet(request):
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_final_tips',
-             renderer='templates/final_tips.pt')
+             renderer='templates/final_tips.pt', http_cache=0)
 def view_final_tips(request):
     final = Match.get_final()
     tips = [FinalTip(final, tip) for tip in DBSession.query(Final)]
@@ -401,7 +401,7 @@ def view_final_tips(request):
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_final_tip',
-             renderer='templates/final_tip.pt')
+             renderer='templates/final_tip.pt', http_cache=0)
 def view_final_tip(request):
     player = request.matchdict['player']
     tip = Final.get_player_tip(player)
