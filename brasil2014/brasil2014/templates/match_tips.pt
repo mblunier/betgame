@@ -38,7 +38,7 @@
   </tr>
   </table>
   <span tal:replace="tips.pager('$link_first $link_previous ~3~ $link_next $link_last')" />
-  <p class="align-right"><!-- input type="button" onClick="history.go(-2)" value=" Back " --><a href="/matches">Back</a> </p>
+  <p class="align-right"><input type="button" onClick="history.go(-2)" value=" Back "><!-- a href="/matches">Back</a --></p>
 </tal:block>
 
 </html>
