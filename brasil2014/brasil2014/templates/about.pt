@@ -15,7 +15,7 @@
     <li><a href="http://docs.python.org/2.7/" target="_blank">Python v2.7 Documentation</a></li>
     <li><a href="http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/index.html" target="_blank">The Pyramid Web Application Development Framework</a></li>
     <li><a href="http://docs.sqlalchemy.org/en/rel_0_9/index.html" target="_blank">SQLAlchemy Documentation</a></li>
-    <li><a href="http://chameleon.repoze.org/docs/latest/reference.html" target="_blank">Chameleon Documentation</a></li>
+    <li><a href="http://chameleon.readthedocs.org/en/latest/" target="_blank">Chameleon Documentation</a></li>
     <li><a href="http://packages.python.org/pyramid_simpleform/index.html" target="_blank">pyramid_simpleform — Simple form library</a></li>
     <li><a href="http://www.formencode.org/en/latest/index.html" target="_blank">FormEncode Documentation</a></li>
     <li><a href="https://webhelpers.readthedocs.org/en/latest/" target="_blank">WebHelpers documentation</a></li>
