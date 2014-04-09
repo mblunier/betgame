@@ -1,8 +1,11 @@
 import json
+import urllib2
 
 from datetime import datetime
 from properties import (
     PROJECT_TITLE,
+    GAME_URL,
+    RESULTPAGE,
     BET_POINTS, 
     FINAL_ID, 
     FINAL_DEADLINE, 
@@ -53,6 +56,7 @@ from scoring import (
     sign
     )
 
+
 def get_page_param(request, param='page'):
     """ @return Numerical value of the 'page' parameter. """
     try:
@@ -76,6 +80,7 @@ def navigation_view(request):
 def view_game(request):
     return { 'project': PROJECT_TITLE,
              'final_deadline': FINAL_DEADLINE,
+             'game_url': GAME_URL,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
@@ -117,6 +122,9 @@ def too_late(request):
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
+
+# ----- Result/point update -----
+
 @view_config(permission='view', route_name='results', renderer='json')
 def results(request):
     """ Generate a list of scores for all played matches and the stage 2 team names. """
@@ -128,6 +136,15 @@ def results(request):
         scores[match.d_id] = { "score1": match.d_score1, "score2": match.d_score2 }
     return {'matches': matches,
             'scores': scores }
+
+@view_config(permission='view', route_name='update')
+def update(request):
+    data = urllib2.urlopen(RESULTPAGE).read()
+    #data = json.dumps(results(request))
+    apply_results(data)
+    #refresh_points()
+    return HTTPFound(location=route_url('view_players', request))
+
 
 # ----- Player views -----
 
@@ -452,11 +469,4 @@ def set_score(request):
     except:
         request.session.flash(u'Updating score and points failed.')
         return HTTPFound(location=route_url('home', request))
-
-@view_config(permission='update', route_name='update')
-def update(request):
-    data = json.dumps(results(request))
-    apply_results(data)
-    #refresh_points()
-    return HTTPFound(location=route_url('view_players', request))
 
