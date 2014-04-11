@@ -141,26 +141,28 @@ def refresh_points():
     # the final result is available
     players = DBSession.query(Player)
     for player in players:
+        final_tip = Final.get_player_tip(player.d_alias)
         if final:
-            final_tip = Final.get_player_tip(player.d_alias)
             if final_tip:
                 player.d_points = evaluate_final_tip(final, final_tip)
                 log.info('player "%s" scored %d points for final tip %s:%s %s:%s',
                           player.d_alias, player.d_points,
                           final_tip.d_team1, final_tip.d_team2,
                           final_tip.d_score1, final_tip.d_score2)
-            else:
+            elif datetime.now() >= FINAL_DEADLINE:
                 # player forgot to enter a final bet...
                 log.warn('player "%s" forgot to enter a final tip', player.d_alias)
                 player.d_points = 0
         else:   
             # the final has not been played yet...
+            log.info('player "%s" has not yet entered a final tip', player.d_alias)
             player.d_points = 0
+
         log.debug('player "%s" starts with %d points', 
                    player.d_alias, player.d_points)
 
     for match in Match.get_played():
-        # update all team points & scores, provided the match took place before the quarter finals
+        # update all team points & scores for stage 1 matches
         if match.d_begin < FINAL_DEADLINE:
             log.debug('match %d (%s:%s) with score %d:%d --> updating team scores', 
                        match.d_id, match.d_team1, match.d_team2, 
@@ -222,15 +224,15 @@ def apply_results(data):
         match = Match.get_by_id(id)
         if match:
             log.debug("apply_result: match %s = %s : %s", id, team['team1'], team['team2'])
-            #match.d_team1 = team['team1']
-            #match.d_team2 = team['team2']
+            match.d_team1 = team['team1']
+            match.d_team2 = team['team2']
     for id, score in scores.iteritems():
         match = Match.get_by_id(id)
         if match:
             log.debug("apply_result: score %s = %s : %s", id, score['score1'], score['score2'])
-            #match.d_score1 = int(score['score1'])
-            #match.d_score2 = int(score['score2'])
+            match.d_score1 = int(score['score1'])
+            match.d_score2 = int(score['score2'])
     log.debug("apply_result: %d scores", len(scores))
-    if False and len(scores) > 0:
+    if len(scores) > 0:
         refresh_points()
 
