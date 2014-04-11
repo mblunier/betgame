@@ -99,7 +99,7 @@ class Player(Base):
 
     @classmethod
     def get_groups(cls):
-        # retrieve player groups as a list of tuples: (d_unit, n_players, n_points)
+        """ Retrieve player groups as a list of tuples: (d_unit, n_players, n_points) """
         return DBSession.query(cls, cls.d_unit, 
                                func.count(cls.d_alias).label('n_players'), 
                                func.sum(cls.d_points).label('n_points')).group_by(cls.d_unit)
@@ -215,13 +215,6 @@ class Match(Base):
     def get_played(cls):
         """ Retrieve the list of played matches. """
         return DBSession.query(cls).filter(cls.d_score1 != None).filter(cls.d_score2 != None)
-
-
-#class MatchGroup:
-#    def __init__(self, id, matches=[]):
-#        """ Associate a list of matches with a group id. """
-#        self.group_id = id
-#        self.matches = matches
 
 
 class Tip(Base):
