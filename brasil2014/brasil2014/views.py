@@ -43,7 +43,6 @@ from .models import (
     Team,
     TeamGroup,
     Match,
-    #MatchGroup,
     Final,
     Tip
     )
@@ -139,10 +138,8 @@ def results(request):
 
 @view_config(permission='view', route_name='update')
 def update(request):
-    data = urllib2.urlopen(RESULTPAGE).read()
-    #data = json.dumps(results(request))
+    data = urllib2.urlopen(RESULTPAGE).read()   # json.dumps(results(request))
     apply_results(data)
-    #refresh_points()
     return HTTPFound(location=route_url('view_players', request))
 
 
