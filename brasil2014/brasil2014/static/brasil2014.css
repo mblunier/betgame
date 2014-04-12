@@ -205,6 +205,19 @@ th, td {
 	padding: 10px;
 }
 
+tr th {
+	background-color: #C0000C0;
+}
+
+tr:nth-child(even) {
+	background-color: #CEF6F5;
+}
+
+
+tr:nth-child(odd) {
+	background-color: #E0F8F7;
+}
+
 td.flag {
         padding-left: 5px;
         width: 20px;
