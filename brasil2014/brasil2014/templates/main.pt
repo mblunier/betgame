@@ -26,7 +26,8 @@
       match and may be modified until then. 
     </li>
     <li>
-      For the profitable final bet you also have to select the teams that will reach the final.
+      For the profitable <a href="${request.route_url('final_bet')}">final bet</a> you also have to select
+      the teams that will reach the final.
       It is due until <b tal:content="final_deadline.strftime('%d.%m.%Y %H:%M')"></b>
       (the beginning of stage 2) <b>and cannot be modified</b>.
     </li>
