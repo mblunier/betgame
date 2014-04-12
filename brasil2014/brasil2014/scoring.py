@@ -143,6 +143,7 @@ def refresh_points():
     # the final result is available
     players = DBSession.query(Player).all()
     for player in players:
+        player.d_points = 0
         final_tip = Final.get_player_tip(player.d_alias)
         if final:
             if final_tip:
@@ -156,14 +157,12 @@ def refresh_points():
             elif datetime.now() >= FINAL_DEADLINE:
                 # player forgot to enter a final bet...
                 log.warn('player "%s" forgot to enter a final tip', player.d_alias)
-                player.d_points = 0
         else:   
             # the final has not been played yet...
             log.info('player "%s" has not yet entered a final tip (%s:%s %s:%s)',
                       player.d_alias,
                       final.d_team1, final.d_team2,
                       final.d_score1, final.d_score2)
-            player.d_points = 0
 
         log.debug('player "%s" starts with %d points', 
                    player.d_alias, player.d_points)
