@@ -136,9 +136,14 @@ def results(request):
     return {'matches': matches,
             'scores': scores }
 
-@view_config(permission='view', route_name='update')
-def update(request):
-    data = urllib2.urlopen(RESULTPAGE).read()   # json.dumps(results(request))
+@view_config(permission='update', route_name='update_local')
+def update_local(request):
+    apply_results(results(request))
+    return HTTPFound(location=route_url('view_players', request))
+
+@view_config(permission='view', route_name='update_remote')
+def update_remote(request):
+    data = urllib2.urlopen(RESULTPAGE).read()
     apply_results(data)
     return HTTPFound(location=route_url('view_players', request))
 
@@ -459,7 +464,7 @@ def set_score(request):
         if match:
             match.d_score1 = int(request.matchdict['score1'])
             match.d_score2 = int(request.matchdict['score2'])
-            refresh_points()
+            #refresh_points()
         else:
             request.session.flash(u'Invalid match id.')
         return HTTPFound(location=route_url('view_matches', request))

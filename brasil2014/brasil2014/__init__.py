@@ -51,6 +51,8 @@ def addroutes(config):
     config.add_route('score_table', '/scoretable')
     config.add_route('set_match', '/match/{id}/{team1}/{team2}')
     config.add_route('set_score', '/score/{id}/{score1}/{score2}')
+    config.add_route('update_local', '/update_local')
+    config.add_route('update_remote', '/update_remote')
     config.add_route('final_bet', '/bet/final')
     config.add_route('match_bet', '/bet/{match}')
     config.add_route('view_final_tips', '/final_tips')
@@ -65,7 +67,6 @@ def addroutes(config):
     config.add_route('view_team_groups', '/team_groups')
     config.add_route('view_teams', '/teams')
     config.add_route('view_tips', '/tips')
-    config.add_route('update', '/update')
     config.add_route('too_late', '/too_late')
     config.add_route('home', '/')
 
