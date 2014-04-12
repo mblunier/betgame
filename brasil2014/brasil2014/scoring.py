@@ -1,8 +1,7 @@
 import json
 import logging
 
-log = logging.getLogger(__name__)
-
+from datetime import datetime
 from properties import (
     FINAL_DEADLINE, 
     BET_POINTS 
@@ -16,6 +15,8 @@ from .models import (
     Match,
     Tip
     )
+
+log = logging.getLogger(__name__)
 
 def sign(num):
     if num < 0:
@@ -134,33 +135,40 @@ def refresh_points():
                 return player
         return None
 
+    log.info('===== ...evaluating final tips')
     final = Match.get_final()
 
     # retrieve all players to initialize their points,
     # apply the final tip immediately, if present and
     # the final result is available
-    players = DBSession.query(Player)
+    players = DBSession.query(Player).all()
     for player in players:
         final_tip = Final.get_player_tip(player.d_alias)
         if final:
             if final_tip:
                 player.d_points = evaluate_final_tip(final, final_tip)
-                log.info('player "%s" scored %d points for final tip %s:%s %s:%s',
+                log.info('player "%s" scored %d points for final tip %s:%s %s:%s (%s:%s %s:%s)',
                           player.d_alias, player.d_points,
                           final_tip.d_team1, final_tip.d_team2,
-                          final_tip.d_score1, final_tip.d_score2)
+                          final_tip.d_score1, final_tip.d_score2,
+                          final.d_team1, final.d_team2,
+                          final.d_score1, final.d_score2)
             elif datetime.now() >= FINAL_DEADLINE:
                 # player forgot to enter a final bet...
                 log.warn('player "%s" forgot to enter a final tip', player.d_alias)
                 player.d_points = 0
         else:   
             # the final has not been played yet...
-            log.info('player "%s" has not yet entered a final tip', player.d_alias)
+            log.info('player "%s" has not yet entered a final tip (%s:%s %s:%s)',
+                      player.d_alias,
+                      final.d_team1, final.d_team2,
+                      final.d_score1, final.d_score2)
             player.d_points = 0
 
         log.debug('player "%s" starts with %d points', 
                    player.d_alias, player.d_points)
 
+    log.info('===== ...applying scores to stage 1 matches')
     for match in Match.get_played():
         # update all team points & scores for stage 1 matches
         if match.d_begin < FINAL_DEADLINE:
@@ -189,7 +197,7 @@ def refresh_points():
             log.debug('match %d (%s:%s) starts after %s --> skip team update', 
                        match.d_id, match.d_team1, match.d_team2, FINAL_DEADLINE)
 
-        # the final tip has been evaluated already
+        # the final tip has already been evaluated
         if final and match is final:
             log.debug('skipping final match %d (%s:%s)', 
                        match.d_id, match.d_team1, match.d_team2)
