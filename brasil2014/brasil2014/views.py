@@ -138,7 +138,7 @@ def results(request):
 
 @view_config(permission='update', route_name='update_local')
 def update_local(request):
-    apply_results(results(request))
+    refresh_points()
     return HTTPFound(location=route_url('view_players', request))
 
 @view_config(permission='view', route_name='update_remote')
@@ -462,9 +462,16 @@ def set_score(request):
     try:
         match = Match.get_by_id(request.matchdict['id'])
         if match:
-            match.d_score1 = int(request.matchdict['score1'])
-            match.d_score2 = int(request.matchdict['score2'])
-            #refresh_points()
+            score1 = int(request.matchdict['score1'])
+            if score1 >= 0:
+                match.d_score1 = score1
+            else:
+                match.d_score1 = None
+            score2 = int(request.matchdict['score2'])
+            if score2 >= 0:
+                match.d_score2 = score2
+            else:
+                match.d_score2 = None
         else:
             request.session.flash(u'Invalid match id.')
         return HTTPFound(location=route_url('view_matches', request))
