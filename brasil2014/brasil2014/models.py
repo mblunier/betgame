@@ -16,7 +16,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import (
     scoped_session,
     sessionmaker,
-    synonym
+    synonym,
+    relationship
     )
 from zope.sqlalchemy import ZopeTransactionExtension
 
@@ -59,6 +60,9 @@ class Player(Base):
     d_unit = Column(String(10))
     d_points = Column(Integer)
 
+    tips = relationship('Tip', backref='player', cascade="all, delete, delete-orphan")
+    final_tip = relationship('Final', backref='final', cascade="all, delete, delete-orphan")
+
     _password = Column('d_password', Unicode(60))
 
     def _get_password(self):
@@ -88,6 +92,12 @@ class Player(Base):
     @classmethod
     def exists(cls, username):
         return DBSession.query(cls).filter(cls.d_alias == username).first() is not None
+
+    @classmethod
+    def del_player(cls, username):
+        #player = get_by_username(username)
+        #DBSession.query(cls).delete(player)
+        pass
 
     @classmethod
     def get_by_username(cls, username):
@@ -243,6 +253,10 @@ class Tip(Base):
         return DBSession.query(cls).filter(cls.d_player == player)
 
     @classmethod
+    def del_player_tips(cls, player):
+        return DBSession.query(cls).delete().where(cls.d_player == player)
+
+    @classmethod
     def get_player_tip(cls, player, match):
         return DBSession.query(cls).filter(cls.d_player == player).\
                                     filter(cls.d_match == match).first()
@@ -270,3 +284,8 @@ class Final(Base):
     @classmethod
     def get_player_tip(cls, player):
         return DBSession.query(cls).filter(cls.d_player == player).first()
+
+    @classmethod
+    def del_player_tip(cls, player):
+        return DBSession.query(cls).delete().where(cls.d_player == player)
+

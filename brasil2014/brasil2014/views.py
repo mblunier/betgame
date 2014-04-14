@@ -122,7 +122,7 @@ def too_late(request):
              'navigation': navigation_view(request) }
 
 
-# ----- Result/point update -----
+# ----- Result/point/player update -----
 
 @view_config(permission='view', route_name='results', renderer='json')
 def results(request):
@@ -147,17 +147,28 @@ def update_remote(request):
     apply_results(data)
     return HTTPFound(location=route_url('view_players', request))
 
+@view_config(permission='update', route_name='unregister')
+def unregister(request):
+    alias = request.matchdict['alias']
+    player = Player.get_by_username(alias)
+    if player:
+        DBSession.delete(player)
+        request.session.flash(u'Player %s deleted.' % alias)
+    else:
+        request.session.flash(u'Player %s not found.' % alias)
+    return HTTPFound(location=route_url('view_players', request))
+
 
 # ----- Player views -----
 
 class RegistrationSchema(formencode.Schema):
     allow_extra_fields = True
-    alias = formencode.validators.PlainText(not_empty=True)
+    alias = formencode.validators.PlainText(not_empty=True, max=10)
     name = formencode.validators.String(not_empty=True)
     mail = formencode.validators.Email(resolve_domain=False, not_empty=True)
     #category = formencode.validators.OneOf(categories, hideList=True)
-    initial_password = formencode.validators.String(not_empty=True)
-    confirm_password = formencode.validators.String(not_empty=True)
+    initial_password = formencode.validators.String(not_empty=True, min=5)
+    confirm_password = formencode.validators.String(not_empty=True, min=5)
     chained_validators = [
         formencode.validators.FieldsMatch('initial_password', 'confirm_password')
     ]
@@ -169,14 +180,14 @@ def add_player(request):
     if 'form.submitted' in request.POST and form.validate():
         alias = form.data['alias']
         if (Player.exists(alias)):
-            request.session.flash(u'Alias is already used, please choose another one.')
+            request.session.flash(u'This alias is already used, please choose another one.')
         else:
             player = Player(alias=alias,
                             password=form.data['initial_password'],
                             name=form.data['name'],
                             mail=form.data['mail'],
                             unit=form.data['category'])
-            DBSession().add(player)
+            DBSession.add(player)
             headers = remember(request, alias)
             return HTTPFound(location=route_url('home', request), headers=headers)
     return { 'form': FormRenderer(form),
@@ -325,10 +336,9 @@ def match_bet(request):
 
     form = Form(request, schema=MatchBetSchema, obj=tip)
     if 'form.submitted' in request.POST and form.validate():
-        session = DBSession()
         if not tip:
             tip = Tip(player=player_id, match=match_id)
-            session.add(tip)
+            DBSession.add(tip)
         tip.d_score1 = form.data['d_score1']
         tip.d_score2 = form.data['d_score2']
         return HTTPFound(location=route_url('view_match_tips', request, match=match_id))
@@ -410,7 +420,7 @@ def final_bet(request):
         final_tip.d_team2 = form.data['d_team2']
         final_tip.d_score1 = form.data['d_score1']
         final_tip.d_score2 = form.data['d_score2']
-        DBSession().add(final_tip)
+        DBSession.add(final_tip)
         return HTTPFound(location=route_url('view_final_tip', request, player=player))
 
     teams = [(team.d_id,team.d_name) for team in Team.get_all()]

@@ -51,6 +51,7 @@ def addroutes(config):
     config.add_route('score_table', '/scoretable')
     config.add_route('set_match', '/match/{id}/{team1}/{team2}')
     config.add_route('set_score', '/score/{id}/{score1}/{score2}')
+    config.add_route('unregister', '/unregister/{alias}')
     config.add_route('update_local', '/update_local')
     config.add_route('update_remote', '/update_remote')
     config.add_route('final_bet', '/bet/final')
