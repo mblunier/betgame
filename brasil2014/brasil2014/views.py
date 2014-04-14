@@ -299,6 +299,7 @@ def view_group_matches(request):
     for match in matches:
         match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
+             'group_id': group_id,
              'matches': matches,
              'viewer_username': player,
              'navigation': navigation_view(request) }
