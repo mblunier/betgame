@@ -163,7 +163,7 @@ def unregister(request):
 
 class RegistrationSchema(formencode.Schema):
     allow_extra_fields = True
-    alias = formencode.validators.PlainText(not_empty=True, max=10)
+    alias = formencode.validators.PlainText(not_empty=True, max=30)
     name = formencode.validators.String(not_empty=True)
     mail = formencode.validators.Email(resolve_domain=False, not_empty=True)
     #category = formencode.validators.OneOf(categories, hideList=True)
@@ -320,8 +320,8 @@ def view_group_matches(request):
 
 class MatchBetSchema(formencode.Schema):
     allow_extra_fields = True
-    d_score1 = formencode.validators.Int(min=0, not_empty=True)
-    d_score2 = formencode.validators.Int(min=0, not_empty=True)
+    d_score1 = formencode.validators.Int(min=0, max=100, not_empty=True)
+    d_score2 = formencode.validators.Int(min=0, max=100, not_empty=True)
 
 @view_config(permission='post', route_name='match_bet',
              renderer='templates/match_bet.pt')
