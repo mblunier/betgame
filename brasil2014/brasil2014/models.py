@@ -201,6 +201,10 @@ class Match(Base):
         return DBSession.query(cls).order_by(cls.d_begin).all()
 
     @classmethod
+    def get_upcoming(cls, start, num):
+        return DBSession.query(cls).filter(cls.d_begin > start).order_by(cls.d_begin).limit(num).all()
+
+    @classmethod
     def get_by_id(cls, match_id):
         return DBSession.query(cls).filter(cls.d_id == match_id).first()
 

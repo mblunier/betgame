@@ -41,6 +41,8 @@ def main(global_config, **settings):
 
 
 def addroutes(config):
+    """ Define URL mappings. Note, that order is relevant as the first matching URL
+        will hide any following URL with the same initial pattern. """
     config.add_route('about', '/about')
     config.add_route('help', '/help')
     config.add_route('login', '/login')
@@ -61,6 +63,7 @@ def addroutes(config):
     config.add_route('view_group_matches', '/group_matches/{group}')
     config.add_route('view_matches', '/matches')
     config.add_route('view_match_tips', '/match_tips/{match}')
+    config.add_route('view_upcoming_matches', '/upcoming/{num}')
     config.add_route('view_players', '/players')
     config.add_route('view_group_players', '/group_players/{category}')
     config.add_route('view_player_groups', '/player_groups')

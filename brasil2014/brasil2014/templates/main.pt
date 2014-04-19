@@ -7,11 +7,9 @@
   <p class="app-welcome">
     Welcome to the <span class="app-name">${project}</span>.
   </p>
-
-  <p>
+  <p style="margin-bottom: 30px">
     Please read the following sections carefully.
   </p>
-
   <h3>How to play</h3>
   <ul class="align-left">
     <li>

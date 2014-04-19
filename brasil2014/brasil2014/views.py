@@ -1,7 +1,7 @@
 import json
 import urllib2
 
-from datetime import datetime
+from datetime import date, datetime
 from properties import (
     PROJECT_TITLE,
     GAME_URL,
@@ -283,8 +283,29 @@ def view_team_groups(request):
              renderer='templates/matches.pt', http_cache=0)
 def view_matches(request):
     player = request.authenticated_userid
-    #matches = Match.get_played()
     matches = Match.get_all()
+    for match in matches:
+        if match.d_id == FINAL_ID:
+            final_tip = Final.get_player_tip(player)
+            if final_tip:
+                match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2)
+            else:
+                match.tip = None
+        else:
+            match.tip = Tip.get_player_tip(player, match.d_id)
+    return { 'now': datetime.now(),
+             'matches': matches,
+             'final_id': FINAL_ID,
+             'final_deadline': FINAL_DEADLINE,
+             'viewer_username': player,
+             'navigation': navigation_view(request) }
+
+@view_config(permission='view', route_name='view_upcoming_matches',
+             renderer='templates/matches.pt', http_cache=0)
+def view_upcoming_matches(request):
+    player = request.authenticated_userid
+    num = request.matchdict['num']
+    matches = Match.get_upcoming(date.today(), num)
     for match in matches:
         if match.d_id == FINAL_ID:
             final_tip = Final.get_player_tip(player)
