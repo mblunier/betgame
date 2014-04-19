@@ -1,4 +1,3 @@
-import json
 import urllib2
 
 from datetime import date, datetime
@@ -124,7 +123,8 @@ def too_late(request):
 
 # ----- Result/point/player update -----
 
-@view_config(permission='view', route_name='results', renderer='json')
+@view_config(permission='view', route_name='results',
+             renderer='json')
 def results(request):
     """ Generate a list of scores for all played matches and the stage 2 team names. """
     matches = {}
@@ -143,8 +143,7 @@ def update_local(request):
 
 @view_config(permission='view', route_name='update_remote')
 def update_remote(request):
-    data = urllib2.urlopen(RESULTPAGE).read()
-    apply_results(data)
+    apply_results(urllib2.urlopen(RESULTPAGE).read())
     return HTTPFound(location=route_url('view_players', request))
 
 @view_config(permission='update', route_name='unregister')
