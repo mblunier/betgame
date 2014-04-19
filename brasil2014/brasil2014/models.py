@@ -94,12 +94,6 @@ class Player(Base):
         return DBSession.query(cls).filter(cls.d_alias == username).first() is not None
 
     @classmethod
-    def del_player(cls, username):
-        #player = get_by_username(username)
-        #DBSession.query(cls).delete(player)
-        pass
-
-    @classmethod
     def get_by_username(cls, username):
         return DBSession.query(cls).filter(cls.d_alias == username).first()
 
@@ -217,7 +211,7 @@ class Match(Base):
 
     @classmethod
     def get_final(cls):
-        """ Retrieve final match, but make sure it has already been played. """
+        """ Retrieve final match. """
         return DBSession.query(cls).filter(cls.d_id == FINAL_ID).first()    # .one()
 
     @classmethod
