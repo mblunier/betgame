@@ -4,7 +4,7 @@
 import socket
 from datetime import datetime
 
-PROJECT_TITLE = 'Brasil 2014 Bet Game'
+PROJECT_TITLE = 'Unofficial Brasil 2014 Bet Game'
 ADMINS = [ 'admin', 'mb' ]
 
 RESULTSERVER = 'wm2014.rolotec.ch'
