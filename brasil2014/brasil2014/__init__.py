@@ -67,6 +67,7 @@ def addroutes(config):
     config.add_route('view_upcoming_matches', '/upcoming/{num}')
     config.add_route('view_players', '/players')
     config.add_route('view_group_players', '/group_players/{category}')
+    config.add_route('view_group_teams', '/group_teams/{group}')
     config.add_route('view_player_groups', '/player_groups')
     config.add_route('view_player_tips', '/player_tips/{player}')
     config.add_route('view_team_groups', '/team_groups')
