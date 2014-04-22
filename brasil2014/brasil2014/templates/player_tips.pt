@@ -9,7 +9,8 @@
   </p>
   <table id="player-tips">
   <tr>
-    <th colspan="2">Match</th>
+    <th>Id</th>
+    <th>Match</th>
     <th>Result</th>
     <th>Tip</th>
     <th>Points</th>
