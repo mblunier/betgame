@@ -68,6 +68,7 @@ def login_form_view(request):
                   request)
 
 def navigation_view(request):
+    if 'nonav' in request.params: return None
     return render('templates/navigation.pt',
                   { 'viewer_username': request.authenticated_userid,
                     'login_form': login_form_view(request) },
@@ -93,6 +94,16 @@ def about_view(request):
 def help_view(request):
     return { 'project': PROJECT_TITLE,
              'navigation': navigation_view(request) }
+
+@view_config(permission='view', route_name='infoscreen',
+             renderer='templates/infoscreen.pt')
+def infoscreen(request):
+    return { 'project': PROJECT_TITLE,
+             'final_deadline': FINAL_DEADLINE,
+             'game_url': GAME_URL,
+             'viewer_username': None,
+             'navigation': None,
+             'params': request.params }
 
 @view_config(permission='view', route_name='scoring',
              renderer='templates/scoring.pt')
