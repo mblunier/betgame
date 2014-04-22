@@ -280,10 +280,19 @@ def view_teams(request):
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_team_groups',
-             renderer='templates/group_teams.pt')
+             renderer='templates/team_groups.pt')
 def view_team_groups(request):
     groups = [TeamGroup(group_id, Team.get_by_group(group_id)) for group_id in GROUP_IDS]
     return { 'groups': groups,
+             'navigation': navigation_view(request) }
+
+@view_config(permission='view', route_name='view_group_teams',
+             renderer='templates/group_teams.pt')
+def view_group_teams(request):
+    group_id = request.matchdict['group']
+    teams = Team.get_by_group(group_id)
+    return { 'group_id': group_id,
+             'teams': teams,
              'navigation': navigation_view(request) }
 
 
