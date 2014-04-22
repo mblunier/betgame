@@ -58,6 +58,7 @@ def addroutes(config):
     config.add_route('update_remote', '/update_remote')
     config.add_route('final_bet', '/bet/final')
     config.add_route('match_bet', '/bet/{match}')
+    config.add_route('infoscreen', '/infoscreen')
     config.add_route('view_final_tips', '/final_tips')
     config.add_route('view_final_tip', '/final_tip/{player}')
     config.add_route('view_group_matches', '/group_matches/{group}')
