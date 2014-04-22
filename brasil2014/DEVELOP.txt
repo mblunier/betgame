@@ -82,27 +82,29 @@ python environment and install it with 'easy_install brasil2014-x.y.tar.gz'.
 
 === Raspberry preparation ===
 
-Install required software:
+- Install required software:
 $ sudo apt-get update
 $ sudo apt-get install python-setuptools
 $ sudo apt-get install python-dev
 $ sudo easy_install pip
 $ sudo pip install virtualenv
 
-Prepare virtual python environment:
+- Prepare virtual python environment:
 $ mkdir betgame
 $ virtualenv --no-site-packages betgame
 $ cd betgame
 $ source bin/activate
+
+- Install the game (this step must be repeated for every new release):
 (betgame)$ easy_install path/to/brasil2014-x.y.tar.gz
 
-Edit the categories in scripts/
+- Edit the categories in '~/betgame/lib/python2.7/site-packages/brasil2014-x.y-py2.7.egg/brasil2014/scripts/initialize_db.py'.
 
-Extract the production.ini file from the archive and adapt it as desired
-(as port 80 is reserved for root the default port is 8080).
+- Extract the production.ini file from the archive and adapt it as desired
+  (as port 80 is reserved for root the default port is 8080).
 
-Import initial database content:
+- Initialize database content:
 $ initialize_brasil2014_db production.ini
 
-Launch the service:
+- Launch the service:
 $ pserve production.ini
