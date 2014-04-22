@@ -10,8 +10,7 @@ ADMINS = [ 'admin', 'mb' ]
 RESULTSERVER = 'wm2014.rolotec.ch'
 RESULTPAGE = 'http://%s/results' % RESULTSERVER
 # determine the local IP address to access this device
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect((RESULTSERVER, 80))
+s = socket.create_connection((RESULTSERVER, 80))
 GAME_URL = 'http://%s:8080' % s.getsockname()[0]
 s.close()
 
