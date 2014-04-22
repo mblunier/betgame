@@ -108,3 +108,7 @@ $ initialize_brasil2014_db production.ini
 
 - Launch the service:
 $ pserve production.ini
+
+=== PyCharm IDE ===
+
+- Could be interesting for all those who aren't happy with emacs and midnight commander: http://www.jetbrains.com/pycharm
