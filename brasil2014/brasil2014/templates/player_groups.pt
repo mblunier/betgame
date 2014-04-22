@@ -6,14 +6,12 @@
 <tal:block metal:fill-slot="content">
   <table id="player-list">
   <tr>
-    <!-- th>Group</th -->
     <th>Rank</th>
     <th>Category</th>
     <th>Players</th>
     <th>Points (avg.)</th>
   </tr>
   <tr tal:repeat="group groups">
-    <!-- td>${group}</td -->
     <td>${repeat.group.number}</td>
     <td><a href="${request.route_url('view_group_players', category=group.d_unit)}">${group.d_unit}</a></td>
     <td>${group.n_players}</td>

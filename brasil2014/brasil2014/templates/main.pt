@@ -12,9 +12,6 @@
   </p>
   <h3>How to play</h3>
   <ul class="align-left">
-    <li>
-      Open this address in your preferred browser: <b>${game_url}</b>.
-    </li>
     <li tal:condition="viewer_username is None">
       First, you must <a href="${request.route_url('register')}">register</a> yourself (it's free).
       Once registered you can log in anytime to enter or modify your bets.

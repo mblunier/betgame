@@ -5,7 +5,7 @@
 
 <tal:block metal:fill-slot="content">
   <p class="app-welcome">
-    Welcome to the <span class="app-name">${project}</span>.
+    This is the <span class="app-name">${project}</span>.
   </p>
   <ul class="align-left">
     <li>
@@ -25,23 +25,7 @@
       It is due until <b tal:content="final_deadline.strftime('%d.%m.%Y %H:%M')"></b>
       (the beginning of stage 2) <b>and cannot be modified</b>.
     </li>
-    <li>
-      The <a href="${request.route_url('scoring')}">scoring</a> page describes how many points you
-      can earn with a single bet.
-    </li>
-    <li>
-      To get additional help <a href="${request.route_url('help')}">click here</a>.
-    </li>
   </ul>
-
-  <!--<
-  h3>Params</h3>
-  <table>
-  <tr tal:repeat="param params">
-    <td>${param}</td><td><span tal:replace="params[param]"/></td>
-  </tr>
-  </table>
-  -->
 
 </tal:block>
 
