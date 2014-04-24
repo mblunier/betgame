@@ -105,6 +105,19 @@ def infoscreen(request):
              'navigation': None,
              'params': request.params }
 
+@view_config(permission='view', route_name='results',
+             renderer='json')
+def results(request):
+    """ Generate a list of scores for all played matches and the stage 2 team names. """
+    matches = {}
+    for match in Match.get_stage2():
+        matches[match.d_id] = { "team1": match.d_team1, "team2": match.d_team2 }
+    scores = {}
+    for match in Match.get_played():
+        scores[match.d_id] = { "score1": match.d_score1, "score2": match.d_score2 }
+    return {'matches': matches,
+            'scores': scores }
+
 @view_config(permission='view', route_name='scoring',
              renderer='templates/scoring.pt')
 def scoring_view(request):
@@ -132,48 +145,11 @@ def too_late(request):
              'navigation': navigation_view(request) }
 
 
-# ----- Result/point/player update -----
-
-@view_config(permission='view', route_name='results',
-             renderer='json')
-def results(request):
-    """ Generate a list of scores for all played matches and the stage 2 team names. """
-    matches = {}
-    for match in Match.get_stage2():
-        matches[match.d_id] = { "team1": match.d_team1, "team2": match.d_team2 }
-    scores = {}
-    for match in Match.get_played():
-        scores[match.d_id] = { "score1": match.d_score1, "score2": match.d_score2 }
-    return {'matches': matches,
-            'scores': scores }
-
-@view_config(permission='update', route_name='update_local')
-def update_local(request):
-    refresh_points()
-    return HTTPFound(location=route_url('view_players', request))
-
-@view_config(permission='view', route_name='update_remote')
-def update_remote(request):
-    apply_results(urllib2.urlopen(RESULTPAGE).read())
-    return HTTPFound(location=route_url('view_players', request))
-
-@view_config(permission='update', route_name='unregister')
-def unregister(request):
-    alias = request.matchdict['alias']
-    player = Player.get_by_username(alias)
-    if player:
-        DBSession.delete(player)
-        request.session.flash(u'Player %s deleted.' % alias)
-    else:
-        request.session.flash(u'Player %s not found.' % alias)
-    return HTTPFound(location=route_url('view_players', request))
-
-
 # ----- Player views -----
 
 class RegistrationSchema(formencode.Schema):
     allow_extra_fields = True
-    alias = formencode.validators.PlainText(not_empty=True, max=30)
+    alias = formencode.validators.String(not_empty=True, max=30)
     name = formencode.validators.String(not_empty=True)
     mail = formencode.validators.Email(resolve_domain=False, not_empty=True)
     #category = formencode.validators.OneOf(categories, hideList=True)
@@ -181,11 +157,12 @@ class RegistrationSchema(formencode.Schema):
     confirm_password = formencode.validators.String(not_empty=True, min=5)
     chained_validators = [
         formencode.validators.FieldsMatch('initial_password', 'confirm_password')
+        #TODO: uniqueUsername(alias)
     ]
 
 @view_config(permission='view', route_name='register',
              renderer='templates/register.pt')
-def add_player(request):
+def register(request):
     form = Form(request, schema=RegistrationSchema)
     if 'form.submitted' in request.POST and form.validate():
         alias = form.data['alias']
@@ -491,8 +468,29 @@ def view_final_tip(request):
 
 # ----- Admin stuff -----
 
-@view_config(permission='update', route_name='set_match')
-def set_match(request):
+@view_config(permission='update', route_name='update_local')
+def update_local(request):
+    refresh_points()
+    return HTTPFound(location=route_url('view_players', request))
+
+@view_config(permission='view', route_name='update_remote')
+def update_remote(request):
+    apply_results(urllib2.urlopen(RESULTPAGE).read())
+    return HTTPFound(location=route_url('view_players', request))
+
+@view_config(permission='update', route_name='unregister')
+def unregister(request):
+    alias = request.matchdict['alias']
+    player = Player.get_by_username(alias)
+    if player:
+        DBSession.delete(player)
+        request.session.flash(u'Player %s deleted.' % alias)
+    else:
+        request.session.flash(u'Player %s not found.' % alias)
+    return HTTPFound(location=route_url('view_players', request))
+
+@view_config(permission='update', route_name='update_match')
+def update_match(request):
     try:
         match = Match.get_by_id(request.matchdict['id'])
         if match:
@@ -508,8 +506,8 @@ def set_match(request):
         request.session.flash(u'Updating match teams failed.')
         return HTTPFound(location=route_url('home', request))
 
-@view_config(permission='update', route_name='set_score')
-def set_score(request):
+@view_config(permission='update', route_name='update_score')
+def update_score(request):
     try:
         match = Match.get_by_id(request.matchdict['id'])
         if match:
