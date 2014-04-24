@@ -37,6 +37,7 @@ from sqlalchemy.exc import DBAPIError
 
 from .models import (
     DBSession,
+    Setting,
     Player,
     Category,
     Team,
@@ -93,6 +94,7 @@ def about_view(request):
              renderer='templates/help.pt')
 def help_view(request):
     return { 'project': PROJECT_TITLE,
+             'contact': Setting.get('admin_mail').d_value,
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='infoscreen',
@@ -135,6 +137,16 @@ def score_table(request):
     tips = [Tip('none', 0, score1, score2) for (score1, score2) in tip_scores]
     match_tips = [MatchTip(match, tip) for match in matches for tip in tips]
     return { 'match_tips': match_tips,
+             'navigation': navigation_view(request) }
+
+@view_config(permission='view', route_name='settings',
+             renderer='templates/settings.pt')
+def view_settings(request):
+    return { 'settings': Setting.get_all(),
+             'project': PROJECT_TITLE,
+             'final_deadline': FINAL_DEADLINE,
+             'game_url': GAME_URL,
+             'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='too_late',
@@ -527,4 +539,21 @@ def update_score(request):
     except:
         request.session.flash(u'Updating score and points failed.')
         return HTTPFound(location=route_url('home', request))
+
+@view_config(permission='update', route_name='update_setting')
+def update_setting(request):
+    try:
+        name = request.matchdict['name']
+        value = request.matchdict['value']
+        setting = Setting.get(name)
+        if setting:
+            setting.d_value = value
+            request.session.flash(u'Updated setting %(name).'.format(request.matchdict))
+        else:
+            setting = Setting(name, value)
+            DBSession.add(setting)
+            request.session.flash(u'Created setting %(name).'.format(request.matchdict))
+    except:
+        request.session.flash(u'Failed to update setting %(name).'.format(request.matchdict))
+    return HTTPFound(location=route_url('settings', request))
 

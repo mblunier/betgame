@@ -31,7 +31,7 @@
         Despite the utmost care and although only the <a href="http://www.vim.org">most advanced technology</a> were
 	used for the development of this game - not to speak about the ridiculous consumption of resources - there
 	remains an extremely tiny chance of errors.
-        In this case you may trustingly contact the <a href="mailto:markus.blunier@rolotec.ch?subject=BRASIL2014">helpdesk</a>,
+        In this case you may trustingly contact the <a href="mailto:${contact}?subject=${project}">helpdesk</a>,
         where your issues will be answered with well-pretended sympathy and - in exceptional cases - solved.</dd>
   </dl>
 </tal:block>

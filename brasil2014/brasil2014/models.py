@@ -52,6 +52,25 @@ def groupfinder(userid, request):
 def hash_password(password):
     return unicode(crypt.encode(password))
 
+class Setting(Base):
+    """ Global configuration settings. """
+    __tablename__ = 't_setting'
+    d_name = Column(String(20), primary_key=True)
+    d_value = Column(String(20))
+
+    def __init__(self, name, value):
+        self.d_name = name
+        self.d_value = str(value)
+
+    @classmethod
+    def get_all(cls):
+        return DBSession.query(cls).order_by(cls.d_name)
+
+    @classmethod
+    def get(cls, name):
+        return DBSession.query(cls).filter(cls.d_name == name).first()
+
+
 class Player(Base):
     __tablename__ = 't_player'
     d_alias = Column(String(10), primary_key=True)

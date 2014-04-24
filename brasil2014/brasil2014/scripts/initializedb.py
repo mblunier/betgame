@@ -17,6 +17,7 @@ from pyramid.scripts.common import parse_vars
 
 from ..models import (
     DBSession,
+    Setting,
     Team,
     Match,
     Final,
@@ -46,7 +47,7 @@ def main(argv=sys.argv):
 
     # register the 'admin' user
     with transaction.manager:
-        DBSession.add(Player(alias="admin", password="None", name="Admin", mail="office@rolotec.ch", unit="Administration"))
+        DBSession.add(Player(alias="admin", password="None", name="Admin", mail="mb@rolotec.ch", unit="Administration"))
 
     # player categories (org. units)
     with transaction.manager:
@@ -179,3 +180,16 @@ def main(argv=sys.argv):
 
         DBSession.add(Match(id=63, begin=datetime(2014,7,12, 22,00), team1='L61', team2='L62'))
         DBSession.add(Match(id=64, begin=datetime(2014,7,13, 21,00), team1='W61', team2='W62'))
+
+    with transaction.manager:
+        DBSession.add(Setting(name="result_server",        value="wm2014.rolotec.ch"))
+        DBSession.add(Setting(name="admin_alias",          value="admin"))
+        DBSession.add(Setting(name="admin_mail",           value="mb@rolotec.ch"))
+        DBSession.add(Setting(name="scoring_exacthit",     value="5"))
+        DBSession.add(Setting(name="scoring_outcome",      value="3"))
+        DBSession.add(Setting(name="scoring_missed",       value="1"))
+        DBSession.add(Setting(name="scoring_sumgoals",     value="3"))
+        DBSession.add(Setting(name="scoring_goaldiff",     value="2"))
+        DBSession.add(Setting(name="scoring_onescore",     value="1"))
+        DBSession.add(Setting(name="scoring_onefinalist",  value="5"))
+        DBSession.add(Setting(name="scoring_twofinalists", value="10"))
