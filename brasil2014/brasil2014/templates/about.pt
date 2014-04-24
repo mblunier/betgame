@@ -8,7 +8,7 @@
     This is the <span class="app-name">${project}</span>.
   </p>
   <p style="margin-bottom: 30px">
-    Based on the <a href="http://docs.pylonshq.com" target="_blank">Pyramid</a> web framework.
+    Based on the <a href="http://www.pylonsproject.org/" target="_blank">Pyramid</a> web framework.
   </p>
   <h3>References</h3>
   <ul class="align-left">
