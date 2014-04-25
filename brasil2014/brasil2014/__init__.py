@@ -47,6 +47,8 @@ def addroutes(config):
     config.add_route('help', '/help')
     config.add_route('home', '/')
     config.add_route('infoscreen', '/infoscreen')
+    #config.add_route('forbidden', '/forbidden')
+    #config.add_route('notfound', '/notfound')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('register', '/register')

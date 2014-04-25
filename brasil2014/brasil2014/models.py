@@ -35,6 +35,7 @@ Base = declarative_base()
 crypt = cryptacular.bcrypt.BCRYPTPasswordManager()
 
 class RootFactory(object):
+    """ Authorization list. """
     __acl__ = [
         (Allow, Everyone, 'view'),
         (Allow, Authenticated, 'post'),
@@ -50,26 +51,8 @@ def groupfinder(userid, request):
     return []
 
 def hash_password(password):
+    """ Encode a password for storage & checking. """
     return unicode(crypt.encode(password))
-
-class Setting(Base):
-    """ Global configuration settings. """
-    __tablename__ = 't_setting'
-    d_name = Column(String(20), primary_key=True)
-    d_value = Column(String(20))
-
-    def __init__(self, name, value):
-        self.d_name = name
-        self.d_value = str(value)
-
-    @classmethod
-    def get_all(cls):
-        return DBSession.query(cls).order_by(cls.d_name)
-
-    @classmethod
-    def get(cls, name):
-        return DBSession.query(cls).filter(cls.d_name == name).first()
-
 
 class Player(Base):
     __tablename__ = 't_player'
@@ -133,6 +116,7 @@ class Player(Base):
 
 
 class Category(Base):
+    """ Player categories (e.g. organizational unit). """
     __tablename__ = 't_category'
     d_alias = Column(String(20), primary_key=True)
     d_name = Column(Unicode(30))
@@ -144,6 +128,25 @@ class Category(Base):
     @classmethod
     def option_list(cls):
         return [(c.d_alias, c.d_name) for c in DBSession.query(cls).order_by(cls.d_name)]
+
+
+class Setting(Base):
+    """ Generic global configuration settings. """
+    __tablename__ = 't_setting'
+    d_name = Column(String(20), primary_key=True)
+    d_value = Column(String(20))
+
+    def __init__(self, name, value):
+        self.d_name = name
+        self.d_value = str(value)
+
+    @classmethod
+    def get_all(cls):
+        return DBSession.query(cls).order_by(cls.d_name)
+
+    @classmethod
+    def get(cls, name):
+        return DBSession.query(cls).filter(cls.d_name == name).first()
 
 
 class Team(Base):
@@ -190,7 +193,7 @@ class Match(Base):
     __tablename__ = 't_match'
     d_id = Column(Integer, primary_key=True)
     d_begin = Column(DateTime)
-    # the following constraints cannot be fulfilled:
+    # the following constraints cannot be fulfilled for stage 2 matches:
     #d_team1 = Column(String(3), ForeignKey('t_team.d_id'))
     #d_team2 = Column(String(3), ForeignKey('t_team.d_id'))
     d_team1 = Column(String(3), nullable=False)
@@ -245,6 +248,7 @@ class Match(Base):
 
 
 class Tip(Base):
+    """ Single bets of single players. """
     __tablename__ = 't_tip'
     d_player = Column(String(10), ForeignKey('t_player.d_alias'), primary_key=True)
     d_match = Column(Integer, ForeignKey('t_match.d_id'), primary_key=True)
@@ -280,6 +284,7 @@ class Tip(Base):
 
 
 class Final(Base):
+    """ Final bet of a single player. """
     __tablename__ = 't_final'
     d_player = Column(String(10), ForeignKey('t_player.d_alias'), primary_key=True)
     d_team1 = Column(String(3), ForeignKey('t_team.d_id'))

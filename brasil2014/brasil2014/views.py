@@ -15,7 +15,7 @@ import webhelpers.paginate
 
 from pyramid.response import Response
 
-from pyramid.view import view_config
+from pyramid.view import view_config, forbidden_view_config, notfound_view_config
 from pyramid.renderers import render
 from pyramid.url import route_url
 
@@ -74,6 +74,21 @@ def navigation_view(request):
                   { 'viewer_username': request.authenticated_userid,
                     'login_form': login_form_view(request) },
                   request)
+
+@forbidden_view_config()
+def forbidden(request):
+    return Response(body=render('templates/forbidden.pt',
+                                { 'project': PROJECT_TITLE,
+                                  'navigation': navigation_view(request) },
+                                request));
+
+@notfound_view_config()
+def notfound(request):
+    return Response(body=render('templates/notfound.pt',
+                                { 'project': PROJECT_TITLE,
+                                  'navigation': navigation_view(request) },
+                                request),
+                    status='404 Not Found');
 
 @view_config(permission='view', route_name='home',
              renderer='templates/main.pt')
