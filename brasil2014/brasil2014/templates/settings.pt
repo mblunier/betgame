@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <table id="team-list">
+    <tr>
+      <th colspan="3"><span class="app-name">${project}</span> settings</th>
+    </tr>
+    <tr>
+      <th align="right">Name</th>
+      <th>&nbsp;</th>
+      <th align="left">Value</th>
+    </tr>
+    <tr tal:repeat="setting settings">
+      <td align="right">${setting.d_name}</td>
+      <td align="center">=</td>
+      <td align="left">${setting.d_value}</td>
+    </tr>
+  </table>
+</tal:block>
+
+</html>
