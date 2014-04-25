@@ -496,9 +496,9 @@ def unregister(request):
     player = Player.get_by_username(alias)
     if player:
         DBSession.delete(player)
-        request.session.flash(u'Player %s deleted.' % alias)
+        request.session.flash(u'Player %(alias)s deleted.' % request.matchdict)
     else:
-        request.session.flash(u'Player %s not found.' % alias)
+        request.session.flash(u'Player %(alias)s not found.' % request.matchdict)
     return HTTPFound(location=route_url('view_players', request))
 
 @view_config(permission='update', route_name='update_match')
@@ -548,12 +548,12 @@ def update_setting(request):
         setting = Setting.get(name)
         if setting:
             setting.d_value = value
-            request.session.flash(u'Updated setting %(name).'.format(request.matchdict))
+            request.session.flash(u'Updated setting %(name)s.' % request.matchdict)
         else:
             setting = Setting(name, value)
             DBSession.add(setting)
-            request.session.flash(u'Created setting %(name).'.format(request.matchdict))
+            request.session.flash(u'Created setting %(name)s.' % request.matchdict)
     except:
-        request.session.flash(u'Failed to update setting %(name).'.format(request.matchdict))
+        request.session.flash(u'Failed to update or create setting %(name)s.' % request.matchdict)
     return HTTPFound(location=route_url('settings', request))
 
