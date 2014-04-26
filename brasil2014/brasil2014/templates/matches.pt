@@ -10,7 +10,7 @@
      <th>Date</th>
      <th colspan="3">Match</th>
      <th>Result</th>
-     <th colspan="2">Tip</th>
+     <th tal:condition="not nonav" colspan="2">Tip</th>
    </tr>
    <tr tal:repeat="match matches">
      <!-- ${match} -->
@@ -50,10 +50,10 @@
          </span>
        </span>
      </td>
-     <td tal:condition="match.d_id == final_id">
+     <td tal:condition="not nonav and match.d_id == final_id">
          <a href="${request.route_url('view_final_tips')}"> View </a>
      </td>
-     <td tal:condition="match.d_id != final_id">
+     <td tal:condition="not nonav and match.d_id != final_id">
          <a href="${request.route_url('view_match_tips', match=match.d_id)}"> View </a>
      </td>
    </tr>
