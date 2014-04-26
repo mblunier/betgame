@@ -1,0 +1,90 @@
+0.7
+---
+
+- Enabled non-interactive match view.
+- Determine result server & game URL from Setting table.
+- Removed unused routes, completed documentation.
+- Added forbidden & notfound views.
+- Added template to display settings.
+- Created a setting table.
+- Reorganized views.
+- Updated link to Pyramid homepage.
+- Updated license contact mail.
+- Enhanced some list displays.
+- Merge remote-tracking branch 'origin/master'
+- Added team group view.
+- Merge branch 'master' of https://github.com/mblunier/betgame
+- Initial commit for github.com
+- Use enhanced method to determine local IP.
+- Streamlined main & infoscreen views.
+
+
+0.6
+---
+
+- Extended installation description.
+- Added infoscreen view.
+- Added query option 'nonav' to suppress navigation.
+- Removed unused JSON module dependency.
+- Removed unused method.
+- Changed project title.
+- Added upcoming matches view.
+- Enhanced player highlighting.
+- Restrict acceptable form entries.
+- Enabled deletion of a player.
+- Print group in header of group matches.
+- Fixed match times.
+- Enabled clearing scores.
+- Fixed player points initialization.
+- Enabled zebra stripes for tables.
+
+
+0.5
+---
+
+- Added final bet link.
+- Enhanced scoring log.
+- Enabled remote & local updating.
+
+
+0.4
+---
+
+- Enabled updating from remote server.
+- Restored team & score updates.
+- Code cleanup.
+- Retrieve results from result server.
+- Pass game URL for main view.
+- Fixed link to chameleon documentation.
+- Display game URL on main page.
+- Determine game URL by looking up the local IP address.
+- Completed package information.
+
+
+0.3
+---
+
+- Enabled scoring logger.
+- Enabled result export/import in JSON format.
+- Changed button color.
+- Disabled caching for certain pages.
+- Restore history back button.
+- Avoid deprecation warning by explitly setting hashalg='md5'.
+
+
+0.2
+---
+
+- Replaced deprecated methods.
+- Use decorators to mark event handlers.
+- Updated initialization.
+- Enabled match/score updating for admins.
+- Minor layout optimizations & fixes.
+- Updated styles.
+- Create admin user during installation.
+
+
+0.1
+---
+
+- Initial release for beta testing.
