@@ -12,8 +12,7 @@ from .models import (
     )
 
 def main(global_config, **settings):
-    """ This function returns a Pyramid WSGI application.
-    """
+    """ This function returns a Pyramid WSGI application. """
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
 
@@ -31,6 +30,7 @@ def main(global_config, **settings):
         session_factory=session_factory
         )
 
+    # since version 1.5 templating is not included by default
     config.include('pyramid_chameleon')
 
     config.add_static_view('static', 'brasil2014:static', cache_max_age=3600)
@@ -41,14 +41,14 @@ def main(global_config, **settings):
 
 
 def addroutes(config):
-    """ Define URL mappings. Note, that order is relevant as the first matching URL
-        will hide any following URL with the same initial pattern. """
+    """ Define URL mappings.
+    Note, that order is relevant as the first matching URL will hide
+    any following URL with the same initial pattern. 
+    """
     config.add_route('about', '/about')
     config.add_route('help', '/help')
     config.add_route('home', '/')
     config.add_route('infoscreen', '/infoscreen')
-    #config.add_route('forbidden', '/forbidden')
-    #config.add_route('notfound', '/notfound')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('register', '/register')
