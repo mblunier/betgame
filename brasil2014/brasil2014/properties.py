@@ -1,18 +1,10 @@
 """ Define some application-wide properties.
 """
 
-import socket
 from datetime import datetime
 
 PROJECT_TITLE = 'Unofficial Brasil 2014 Bet Game'
 ADMINS = [ 'admin', 'mb' ]
-
-RESULTSERVER = 'wm2014.rolotec.ch'
-RESULTPAGE = 'http://%s/results' % RESULTSERVER
-# determine the local IP address to access this device
-s = socket.create_connection((RESULTSERVER, 80))
-GAME_URL = 'http://%s:8080' % s.getsockname()[0]
-s.close()
 
 SCORINGS = [{   # [0]
     'exacthit': 12,

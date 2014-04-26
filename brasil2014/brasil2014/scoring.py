@@ -1,5 +1,4 @@
 import json
-import logging
 
 from datetime import datetime
 from properties import (
@@ -16,6 +15,7 @@ from .models import (
     Tip
     )
 
+import logging
 log = logging.getLogger(__name__)
 
 def sign(num):

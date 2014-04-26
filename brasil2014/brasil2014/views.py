@@ -1,10 +1,12 @@
 import urllib2
 
 from datetime import date, datetime
+
+#TODO: replace the following definitions with values from the Setting table or from the .ini file
 from properties import (
     PROJECT_TITLE,
-    GAME_URL,
-    RESULTPAGE,
+    #GAME_URL,
+    #RESULTPAGE,
     BET_POINTS, 
     FINAL_ID, 
     FINAL_DEADLINE, 
@@ -55,6 +57,15 @@ from scoring import (
     sign
     )
 
+# determine the local IP address to access this game
+import socket
+local_port = 8080   #TODO: extract port number from the application settings
+remote_server = Setting.get('result_server')
+RESULTSERVER = remote_server.d_value if remote_server else 'wm2014.rolotec.ch'
+RESULTPAGE = 'http://%s/results' % RESULTSERVER
+s = socket.create_connection((RESULTSERVER, 80))
+GAME_URL = 'http://%s:%d' % (s.getsockname()[0], local_port)
+s.close()
 
 def get_page_param(request, param='page'):
     """ @return Numerical value of the 'page' parameter. """
@@ -288,6 +299,7 @@ def view_teams(request):
 def view_team_groups(request):
     groups = [TeamGroup(group_id, Team.get_by_group(group_id)) for group_id in GROUP_IDS]
     return { 'groups': groups,
+             'nonav': 'nonav' in request.params,
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_group_teams',
@@ -320,6 +332,7 @@ def view_matches(request):
              'matches': matches,
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
+             'nonav': 'nonav' in request.params,
              'viewer_username': player,
              'navigation': navigation_view(request) }
 
