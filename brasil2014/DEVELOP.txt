@@ -1,17 +1,17 @@
 
 === Development environment setup ===
 
-$ mkdir brasil2014
+$ mkdir betgame
 
-$ cd brasil2014 && git init
-Initialized empty Git repository in /users/mb/brasil2014/.git/
+$ cd betgame && git init
+Initialized empty Git repository in /users/mb/betgame/.git/
 
-$ cd .. && virtualenv --no-site-packages brasil2014
-New python executable in brasil2014/bin/python
+$ cd .. && virtualenv --no-site-packages betgame
+New python executable in betgame/bin/python
 Installing setuptools...............................done.
 Installing pip.....................done.
 
-$ cd brasil2014
+$ cd betgame
 
 $ bin/easy_install pyramid
 Searching for pyramid
@@ -22,37 +22,37 @@ Processing pyramid-1.5b1.tar.gz
 Running pyramid-1.5b1/setup.py -q bdist_egg --dist-dir /tmp/easy_install-qyqWRx/pyramid-1.5b1/egg-dist-tmp-z3kubb
 Adding pyramid 1.5b1 to easy-install.pth file
 ...
-Installed /users/mb/brasil2014/lib/python2.7/site-packages/WebOb-1.3.1-py2.7.egg
+Installed /users/mb/betgame/lib/python2.7/site-packages/WebOb-1.3.1-py2.7.egg
 Finished processing dependencies for pyramid
 
 $ bin/pcreate -s alchemy  brasil2014
-Creating directory /users/mb/brasil2014/brasil2014
+Creating directory /users/mb/betgame/brasil2014
   Recursing into +package+
-    Creating /users/mb/brasil2014/brasil2014/brasil2014/
-    Copying __init__.py to /users/mb/brasil2014/brasil2014/brasil2014/__init__.py
-    Copying models.py to /users/mb/brasil2014/brasil2014/brasil2014/models.py
+    Creating /users/mb/betgame/brasil2014/brasil2014/
+    Copying __init__.py to /users/mb/betgame/brasil2014/brasil2014/__init__.py
+    Copying models.py to /users/mb/betgame/brasil2014/brasil2014/models.py
     Recursing into scripts
-      Creating /users/mb/brasil2014/brasil2014/brasil2014/scripts/
-      Copying __init__.py to /users/mb/brasil2014/brasil2014/brasil2014/scripts/__init__.py
-      Copying initializedb.py to /users/mb/brasil2014/brasil2014/brasil2014/scripts/initializedb.py
+      Creating /users/mb/betgame/brasil2014/brasil2014/scripts/
+      Copying __init__.py to /users/mb/betgame/brasil2014/brasil2014/scripts/__init__.py
+      Copying initializedb.py to /users/mb/betgame/brasil2014/brasil2014/scripts/initializedb.py
     Recursing into static
-      Creating /users/mb/brasil2014/brasil2014/brasil2014/static/
-      Copying pyramid-16x16.png to /users/mb/brasil2014/brasil2014/brasil2014/static/pyramid-16x16.png
-      Copying pyramid.png to /users/mb/brasil2014/brasil2014/brasil2014/static/pyramid.png
-      Copying theme.css to /users/mb/brasil2014/brasil2014/brasil2014/static/theme.css
-      Copying theme.min.css to /users/mb/brasil2014/brasil2014/brasil2014/static/theme.min.css
+      Creating /users/mb/betgame/brasil2014/brasil2014/static/
+      Copying pyramid-16x16.png to /users/mb/betgame/brasil2014/brasil2014/static/pyramid-16x16.png
+      Copying pyramid.png to /users/mb/betgame/brasil2014/brasil2014/static/pyramid.png
+      Copying theme.css to /users/mb/betgame/brasil2014/brasil2014/static/theme.css
+      Copying theme.min.css to /users/mb/betgame/brasil2014/brasil2014/static/theme.min.css
     Recursing into templates
-      Creating /users/mb/brasil2014/brasil2014/brasil2014/templates/
-      Copying mytemplate.pt_tmpl to /users/mb/brasil2014/brasil2014/brasil2014/templates/mytemplate.pt
-    Copying tests.py_tmpl to /users/mb/brasil2014/brasil2014/brasil2014/tests.py
-    Copying views.py_tmpl to /users/mb/brasil2014/brasil2014/brasil2014/views.py
-  Copying CHANGES.txt_tmpl to /users/mb/brasil2014/brasil2014/CHANGES.txt
-  Copying MANIFEST.in_tmpl to /users/mb/brasil2014/brasil2014/MANIFEST.in
-  Copying README.txt_tmpl to /users/mb/brasil2014/brasil2014/README.txt
-  Copying development.ini_tmpl to /users/mb/brasil2014/brasil2014/development.ini
-  Copying production.ini_tmpl to /users/mb/brasil2014/brasil2014/production.ini
-  Copying setup.cfg_tmpl to /users/mb/brasil2014/brasil2014/setup.cfg
-  Copying setup.py_tmpl to /users/mb/brasil2014/brasil2014/setup.py
+      Creating /users/mb/betgame/brasil2014/brasil2014/templates/
+      Copying mytemplate.pt_tmpl to /users/mb/betgame/brasil2014/brasil2014/templates/mytemplate.pt
+    Copying tests.py_tmpl to /users/mb/betgame/brasil2014/brasil2014/tests.py
+    Copying views.py_tmpl to /users/mb/betgame/brasil2014/brasil2014/views.py
+  Copying CHANGES.txt_tmpl to /users/mb/betgame/brasil2014/CHANGES.txt
+  Copying MANIFEST.in_tmpl to /users/mb/betgame/brasil2014/MANIFEST.in
+  Copying README.txt_tmpl to /users/mb/betgame/brasil2014/README.txt
+  Copying development.ini_tmpl to /users/mb/betgame/brasil2014/development.ini
+  Copying production.ini_tmpl to /users/mb/betgame/brasil2014/production.ini
+  Copying setup.cfg_tmpl to /users/mb/betgame/brasil2014/setup.cfg
+  Copying setup.py_tmpl to /users/mb/betgame/brasil2014/setup.py
 
 ===============================================================================
 Tutorials: http://docs.pylonsproject.org/projects/pyramid_tutorials
@@ -66,15 +66,15 @@ Welcome to Pyramid.  Sorry for the convenience.
 
 
 $ source bin/activate
-(brasil2014)> cd brasil2014
-(brasil2014)> python setup.py develop
-(brasil2014)> initialize_brasil2014_db development.ini
+(betgame)> cd brasil2014
+(betgame)> python setup.py develop
+(betgame)> initialize_brasil2014_db development.ini
 
 
 === Deployment ===
 
 Build distributable package (edit the version in setup.py => x.y):
-(brasil2014)mb@mb-06:~/brasil2014/brasil2014> python setup.py sdist
+(betgame)mb@mb-06:~/betgame/brasil2014> python setup.py sdist
 
 Copy the resulting brasil2014-x.y.tar.gz to a target machine with a virtual
 python environment and install it with 'easy_install brasil2014-x.y.tar.gz'.
