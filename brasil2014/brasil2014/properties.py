@@ -87,5 +87,5 @@ GROUP_IDS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
 FINAL_ID = 64
 
 # deadline for final tips (the beginning of the second stage)
-FINAL_DEADLINE = datetime(2014, 6, 28, 18, 00)
+FINAL_DEADLINE = datetime(2014,6,28, 18,00)
 

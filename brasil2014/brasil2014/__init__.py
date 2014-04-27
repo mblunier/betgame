@@ -11,6 +11,7 @@ from .models import (
     groupfinder
     )
 
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application. """
     engine = engine_from_config(settings, 'sqlalchemy.')
@@ -42,8 +43,8 @@ def main(global_config, **settings):
 
 def addroutes(config):
     """ Define URL mappings.
-    Note, that order is relevant as the first matching URL will hide
-    any following URL with the same initial pattern. 
+    Note, that order is relevant as the first matching route will hide
+    any following routes with the same initial pattern. 
     """
     config.add_route('about', '/about')
     config.add_route('help', '/help')

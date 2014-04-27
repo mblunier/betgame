@@ -5,8 +5,6 @@ from datetime import date, datetime
 #TODO: replace the following definitions with values from the Setting table or from the .ini file
 from properties import (
     PROJECT_TITLE,
-    #GAME_URL,
-    #RESULTPAGE,
     BET_POINTS, 
     FINAL_ID, 
     FINAL_DEADLINE, 
@@ -17,7 +15,11 @@ import webhelpers.paginate
 
 from pyramid.response import Response
 
-from pyramid.view import view_config, forbidden_view_config, notfound_view_config
+from pyramid.view import (
+    view_config, 
+    forbidden_view_config, 
+    notfound_view_config
+    )
 from pyramid.renderers import render
 from pyramid.url import route_url
 
@@ -58,14 +60,20 @@ from scoring import (
     )
 
 # determine the local IP address to access this game
-import socket
-local_port = 8080   #TODO: extract port number from the application settings
 remote_server = Setting.get('result_server')
 RESULTSERVER = remote_server.d_value if remote_server else 'wm2014.rolotec.ch'
 RESULTPAGE = 'http://%s/results' % RESULTSERVER
-s = socket.create_connection((RESULTSERVER, 80))
-GAME_URL = 'http://%s:%d' % (s.getsockname()[0], local_port)
-s.close()
+local_host = 'localhost'
+local_port = 8080   #TODO: extract port number from the application settings
+try:
+    from socket import create_connection
+    s = create_connection((RESULTSERVER, 80))
+    local_host = s.getsockname()[0]
+    s.close()
+except:
+	pass
+GAME_URL = 'http://%s:%d' % (local_host, local_port)
+
 
 def get_page_param(request, param='page'):
     """ @return Numerical value of the 'page' parameter. """
@@ -101,40 +109,35 @@ def notfound(request):
                                 request),
                     status='404 Not Found');
 
-@view_config(permission='view', route_name='home',
-             renderer='templates/main.pt')
+@view_config(permission='view', route_name='home', renderer='templates/main.pt')
 def view_game(request):
     return { 'project': PROJECT_TITLE,
-             'final_deadline': FINAL_DEADLINE,
              'game_url': GAME_URL,
+             'final_deadline': FINAL_DEADLINE,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='about',
-             renderer='templates/about.pt')
+@view_config(permission='view', route_name='about', renderer='templates/about.pt')
 def about_view(request):
     return { 'project': PROJECT_TITLE,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='help',
-             renderer='templates/help.pt')
+@view_config(permission='view', route_name='help', renderer='templates/help.pt')
 def help_view(request):
     return { 'project': PROJECT_TITLE,
              'contact': Setting.get('admin_mail').d_value,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='infoscreen',
-             renderer='templates/infoscreen.pt')
+@view_config(permission='view', route_name='infoscreen', renderer='templates/infoscreen.pt')
 def infoscreen(request):
     return { 'project': PROJECT_TITLE,
-             'final_deadline': FINAL_DEADLINE,
              'game_url': GAME_URL,
+             'final_deadline': FINAL_DEADLINE,
              'viewer_username': None,
              'navigation': None,
              'params': request.params }
 
-@view_config(permission='view', route_name='results',
-             renderer='json')
+@view_config(permission='view', route_name='results', renderer='json')
 def results(request):
     """ Generate a list of scores for all played matches and the stage 2 team names. """
     matches = {}
@@ -143,19 +146,17 @@ def results(request):
     scores = {}
     for match in Match.get_played():
         scores[match.d_id] = { "score1": match.d_score1, "score2": match.d_score2 }
-    return {'matches': matches,
-            'scores': scores }
+    return { 'matches': matches,
+             'scores': scores }
 
-@view_config(permission='view', route_name='scoring',
-             renderer='templates/scoring.pt')
+@view_config(permission='view', route_name='scoring', renderer='templates/scoring.pt')
 def scoring_view(request):
     return { 'project': PROJECT_TITLE,
              'num_matches': DBSession.query(Match).count(),
              'scoring': BET_POINTS,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='score_table',
-             renderer='templates/score_table.pt')
+@view_config(permission='view', route_name='score_table', renderer='templates/score_table.pt')
 def score_table(request):
     match_scores = [(score1, score2) for score1 in range(0, 6) for score2 in range(score1, 6)]
     matches = [Match(0, datetime.now(), 'team1', 'team2', score1, score2) for (score1, score2) in match_scores]
@@ -165,8 +166,7 @@ def score_table(request):
     return { 'match_tips': match_tips,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='settings',
-             renderer='templates/settings.pt')
+@view_config(permission='view', route_name='settings', renderer='templates/settings.pt')
 def view_settings(request):
     return { 'settings': Setting.get_all(),
              'project': PROJECT_TITLE,
@@ -175,8 +175,7 @@ def view_settings(request):
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='too_late',
-             renderer='templates/too_late.pt')
+@view_config(permission='view', route_name='too_late', renderer='templates/too_late.pt')
 def too_late(request):
     return { 'final_deadline': FINAL_DEADLINE,
              'viewer_username': request.authenticated_userid,
@@ -198,14 +197,13 @@ class RegistrationSchema(formencode.Schema):
         #TODO: uniqueUsername(alias)
     ]
 
-@view_config(permission='view', route_name='register',
-             renderer='templates/register.pt')
+@view_config(permission='view', route_name='register', renderer='templates/register.pt')
 def register(request):
     form = Form(request, schema=RegistrationSchema)
     if 'form.submitted' in request.POST and form.validate():
         alias = form.data['alias']
         if (Player.exists(alias)):
-            request.session.flash(u'This alias is already used, please choose another one.')
+            request.session.flash(u'Alias "%(alias)s" is already used, please choose another one.' % form.data)
         else:
             player = Player(alias=alias,
                             password=form.data['initial_password'],
@@ -240,8 +238,7 @@ def logout(request):
     request.session.flash(u'Logged out successfully.')
     return HTTPFound(location=route_url('home', request), headers=forget(request))
 
-@view_config(permission='view', route_name='view_players',
-             renderer='templates/players.pt')
+@view_config(permission='view', route_name='view_players', renderer='templates/players.pt')
 def view_players(request):
     url = webhelpers.paginate.PageURL_WebOb(request)
     page = get_page_param(request)
@@ -255,8 +252,7 @@ def view_players(request):
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_group_players',
-             renderer='templates/group_players.pt')
+@view_config(permission='view', route_name='view_group_players', renderer='templates/group_players.pt')
 def view_group_players(request):
     category = request.matchdict['category']
     page = get_page_param(request)
@@ -273,14 +269,13 @@ def view_group_players(request):
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_player_groups',
-             renderer='templates/player_groups.pt')
+@view_config(permission='view', route_name='view_player_groups', renderer='templates/player_groups.pt')
 def view_player_groups(request):
     groups = Player.get_groups().all()
     if not groups:
         return HTTPNotFound('No player groups')
     # sort groups descending by the average number of points per player
-    groups = sorted(groups, lambda g1,g2: sign((g1[3] / g1[2]) - (g2[3] / g2[2])), reverse=True)
+    groups = sorted(groups, lambda g1,g2: sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True)
     return { 'groups': groups,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
@@ -288,22 +283,19 @@ def view_player_groups(request):
 
 # ----- Team/Group views -----
 
-@view_config(permission='view', route_name='view_teams',
-             renderer='templates/teams.pt')
+@view_config(permission='view', route_name='view_teams', renderer='templates/teams.pt')
 def view_teams(request):
     return { 'teams': Team.get_all(),
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_team_groups',
-             renderer='templates/team_groups.pt')
+@view_config(permission='view', route_name='view_team_groups', renderer='templates/team_groups.pt')
 def view_team_groups(request):
     groups = [TeamGroup(group_id, Team.get_by_group(group_id)) for group_id in GROUP_IDS]
     return { 'groups': groups,
              'nonav': 'nonav' in request.params,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_group_teams',
-             renderer='templates/group_teams.pt')
+@view_config(permission='view', route_name='view_group_teams', renderer='templates/group_teams.pt')
 def view_group_teams(request):
     group_id = request.matchdict['group']
     teams = Team.get_by_group(group_id)
@@ -314,18 +306,14 @@ def view_group_teams(request):
 
 # ----- Match views -----
 
-@view_config(permission='view', route_name='view_matches',
-             renderer='templates/matches.pt', http_cache=0)
+@view_config(permission='view', route_name='view_matches', renderer='templates/matches.pt', http_cache=0)
 def view_matches(request):
     player = request.authenticated_userid
     matches = Match.get_all()
     for match in matches:
         if match.d_id == FINAL_ID:
             final_tip = Final.get_player_tip(player)
-            if final_tip:
-                match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2)
-            else:
-                match.tip = None
+            match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
         else:
             match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
@@ -336,8 +324,7 @@ def view_matches(request):
              'viewer_username': player,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_upcoming_matches',
-             renderer='templates/matches.pt', http_cache=0)
+@view_config(permission='view', route_name='view_upcoming_matches', renderer='templates/matches.pt', http_cache=0)
 def view_upcoming_matches(request):
     player = request.authenticated_userid
     num = request.matchdict['num']
@@ -345,10 +332,7 @@ def view_upcoming_matches(request):
     for match in matches:
         if match.d_id == FINAL_ID:
             final_tip = Final.get_player_tip(player)
-            if final_tip:
-                match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2)
-            else:
-                match.tip = None
+            match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
         else:
             match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
@@ -358,8 +342,7 @@ def view_upcoming_matches(request):
              'viewer_username': player,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_group_matches',
-             renderer='templates/group_matches.pt', http_cache=0)
+@view_config(permission='view', route_name='view_group_matches', renderer='templates/group_matches.pt', http_cache=0)
 def view_group_matches(request):
     player = request.authenticated_userid
     group_id = request.matchdict['group']
@@ -380,8 +363,7 @@ class MatchBetSchema(formencode.Schema):
     d_score1 = formencode.validators.Int(min=0, max=100, not_empty=True)
     d_score2 = formencode.validators.Int(min=0, max=100, not_empty=True)
 
-@view_config(permission='post', route_name='match_bet',
-             renderer='templates/match_bet.pt')
+@view_config(permission='post', route_name='match_bet', renderer='templates/match_bet.pt')
 def match_bet(request):
     player_id = request.authenticated_userid
     match_id = request.matchdict['match']
@@ -405,15 +387,13 @@ def match_bet(request):
              'form': FormRenderer(form),
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_tips',
-             renderer='templates/tips.pt', http_cache=0)
+@view_config(permission='view', route_name='view_tips', renderer='templates/tips.pt', http_cache=0)
 def view_tips(request):
     return { 'tips': Tip.get_all(),
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_match_tips',
-             renderer='templates/match_tips.pt', http_cache=0)
+@view_config(permission='view', route_name='view_match_tips', renderer='templates/match_tips.pt', http_cache=0)
 def view_match_tips(request):
     match_id = request.matchdict['match']
     match = Match.get_by_id(match_id)
@@ -429,8 +409,7 @@ def view_match_tips(request):
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_player_tips',
-             renderer='templates/player_tips.pt', http_cache=0)
+@view_config(permission='view', route_name='view_player_tips', renderer='templates/player_tips.pt', http_cache=0)
 def view_player_tips(request):
     player_id = request.matchdict['player']
     player = Player.get_by_username(player_id)
@@ -457,8 +436,7 @@ class FinalBetSchema(formencode.Schema):
     d_score1 = formencode.validators.Int(min=0, not_empty=True)
     d_score2 = formencode.validators.Int(min=0, not_empty=True)
 
-@view_config(permission='post', route_name='final_bet',
-             renderer='templates/final_bet.pt')
+@view_config(permission='post', route_name='final_bet', renderer='templates/final_bet.pt')
 def final_bet(request):
     player = request.authenticated_userid
     final_tip = Final.get_player_tip(player)
@@ -487,8 +465,7 @@ def final_bet(request):
              'teams': teams,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_final_tips',
-             renderer='templates/final_tips.pt', http_cache=0)
+@view_config(permission='view', route_name='view_final_tips', renderer='templates/final_tips.pt', http_cache=0)
 def view_final_tips(request):
     final = Match.get_final()
     tips = [FinalTip(final, tip) for tip in Final.get_all()]
@@ -497,8 +474,7 @@ def view_final_tips(request):
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_final_tip',
-             renderer='templates/final_tip.pt', http_cache=0)
+@view_config(permission='view', route_name='view_final_tip', renderer='templates/final_tip.pt', http_cache=0)
 def view_final_tip(request):
     player = request.matchdict['player']
     tip = Final.get_player_tip(player)
@@ -508,28 +484,31 @@ def view_final_tip(request):
 
 # ----- Admin stuff -----
 
-@view_config(permission='update', route_name='update_local')
+@view_config(permission='admin', route_name='update_local')
 def update_local(request):
     refresh_points()
     return HTTPFound(location=route_url('view_players', request))
 
 @view_config(permission='view', route_name='update_remote')
 def update_remote(request):
-    apply_results(urllib2.urlopen(RESULTPAGE).read())
-    return HTTPFound(location=route_url('view_players', request))
+    try:
+        apply_results(urllib2.urlopen(RESULTPAGE).read())
+        return HTTPFound(location=route_url('view_players', request))
+    except:
+        return HTTPNotFound('Location <%s> is inaccessible.' % RESULTPAGE)
 
-@view_config(permission='update', route_name='unregister')
+@view_config(permission='admin', route_name='unregister')
 def unregister(request):
     alias = request.matchdict['alias']
     player = Player.get_by_username(alias)
     if player:
         DBSession.delete(player)
-        request.session.flash(u'Player %(alias)s deleted.' % request.matchdict)
+        request.session.flash(u'Player "%(alias)s" deleted.' % request.matchdict)
     else:
-        request.session.flash(u'Player %(alias)s not found.' % request.matchdict)
+        request.session.flash(u'Player "%(alias)s" not found.' % request.matchdict)
     return HTTPFound(location=route_url('view_players', request))
 
-@view_config(permission='update', route_name='update_match')
+@view_config(permission='admin', route_name='update_match')
 def update_match(request):
     try:
         match = Match.get_by_id(request.matchdict['id'])
@@ -540,35 +519,29 @@ def update_match(request):
                 match.d_team1 = request.matchdict['team1']
                 match.d_team2 = request.matchdict['team2']
         else:
-            request.session.flash(u'Invalid match id.')
+            request.session.flash(u'Invalid match id: %(id)s.' % request.matchdict)
         return HTTPFound(location=route_url('view_matches', request))
     except:
         request.session.flash(u'Updating match teams failed.')
         return HTTPFound(location=route_url('home', request))
 
-@view_config(permission='update', route_name='update_score')
+@view_config(permission='admin', route_name='update_score')
 def update_score(request):
     try:
         match = Match.get_by_id(request.matchdict['id'])
         if match:
             score1 = int(request.matchdict['score1'])
-            if score1 >= 0:
-                match.d_score1 = score1
-            else:
-                match.d_score1 = None
+            match.d_score1 = score1 if score1 >= 0 else None
             score2 = int(request.matchdict['score2'])
-            if score2 >= 0:
-                match.d_score2 = score2
-            else:
-                match.d_score2 = None
+            match.d_score2 = score2 if score2 >= 0 else None
         else:
-            request.session.flash(u'Invalid match id.')
+            request.session.flash(u'Invalid match id: %(id)s.' % request.matchdict)
         return HTTPFound(location=route_url('view_matches', request))
     except:
         request.session.flash(u'Updating score and points failed.')
         return HTTPFound(location=route_url('home', request))
 
-@view_config(permission='update', route_name='update_setting')
+@view_config(permission='admin', route_name='update_setting')
 def update_setting(request):
     try:
         name = request.matchdict['name']
@@ -576,12 +549,12 @@ def update_setting(request):
         setting = Setting.get(name)
         if setting:
             setting.d_value = value
-            request.session.flash(u'Updated setting %(name)s.' % request.matchdict)
+            request.session.flash(u'Updated setting "%(name)s".' % request.matchdict)
         else:
             setting = Setting(name, value)
             DBSession.add(setting)
-            request.session.flash(u'Created setting %(name)s.' % request.matchdict)
+            request.session.flash(u'Created setting "%(name)s".' % request.matchdict)
     except:
-        request.session.flash(u'Failed to update or create setting %(name)s.' % request.matchdict)
+        request.session.flash(u'Failed to update or create setting "%(name)s".' % request.matchdict)
     return HTTPFound(location=route_url('settings', request))
 

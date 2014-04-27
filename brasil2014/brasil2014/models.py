@@ -39,16 +39,14 @@ class RootFactory(object):
     __acl__ = [
         (Allow, Everyone, 'view'),
         (Allow, Authenticated, 'post'),
-        (Allow, 'group:admins', 'update')
+        (Allow, 'group:admins', 'admin')
     ]
 
     def __init__(self, request):
         pass  # pragma: no cover
 
 def groupfinder(userid, request):
-    if userid in ADMINS:
-        return ['group:admins']
-    return []
+    return ['group:admins'] if userid in ADMINS else []
 
 def hash_password(password):
     """ Encode a password for storage & checking. """
@@ -87,9 +85,7 @@ class Player(Base):
     @classmethod
     def check_password(cls, username, password):
         player = cls.get_by_username(username)
-        if not player:
-            return False
-        return crypt.check(player.d_password, password)
+        return crypt.check(player.d_password, password) if player else False
 
     @classmethod
     def exists(cls, username):
@@ -105,7 +101,9 @@ class Player(Base):
 
     @classmethod
     def get_groups(cls):
-        """ Retrieve player groups as a list of tuples: (d_unit, n_players, n_points) """
+        """ Retrieve player groups as a list of tuples: (d_unit, n_players, n_points)
+        @todo Exclude admins
+        """
         return DBSession.query(cls, cls.d_unit, 
                                func.count(cls.d_alias).label('n_players'), 
                                func.sum(cls.d_points).label('n_points')).group_by(cls.d_unit)
@@ -274,10 +272,6 @@ class Tip(Base):
         return DBSession.query(cls).filter(cls.d_player == player)
 
     @classmethod
-    def del_player_tips(cls, player):
-        return DBSession.query(cls).delete().where(cls.d_player == player)
-
-    @classmethod
     def get_player_tip(cls, player, match):
         return DBSession.query(cls).filter(cls.d_player == player).\
                                     filter(cls.d_match == match).first()
@@ -306,8 +300,3 @@ class Final(Base):
     @classmethod
     def get_player_tip(cls, player):
         return DBSession.query(cls).filter(cls.d_player == player).first()
-
-    @classmethod
-    def del_player_tip(cls, player):
-        return DBSession.query(cls).delete().where(cls.d_player == player)
-
