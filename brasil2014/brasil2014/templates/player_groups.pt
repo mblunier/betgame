@@ -15,7 +15,7 @@
     <td>${repeat.group.number}</td>
     <td><a href="${request.route_url('view_group_players', category=group.d_unit)}">${group.d_unit}</a></td>
     <td>${group.n_players}</td>
-    <td><span tal:replace="'{0:.1f}'.format(group.n_points / group.n_players)"/></td>
+    <td><span tal:replace="'{0:.1f}'.format(float(group.n_points) / group.n_players)"/></td>
   </tr>
   </table>
 </tal:block>

@@ -7,10 +7,10 @@
   <h3>Troubleshooting</h3>
   <dl class="align-left">
     <dt>How do I register?</dt>
-    <dd>To register you need a unique alias consisting of letters, numbers and optionally underscores. Avoid any special characters.
+    <dd>To register you need a unique alias.
         The password prevents, that somebody may enter tips in your name, but don't use a precious password.
-     <b>Make sure to remember your password since a forgotten password cannot be restored and setting
-        a new one is currently not possible...</b>
+     <span class="highlight-player">Make sure to remember your password since a forgotten password cannot be
+        restored and setting a new one is currently not possible...</span>
         Entering a mail address is optional, but I promise it won't be abused beyond usual spamming.
         For statistical purposes each player may select its organizational unit.
         </dd>
@@ -28,8 +28,8 @@
     <dt>Something seems not work correctly.</dt>
     <dd>First, <a href="http://jargonwiki.com/wiki/RTFM">do this</a>, then assert, that the reason is not
         <a href="http://jargonwiki.com/wiki/PEBKAC">this kind</a> of problem.
-        Despite the utmost care and although only the <a href="http://www.vim.org">most advanced technology</a> were
-	used for the development of this game - not to speak about the ridiculous consumption of resources - there
+        Despite the utmost care and although only the <a href="http://www.vim.org">most advanced technology</a> was
+	applied for the development of this game - not to speak about the ridiculous consumption of resources - there
 	remains an extremely tiny chance of errors.
         In this case you may trustingly contact the <a href="mailto:${contact}?subject=${project}">helpdesk</a>,
         where your issues will be answered with well-pretended sympathy and - in exceptional cases - solved.</dd>
