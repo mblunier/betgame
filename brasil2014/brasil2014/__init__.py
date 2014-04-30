@@ -80,4 +80,6 @@ def addroutes(config):
     config.add_route('view_team_groups', '/team_groups')
     config.add_route('view_teams', '/teams')
     config.add_route('view_tips', '/tips')
+    config.add_route('db_backup', '/backup/{table}')
+    config.add_route('db_restore', '/restore')
 

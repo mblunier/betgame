@@ -5,9 +5,9 @@ from datetime import date, datetime
 #TODO: replace the following definitions with values from the Setting table or from the .ini file
 from properties import (
     PROJECT_TITLE,
-    BET_POINTS, 
-    FINAL_ID, 
-    FINAL_DEADLINE, 
+    BET_POINTS,
+    FINAL_ID,
+    FINAL_DEADLINE,
     GROUP_IDS 
     )
 
@@ -37,7 +37,13 @@ import formencode
 from pyramid_simpleform import Form
 from pyramid_simpleform.renderers import FormRenderer
 
+from sqlalchemy.schema import MetaData
 from sqlalchemy.exc import DBAPIError
+from sqlalchemy.ext.serializer import (
+    dumps as dump_table,
+    loads as load_table
+    )
+
 
 from .models import (
     DBSession,
@@ -73,6 +79,18 @@ try:
 except:
 	pass
 GAME_URL = 'http://%s:%d' % (local_host, local_port)
+
+if BET_POINTS is None or True:
+    BET_POINTS = {
+        'exacthit': int(Setting.get('scoring_exacthit').d_value),
+        'goaldiff': int(Setting.get('scoring_goaldiff').d_value),
+        'missed': int(Setting.get('scoring_missed').d_value),
+        'onefinalist': int(Setting.get('scoring_onefinalist').d_value),
+        'onescore': int(Setting.get('scoring_onescore').d_value),
+        'outcome': int(Setting.get('scoring_outcome').d_value),
+        'sumgoals': int(Setting.get('scoring_sumgoals').d_value),
+        'twofinalists': int(Setting.get('scoring_twofinalists').d_value)
+    }
 
 
 def get_page_param(request, param='page'):
@@ -558,3 +576,48 @@ def update_setting(request):
         request.session.flash(u'Failed to update or create setting "%(name)s".' % request.matchdict)
     return HTTPFound(location=route_url('settings', request))
 
+@view_config(permission='admin', route_name='db_backup')
+def db_backup(request):
+    table = request.matchdict['table']
+    if table == 'categories':
+        data = dump_table(DBSession.query(Category).all())
+    elif table == 'settings':
+        data = dump_table(DBSession.query(Setting).all())
+    elif table == 'players':
+        data = dump_table(DBSession.query(Player).all())
+    elif table == 'matches':
+        data = dump_table(DBSession.query(Match).all())
+    elif table == 'teams':
+        data = dump_table(DBSession.query(Team).all())
+    elif table == 'tips':
+        data = dump_table(DBSession.query(Tip).all())
+    elif table == 'final':
+        data = dump_table(DBSession.query(Final).all())
+    else:
+        return HTTPNotFound('Unknown table: %(table)s' % request.matchdict)
+    response = Response(headers={'mime-type': 'application/octet-stream'}, body=data)
+    response.content_length = len(data)
+    response.content_disposition = 'attachment;filename="%(table)s.dat"' % request.matchdict
+    return response
+
+@view_config(permission='admin', route_name='db_restore', renderer='templates/restore.pt')
+def db_restore(request):
+    form = Form(request)
+    if 'form.submitted' in request.POST:
+        table = request.POST.get('table')
+        data = request.POST.get('data').file.read()
+        #print 'Restoring table %s..., %d bytes' % (table, len(data))
+        #metadata = MetaData(bind=DBSession.get_bind())
+        query = load_table(data, scoped_session=DBSession)
+        for obj in query:
+            DBSession.merge(obj)
+        return HTTPFound(location=route_url('home', request))
+    return { 'form': FormRenderer(form),
+             'tables': [('categories', 'Categories'),
+                        ('players', 'Players'),
+                        ('matches', 'Matches'),
+                        ('teams', 'Teams'),
+                        ('tips', 'Tips'),
+                        ('final', 'Final')],
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request) }
