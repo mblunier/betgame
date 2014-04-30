@@ -1,12 +1,22 @@
 
 === Development ===
+The following describes the required steps to setup a virtual Python
+development environment from scratch. It should work for every reasonable
+Unix-like platform with internet access.
 
+Prepare an empty Git repository:
   $ mkdir betgame
-
   $ cd betgame && git init
   Initialized empty Git repository in /users/mb/betgame/.git/
+  
+  $ cd ..
 
-  $ cd .. && virtualenv --no-site-packages betgame
+Alternatively clone the existing repository from GitHub:
+  $ git clone https://github.com/mblunier/betgame.git
+
+Install the virtual environment:
+  $ virtualenv --no-site-packages betgame
+
   New python executable in betgame/bin/python
   Installing setuptools...............................done.
   Installing pip.....................done.
@@ -70,7 +80,7 @@ the game.
 
 
 === Contributing ===
-Setup a virtual python environment, then execute the foloowing commands:
+Setup a virtual Python environment, then execute the following commands:
   $ git clone https://github.com/mblunier/betgame.git betgame.tmp
   $ mv betgame.tmp/* betgame
   $ cd betgame
@@ -78,10 +88,12 @@ Setup a virtual python environment, then execute the foloowing commands:
   (betgame)> cd brasil2014
   (betgame)/brasil2014> python setup.py develop
 
+
 === Deployment ===
 Execute the betgame from the local development environment:
   (betgame)> initialize_brasil2014_db development.ini
   (betgame)> pserve development.ini
+
 
 === Distribution ===
 Build a distributable package (edit the version in setup.py => x.y):
@@ -92,7 +104,6 @@ python environment and install it with 'easy_install brasil2014-x.y.tar.gz'.
 
 
 === Raspberry preparation (debian wheezy) ===
-
 - Install required software:
   $ sudo apt-get update
   $ sudo apt-get install python-setuptools
