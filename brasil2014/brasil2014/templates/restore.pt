@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+  ${form.begin(request.route_url('db_restore'), multipart=True)}
+    <fieldset>
+      ${form.csrf_token()}
+      <table>
+        <tr>
+          <td align="right">Table to restore:</td> 
+          <td align="left">${form.select('table', options=tables)}</td>
+        </tr>
+        <tr>
+          <td align="right">The local file with the table content<br/>
+            (replaces all existing table data)</td>
+          <td align="left">${form.file('data')}</td>
+        </tr>
+      </table>
+      ${form.submit('form.submitted', ' OK ', class_='submit')}
+    </fieldset>
+  ${form.end()}
+</tal:block>
+
+</html>
