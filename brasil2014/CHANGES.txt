@@ -1,5 +1,8 @@
 0.8
 ===
+- Updated documentation.
+- Enhanced description in forbidden view.
+- Added DB backup/restore.
 - Added forbidden & notfound templates.
 - Updated installation & deployment instructions.
 - Adapted to Python 2.7 coding standards.
