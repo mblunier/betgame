@@ -23,14 +23,13 @@ Getting Started
 - Launch the service:
   $ pserve production.ini
 
-- Open the URL http://<hostname>:8080 in your preferred web browser.
+- Open the URL http://<hostname_or_ip>:8080 in your preferred web browser.
 
 
 
 Administration
 --------------
-
-Some pages are restricted to the administrator(s) maintaining a Betgame
+Some pages are restricted to the administrator(s) maintaining a betgame
 instance. Once everything is initialized most of the required steps can
 be automated. This chapter describes the available functions (all URLs
 relative to the root):
@@ -55,7 +54,7 @@ relative to the root):
   /restore
 	Displays a form to specify a table name and a data file with saved
 	table contents. After submitting the form the file is uploaded and
-	its content replaces all items with identical keys.
+	its content replaces all items with matching keys.
 
   /unregister/{alias}
 	Deletes the player {alias} together with all related data from the DB.
@@ -66,7 +65,9 @@ relative to the root):
 
   /update_remote
 	Updates all team & player points according to the match results stored
-	on the configured result server (default: 'wm2014.rolotec.ch').
+	on the configured result server (default: 'wm2014.rolotec.ch'). Calling
+	this function regularly or at least after every match suffices to keep 
+	the local instance up to date.
 
 
 Settings
@@ -78,7 +79,7 @@ keys are recognized:
 	The alias of the admin user.
 
   admin_mail (default: admin@rolotec.ch)
-  	The contact mail shown on the help page.
+	The contact mail shown on the help page.
 
   result_server (default: wm2014.rolotec.ch)
 	The name of the server providing match results. Any instance of the
@@ -95,10 +96,10 @@ keys are recognized:
 	exact hit nor the outcome was guessed.
 
   scoring_onefinalist (default: 5)
-  	Number of points for guessing 1 finalist.
+	Number of points for guessing 1 finalist.
 
   scoring_onescore (default: 1)
-  	The number of points for guessing 1 score exactly. Not used for the
+	The number of points for guessing 1 score exactly. Not used for the
 	default scoring algorithm.
 
   scoring_outcome (default: 3)
@@ -109,6 +110,6 @@ keys are recognized:
 	The number of points for guessing the goal difference.
 
   scoring_twofinalists (default: 10)
-  	Number of points for guessing both finalists.
+	Number of points for guessing both finalists.
 
 All stored settings can be viewed via /settings.
