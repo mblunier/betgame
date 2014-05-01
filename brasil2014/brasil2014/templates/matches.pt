@@ -22,7 +22,7 @@
      <td><span class="flagsp flagsp_${match.d_team2}"> </span></td>
      <td tal:condition="match.d_score1 is not None and match.d_score2 is not None">${match.d_score1} : ${match.d_score2}</td>
      <td tal:condition="match.d_score1 is None or match.d_score2 is None">- : -</td>
-     <td>
+     <td tal:condition="not nonav">
        <span tal:condition="match.d_id == final_id">
          <span tal:condition="viewer_username and match.tip is not None">
 	   ${match.tip.d_score1} : ${match.tip.d_score2}
