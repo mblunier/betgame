@@ -10,7 +10,7 @@
     <th>Player</th>
     <th>Category</th>
     <th>Points</th>
-    <th>Tips</th>
+    <th tal:condition="not nonav">Tips</th>
   </tr>
   <tr tal:repeat="player players">
     <!-- ${player.d_name} -->
@@ -23,10 +23,10 @@
     </td>
     <td><a href="${request.route_url('view_group_players', category=player.d_unit)}">${player.d_unit}</a></td>
     <td>${player.d_points}</td>
-    <td><a href="${request.route_url('view_player_tips', player=player.d_alias)}"> View </a></td>
+    <td tal:condition="not nonav"><a href="${request.route_url('view_player_tips', player=player.d_alias)}"> View </a></td>
   </tr>
   </table>
-  <span tal:replace="players.pager('$link_first $link_previous ~3~ $link_next $link_last')" />
+  <span tal:condition="not nonav" tal:replace="players.pager('$link_first $link_previous ~3~ $link_next $link_last')" />
 </tal:block>
 
 </html>

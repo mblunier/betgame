@@ -268,6 +268,7 @@ def view_players(request):
     #    return HTTPNotFound('No players')
     return { 'players': players,
              'viewer_username': request.authenticated_userid,
+             'nonav': 'nonav' in request.params,
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_group_players', renderer='templates/group_players.pt')
@@ -285,6 +286,7 @@ def view_group_players(request):
     return { 'category': category,
              'players': players,
              'viewer_username': request.authenticated_userid,
+             'nonav': 'nonav' in request.params,
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_player_groups', renderer='templates/player_groups.pt')

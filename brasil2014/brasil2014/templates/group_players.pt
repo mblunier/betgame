@@ -12,7 +12,7 @@
     <th>Rank</th>
     <th>Player</th>
     <th>Points</th>
-    <th>Tips</th>
+    <th tal:condition="not nonav">Tips</th>
   </tr>
   <tr tal:repeat="player players">
     <!-- ${player.d_name} -->
@@ -24,11 +24,11 @@
       <a href="mailto:${player.d_mail}">${player.d_alias}</a>
     </td>
     <td>${player.d_points}</td>
-    <td><a href="${request.route_url('view_player_tips', player=player.d_alias)}"> View </a></td>
+    <td tal:condition="not nonav"><a href="${request.route_url('view_player_tips', player=player.d_alias)}"> View </a></td>
   </tr>
   </table>
-  <span tal:replace="players.pager('$link_first $link_previous ~3~ $link_next $link_last')" />
-  <p class="align-right"><input type="button" onClick="history.go(-1)" value=" Back "></p>
+  <span tal:condition="not nonav" tal:replace="players.pager('$link_first $link_previous ~3~ $link_next $link_last')" />
+  <p tal:condition="not nonav" class="align-right"><input type="button" onClick="history.go(-1)" value=" Back "></p>
 </tal:block>
 
 </html>
