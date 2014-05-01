@@ -338,8 +338,8 @@ def view_matches(request):
              'matches': matches,
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
-             'nonav': 'nonav' in request.params,
              'viewer_username': player,
+             'nonav': 'nonav' in request.params,
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_upcoming_matches', renderer='templates/matches.pt', http_cache=0)
@@ -358,6 +358,7 @@ def view_upcoming_matches(request):
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
              'viewer_username': player,
+             'nonav': 'nonav' in request.params,
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_group_matches', renderer='templates/group_matches.pt', http_cache=0)
