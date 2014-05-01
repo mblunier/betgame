@@ -6,7 +6,8 @@
 <tal:block metal:fill-slot="content">
   <table id="group-list" tal:repeat="group groups">
     <tr>
-      <th colspan="6">Group ${group.group_id}</th>
+      <th tal:condition="not nonav" colspan="6">Group ${group.group_id}</th>
+      <th tal:condition="nonav" colspan="5">Group ${group.group_id}</th>
     </tr>
     <tr id="team-list">
       <th>&nbsp;</th>
@@ -14,7 +15,7 @@
       <th>Played</th>
       <th>Goals</th>
       <th>Points</th>
-      <th>Matches</th>
+      <th tal:condition="not nonav">Matches</th>
     </tr>
     <tr tal:repeat="team group.teams">
       <td class="flag"><span class="flagsp flagsp_${team.d_id}" title="${team.d_name}">&nbsp;</span></td>
@@ -22,7 +23,7 @@
       <td>${team.d_played}</td>
       <td>${team.d_shot} : ${team.d_rcvd}</td>
       <td>${team.d_points}</td>
-      <td><a href="${request.route_url('view_group_matches', group=group.group_id)}">View</a></td>
+      <td tal:condition="not nonav"><a href="${request.route_url('view_group_matches', group=group.group_id)}">View</a></td>
     </tr>
   </table>
 </tal:block>
