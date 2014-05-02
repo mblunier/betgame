@@ -608,15 +608,16 @@ def db_restore(request):
     form = Form(request)
     if 'form.submitted' in request.POST:
         data = request.POST.get('data')
-        if len(data) > 0:
-            data = data.file.read()
-            query = load_table(data.file.read(), scoped_session=DBSession)
-            for obj in query:
-                DBSession.merge(obj)
-            return HTTPFound(location=route_url('home', request))
-        else:
-            request.session.flash(u'Please select a file.')
-            # fall thru...
+        try:
+            if len(data) > 0:
+                query = load_table(data.file.read(), scoped_session=DBSession)
+                for obj in query:
+                    DBSession.merge(obj)
+                return HTTPFound(location=route_url('home', request))
+            else:
+                request.session.flash(u'Please select a file.')
+        except:
+            request.session.flash(u'Not a valid backup file.')
     return { 'form': FormRenderer(form),
              'tables': [('categories', 'Categories'),
                         ('players', 'Players'),
