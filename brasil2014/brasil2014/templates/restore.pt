@@ -5,22 +5,17 @@
 
 <tal:block metal:fill-slot="content">
   <p class="app-welcome">
+    Database table restoration
+  </p>
+  <p style="margin-bottom: 30px">
+    Select the local file with the table content to restore (replaces matching table data but leaves new content untouched):
+  </p>
   ${form.begin(request.route_url('db_restore'), multipart=True)}
-    <fieldset>
-      ${form.csrf_token()}
-      <table>
-        <tr>
-          <td align="right">Table to restore:</td> 
-          <td align="left">${form.select('table', options=tables)}</td>
-        </tr>
-        <tr>
-          <td align="right">The local file with the table content<br/>
-            (replaces all existing table data)</td>
-          <td align="left">${form.file('data')}</td>
-        </tr>
-      </table>
-      ${form.submit('form.submitted', ' OK ', class_='submit')}
-    </fieldset>
+  <fieldset>
+    ${form.csrf_token()}
+    ${form.file('data')}
+    ${form.submit('form.submitted', ' OK ', class_='submit')}
+  </fieldset>
   ${form.end()}
 </tal:block>
 
