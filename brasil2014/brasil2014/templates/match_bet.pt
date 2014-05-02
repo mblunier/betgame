@@ -16,9 +16,7 @@
       ${form.errorlist('d_score1')}
       ${form.errorlist('d_score2')}
       <br />
-<!--    <input tal:condition="target" type="hidden" name="bet" value="${match}" /> -->
       ${form.submit('form.submitted', ' OK ', class_='submit')}
-      <!--${form.submit('form.cancelled', 'Cancel', class_='submit')}-->
     </fieldset>
   ${form.end()}
 </tal:block>

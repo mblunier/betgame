@@ -7,13 +7,6 @@
     <li><a href="${request.route_url('view_matches')}">Matches</a></li>
     <li><a href="${request.route_url('view_players')}">Players</a></li>
     <li><a href="${request.route_url('view_player_groups')}">Categories</a></li>
-  <!--
-    <li><span tal:condition="not viewer_username">Tips</span>
-        <span tal:condition="viewer_username">
-          <a href="${request.route_url('view_player_tips', player=viewer_username)}">Tips</a>
-        </span>
-    </li>
-  -->
     <li style="margin-left: 80px"><a href="${request.route_url('about')}">About</a></li>
   </ul>
 </div>

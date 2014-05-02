@@ -3,8 +3,7 @@
      xmlns:tal="http://xml.zope.org/namespaces/tal">
   <form action="/login" method="post" tal:condition="not loggedin">
   <fieldset>
-    <input name="_csrf" type="hidden"
-           value="${request.session.get_csrf_token()}">
+    <input name="_csrf" type="hidden" value="${request.session.get_csrf_token()}">
     <table>
       <tr>
         <td>
