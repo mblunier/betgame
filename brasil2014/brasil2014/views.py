@@ -607,14 +607,16 @@ def db_backup(request):
 def db_restore(request):
     form = Form(request)
     if 'form.submitted' in request.POST:
-        table = request.POST.get('table')
-        data = request.POST.get('data').file.read()
-        #print 'Restoring table %s..., %d bytes' % (table, len(data))
-        #metadata = MetaData(bind=DBSession.get_bind())
-        query = load_table(data, scoped_session=DBSession)
-        for obj in query:
-            DBSession.merge(obj)
-        return HTTPFound(location=route_url('home', request))
+        data = request.POST.get('data')
+        if len(data) > 0:
+            data = data.file.read()
+            query = load_table(data.file.read(), scoped_session=DBSession)
+            for obj in query:
+                DBSession.merge(obj)
+            return HTTPFound(location=route_url('home', request))
+        else:
+            request.session.flash(u'Please select a file.')
+            # fall thru...
     return { 'form': FormRenderer(form),
              'tables': [('categories', 'Categories'),
                         ('players', 'Players'),
