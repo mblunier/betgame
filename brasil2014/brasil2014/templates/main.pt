@@ -17,14 +17,14 @@
       Once registered you can log in anytime to enter or modify your bets.
     </li>
     <li>
-      <b>Enter your bets on time.</b> Each bet must be entered before the beginning of the respective
+      <strong>Enter your bets on time.</strong> Each bet must be entered before the beginning of the respective
       match and may be modified until then. 
     </li>
     <li>
       For the profitable <a href="${request.route_url('final_bet')}">final bet</a> you also have to select
       the teams that will reach the final.
-      It is due until <b tal:content="final_deadline.strftime('%d.%m.%Y %H:%M')"></b>
-      (the beginning of stage 2) <b>and cannot be modified</b>.
+      It is due until <strong tal:content="final_deadline.strftime('%d.%m.%Y %H:%M')"></strong>
+      (the beginning of stage 2) <strong>and cannot be modified</strong>.
     </li>
     <li>
       The <a href="${request.route_url('scoring')}">scoring</a> page describes how many points you
