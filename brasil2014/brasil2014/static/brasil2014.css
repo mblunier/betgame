@@ -213,7 +213,6 @@ tr:nth-child(even) {
 	background-color: #CEF6F5;
 }
 
-
 tr:nth-child(odd) {
 	background-color: #E0F8F7;
 }
@@ -355,14 +354,16 @@ td.flag {
 
 #match-list, #player-list,
 #group-list, #team-list,
-#tip-list, #player-tips  {
+#tip-list, #player-tips,
+#info-list {
 	width: 100%;
 	margin-bottom: 20px;
 }
 
 #match-list th, #player-list th,
 #group-list th, #team-list th,
-#tip-list th, #player-tips th {
+#tip-list th, #player-tips th,
+#info-list th {
 	width: auto;
 	margin-bottom: 5px;
 	border-bottom: 2px solid #FFFFFF;
@@ -370,7 +371,8 @@ td.flag {
 
 #match-list td, #player-list td,
 #group-list td, #team-list td, 
-#tip-list td, #player-tips td {
+#tip-list td, #player-tips td,
+#info-list td {
 	width: auto;
 	margin: 0;
 	padding-top: 0;

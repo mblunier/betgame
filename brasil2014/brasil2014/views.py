@@ -627,3 +627,18 @@ def db_restore(request):
                         ('final', 'Final')],
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
+
+@view_config(permission='admin', route_name='system_info', renderer='templates/sysinfo.pt')
+def system_info(request):
+    cpuinfo = {}
+    with open('/proc/cpuinfo') as f:
+        for info in f:
+            info = info.strip().split(':')
+            #print "info: %s (%d)" % (info, len(info))
+            if len(info) > 0 and info[0].strip() != '':
+                key = info[0].strip() 
+                value = info[1].strip() if len(info) > 1 else '---'
+                cpuinfo[key] = value
+    return { 'sysinfo': cpuinfo.items(),
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request) }
