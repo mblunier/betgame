@@ -10,11 +10,6 @@
   <p style="margin-bottom: 30px">
     You don't have the permission to do or view this. Don't try again!
   </p>
-  <div id="footer">
-    <p>
-      &copy; Copyleft 2014, Clueless Gaming Ltd.
-    </p>
-  </div>
 </tal:block>
 
 </html>

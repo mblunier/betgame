@@ -10,11 +10,6 @@
   <p style="margin-bottom: 30px">
     I don't have what you are looking for!
   </p>
-  <div id="footer">
-    <p>
-      &copy; Copyleft 2014, Clueless Gaming Ltd.
-    </p>
-  </div>
 </tal:block>
 
 </html>

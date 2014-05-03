@@ -22,11 +22,6 @@
     <li><a href="http://de.selfhtml.org/navigation/html.htm" target="_blank">SELFHTML: Kurzreferenz: HTML</a></li>
     <li><a href="http://de.selfhtml.org/navigation/css.htm" target="_blank">SELFHTML: Kurzreferenz: CSS</a></li>
   </ul>
-  <div id="footer">
-    <p>
-      &copy; Copyleft 2014, Clueless Gaming Ltd.
-    </p>
-  </div>
 </tal:block>
 
 </html>
