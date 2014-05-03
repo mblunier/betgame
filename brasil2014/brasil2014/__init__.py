@@ -57,6 +57,7 @@ def addroutes(config):
     config.add_route('scoring', '/scoring')
     config.add_route('score_table', '/scoretable')
     config.add_route('settings', '/settings')
+    config.add_route('system_info', '/sysinfo')
     config.add_route('too_late', '/too_late')
     config.add_route('unregister', '/unregister/{alias}')
     config.add_route('update_local', '/update_local')
