@@ -1,3 +1,5 @@
+import os
+import sys
 import urllib2
 
 from datetime import date, datetime
@@ -92,6 +94,10 @@ if BET_POINTS is None or True:
         'twofinalists': int(Setting.get('scoring_twofinalists').d_value)
     }
 
+ITEMS_PER_PAGE = Setting.get('items_per_page')
+ITEMS_PER_PAGE = int(ITEMS_PER_PAGE.d_value) if ITEMS_PER_PAGE else 10
+
+#FIXME Have to restart game, if any of the above settings is changed
 
 def get_page_param(request, param='page'):
     """ @return Numerical value of the 'page' parameter. """
@@ -197,7 +203,8 @@ def view_settings(request):
 def too_late(request):
     return { 'final_deadline': FINAL_DEADLINE,
              'viewer_username': request.authenticated_userid,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 
 # ----- Player views -----
@@ -239,10 +246,9 @@ def register(request):
 def login(request):
     main_view = route_url('home', request)
     came_from = request.params.get('came_from', main_view)
-    post_data = request.POST
-    if 'submit' in post_data:
-        login = post_data['alias']
-        password = post_data['password']
+    if 'form.submitted' in request.POST:
+        login = request.POST['alias']
+        password = request.POST['password']
         if Player.check_password(login, password):
             request.session.flash(u'Logged in successfully.')
             return HTTPFound(location=came_from, headers=remember(request, login))
@@ -263,13 +269,13 @@ def view_players(request):
     players = webhelpers.paginate.Page(Player.ranking(),
                                        page=page,
                                        url=url,
-                                       items_per_page=15)
+                                       items_per_page=ITEMS_PER_PAGE)
     #if not players:
     #    return HTTPNotFound('No players')
     return { 'players': players,
              'viewer_username': request.authenticated_userid,
-             'nonav': 'nonav' in request.params,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 @view_config(permission='view', route_name='view_group_players', renderer='templates/group_players.pt')
 def view_group_players(request):
@@ -279,15 +285,14 @@ def view_group_players(request):
     players = webhelpers.paginate.Page(Player.get_by_unit(category),
                                        page=page,
                                        url=url,
-                                       items_per_page=10)
+                                       items_per_page=ITEMS_PER_PAGE)
     #if not players:
     #   return HTTPNotFound('No players in this category')
-    # sort groups descending by the average number of points per player
     return { 'category': category,
              'players': players,
              'viewer_username': request.authenticated_userid,
-             'nonav': 'nonav' in request.params,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 @view_config(permission='view', route_name='view_player_groups', renderer='templates/player_groups.pt')
 def view_player_groups(request):
@@ -312,8 +317,8 @@ def view_teams(request):
 def view_team_groups(request):
     groups = [TeamGroup(group_id, Team.get_by_group(group_id)) for group_id in GROUP_IDS]
     return { 'groups': groups,
-             'nonav': 'nonav' in request.params,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 @view_config(permission='view', route_name='view_group_teams', renderer='templates/group_teams.pt')
 def view_group_teams(request):
@@ -341,8 +346,8 @@ def view_matches(request):
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
              'viewer_username': player,
-             'nonav': 'nonav' in request.params,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 @view_config(permission='view', route_name='view_upcoming_matches', renderer='templates/matches.pt', http_cache=0)
 def view_upcoming_matches(request):
@@ -360,8 +365,8 @@ def view_upcoming_matches(request):
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
              'viewer_username': player,
-             'nonav': 'nonav' in request.params,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 @view_config(permission='view', route_name='view_group_matches', renderer='templates/group_matches.pt', http_cache=0)
 def view_group_matches(request):
@@ -374,7 +379,8 @@ def view_group_matches(request):
              'group_id': group_id,
              'matches': matches,
              'viewer_username': player,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 
 # ----- Tip views -----
@@ -424,11 +430,12 @@ def view_match_tips(request):
     tips = webhelpers.paginate.Page(match_tips,
                                     page=page,
                                     url=url,
-                                    items_per_page=10)
+                                    items_per_page=ITEMS_PER_PAGE)
     return { 'match': match,
              'tips': tips,
              'viewer_username': request.authenticated_userid,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 @view_config(permission='view', route_name='view_player_tips', renderer='templates/player_tips.pt', http_cache=0)
 def view_player_tips(request):
@@ -445,7 +452,8 @@ def view_player_tips(request):
     return { 'player': player,
              'tips': tips,
              'viewer_username': request.authenticated_userid,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 
 # ----- Final views -----
@@ -493,7 +501,8 @@ def view_final_tips(request):
     return { 'final': final,
              'tips': tips,
              'viewer_username': request.authenticated_userid,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 @view_config(permission='view', route_name='view_final_tip', renderer='templates/final_tip.pt', http_cache=0)
 def view_final_tip(request):
@@ -620,6 +629,7 @@ def db_restore(request):
             request.session.flash(u'Not a valid backup file.')
     return { 'form': FormRenderer(form),
              'tables': [('categories', 'Categories'),
+                        ('settings', 'Settings'),
                         ('players', 'Players'),
                         ('matches', 'Matches'),
                         ('teams', 'Teams'),
@@ -630,15 +640,20 @@ def db_restore(request):
 
 @view_config(permission='admin', route_name='system_info', renderer='templates/sysinfo.pt')
 def system_info(request):
-    cpuinfo = {}
+    sysinfo = {
+        'os.name': os.name,
+        'sys.platform': sys.platform,
+        'sys.maxint': sys.maxint,
+        'sys.maxsize': sys.maxsize
+    }
     with open('/proc/cpuinfo') as f:
         for info in f:
             info = info.strip().split(':')
             #print "info: %s (%d)" % (info, len(info))
             if len(info) > 0 and info[0].strip() != '':
-                key = info[0].strip() 
+                key = 'cpu.%s' % info[0].strip() 
                 value = info[1].strip() if len(info) > 1 else '---'
-                cpuinfo[key] = value
-    return { 'sysinfo': cpuinfo.items(),
+                sysinfo[key] = value
+    return { 'sysinfo': sorted(sysinfo.items()),
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
