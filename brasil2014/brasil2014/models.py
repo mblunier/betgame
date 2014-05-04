@@ -143,11 +143,8 @@ class Setting(Base):
         return DBSession.query(cls).order_by(cls.d_name)
 
     @classmethod
-    def get(cls, name, default=None):
-        try:
-            return DBSession.query(cls).filter(cls.d_name == name).one()
-        except:
-            return default
+    def get(cls, name):
+        return DBSession.query(cls).filter(cls.d_name == name).first()
 
 
 class Team(Base):
