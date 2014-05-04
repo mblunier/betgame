@@ -647,11 +647,19 @@ def system_info(request):
         'sys.maxsize': sys.maxsize
     }
     with open('/proc/cpuinfo') as f:
-        for info in f:
-            info = info.strip().split(':')
-            #print "info: %s (%d)" % (info, len(info))
+        for line in f:
+            info = line.strip().split(': ')
+            #print "cpuinfo: %s (%d)" % (info, len(info))
             if len(info) > 0 and info[0].strip() != '':
                 key = 'cpu.%s' % info[0].strip() 
+                value = info[1].strip() if len(info) > 1 else '---'
+                sysinfo[key] = value
+    with open('/proc/meminfo') as f:
+        for line in f:
+            info = line.strip().split(': ')
+            #print "meminfo: %s (%d)" % (info, len(info))
+            if len(info) > 0 and info[0].strip() != '':
+                key = 'mem.%s' % info[0].strip() 
                 value = info[1].strip() if len(info) > 1 else '---'
                 sysinfo[key] = value
     return { 'sysinfo': sorted(sysinfo.items()),
