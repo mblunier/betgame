@@ -1,7 +1,7 @@
 <div id="login-form"
      xmlns="http://www.w3.org/1999/xhtml"
      xmlns:tal="http://xml.zope.org/namespaces/tal">
-  <form action="/login" method="post" tal:condition="not loggedin">
+  <form tal:condition="not loggedin" action="/login" method="post">
   <fieldset>
     <input name="_csrf" type="hidden" value="${request.session.get_csrf_token()}">
     <table>
@@ -24,7 +24,7 @@
           <input type="password" name="password" />
 	</td>
         <td>
-          <input type="submit" class="login" name="submit" value="Login" />
+          <input type="submit" class="login" name="form.submitted" value=" Login " />
 	</td>
       </tr>
     </table>

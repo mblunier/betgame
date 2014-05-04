@@ -56,7 +56,7 @@
     <td>Total</td>
     <td>${player.d_points}</td>
   </table>
-  <p class="align-right"><input type="button" onClick="history.back()" value=" Back "></p>
+  <p tal:condition="not nonav" class="align-right"><input type="button" onClick="history.back()" value=" Back "></p>
 </tal:block>
 
 </html>

@@ -27,7 +27,7 @@
   <div id="footer">
       <p>
         &copy; Copyleft 2014, Clueless Gaming Ltd.
-        Powered by <a href="http://docs.pylonshq.com">Pyramid</a>.
+        Powered by <a href="http://www.pylonsproject.org/" target="_blank">Pyramid</a>.
       </p>
   </div>
 </body>

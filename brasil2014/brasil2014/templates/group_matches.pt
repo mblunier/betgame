@@ -16,7 +16,7 @@
      </tr>
      <tr tal:repeat="match matches">
        <td tal:content="match.d_begin.strftime('%d.%m.%Y %H:%M')">Kickoff</td>
-       <td><span class="flagsp flagsp_${match.d_team1}">> </span>&nbsp;</td>
+       <td><span class="flagsp flagsp_${match.d_team1}"> </span>&nbsp;</td>
        <td>${match.d_team1} : ${match.d_team2}</td>
        <td><span class="flagsp flagsp_${match.d_team2}"> </span></td>
        <td tal:condition="match.d_score1 is not None and match.d_score2 is not None">${match.d_score1} : ${match.d_score2}</td>
@@ -38,7 +38,7 @@
        </td>
      </tr>
    </table>
-  <p class="align-right"><input type="button" onClick="history.back()" value=" Back "></p>
+  <p tal:condition="not nonav" class="align-right"><input type="button" onClick="history.back()" value=" Back "></p>
 </tal:block>
 
 </html>

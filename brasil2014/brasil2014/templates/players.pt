@@ -19,7 +19,7 @@
       <a href="mailto:${player.d_mail}">${player.d_alias}</a>
     </td>
     <td tal:condition="viewer_username != player.d_alias">
-      <a href="mailto:${player.d_mail}">${player.d_alias}</a>
+      <a tal:omit-tag="not:player.d_mail" href="mailto:${player.d_mail}">${player.d_alias}</a>
     </td>
     <td><a href="${request.route_url('view_group_players', category=player.d_unit)}">${player.d_unit}</a></td>
     <td>${player.d_points}</td>
