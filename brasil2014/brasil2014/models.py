@@ -97,20 +97,20 @@ class Player(Base):
 
     @classmethod
     def get_by_unit(cls, unit):
-        return DBSession.query(cls).filter(cls.d_unit == unit).order_by(cls.d_points.desc())
+        return DBSession.query(cls).filter(cls.d_unit == unit, cls.d_alias.notin_(ADMINS)).order_by(cls.d_points.desc())
 
     @classmethod
     def get_groups(cls):
-        """ Retrieve player groups as a list of tuples: (d_unit, n_players, n_points)
-        @todo Exclude admins
+        """ Retrieve player groups.
+        @return List of tuples: (d_unit, n_players, n_points)
         """
         return DBSession.query(cls, cls.d_unit, 
                                func.count(cls.d_alias).label('n_players'), 
-                               func.sum(cls.d_points).label('n_points')).group_by(cls.d_unit)
+                               func.sum(cls.d_points).label('n_points')).filter(cls.d_alias.notin_(ADMINS)).group_by(cls.d_unit)
 
     @classmethod
     def ranking(cls):
-        return DBSession.query(cls).order_by(cls.d_points.desc(), cls.d_alias)
+        return DBSession.query(cls).filter(cls.d_alias.notin_(ADMINS)).order_by(cls.d_points.desc(), cls.d_alias)
 
 
 class Category(Base):
@@ -143,8 +143,11 @@ class Setting(Base):
         return DBSession.query(cls).order_by(cls.d_name)
 
     @classmethod
-    def get(cls, name):
-        return DBSession.query(cls).filter(cls.d_name == name).first()
+    def get(cls, name, default=None):
+        try:
+            return DBSession.query(cls).filter(cls.d_name == name).one()
+        except:
+            return default
 
 
 class Team(Base):
