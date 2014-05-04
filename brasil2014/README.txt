@@ -44,6 +44,11 @@ relative to the root):
 	Specifies the team mnemonics for the stage 2 match with id {id}. This
 	is required after stage 1 and after every stage 2 match.
 
+  /restore
+	Displays a form to specify a table name and a data file with saved
+	table contents. After submitting the form the file is uploaded and
+	its content replaces all items with matching keys.
+
   /score/{id}/{score1}/{score2}
 	Specifies the score for the match with id {id}. Using -1 for the
 	scores deletes the score. This is required after every match.
@@ -51,10 +56,8 @@ relative to the root):
   /setting/{name}/{value}
 	Creates or updates a setting (see below).
 
-  /restore
-	Displays a form to specify a table name and a data file with saved
-	table contents. After submitting the form the file is uploaded and
-	its content replaces all items with matching keys.
+  /sysinfo
+  	Shows information about the server where the game is running.
 
   /unregister/{alias}
 	Deletes the player {alias} together with all related data from the DB.
@@ -84,6 +87,9 @@ keys are recognized:
   result_server (default: wm2014.rolotec.ch)
 	The name of the server providing match results. Any instance of the
 	betgame where results are entered may be used.
+
+  items_per_page
+	The number of items shown on pages with pagination.
 
   scoring_exacthit (default: 5)
 	The number of points for an exact hit.
