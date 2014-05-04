@@ -60,6 +60,7 @@ def addroutes(config):
     config.add_route('system_info', '/sysinfo')
     config.add_route('too_late', '/too_late')
     config.add_route('unregister', '/unregister/{alias}')
+    config.add_route('update_category', '/category/{name}/{value}')
     config.add_route('update_local', '/update_local')
     config.add_route('update_match', '/match/{id}/{team1}/{team2}')
     config.add_route('update_remote', '/update_remote')

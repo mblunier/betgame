@@ -538,6 +538,35 @@ def unregister(request):
         request.session.flash(u'Player "%(alias)s" not found.' % request.matchdict)
     return HTTPFound(location=route_url('view_players', request))
 
+@view_config(permission='admin', route_name='update_category')
+def update_category(request):
+    try:
+        name = request.matchdict['name']
+        value = request.matchdict['value']
+        category = Category.get(name)
+        if value == 'DELETE':
+            if category:
+                players = Player.get_by_unit(name)
+                if players and len(players.all()) > 0:
+                    request.session.flash(u'Category "%(name)s" cannot be deleted.' % request.matchdict)
+                else:
+                    DBSession.delete(category)
+                    request.session.flash(u'Deleted category "%(name)s".' % request.matchdict)
+            else:
+                category = Category(name, value)
+                request.session.flash(u'Category "%(name)s" does not exist.' % request.matchdict)
+        else:
+            if category:
+                category.d_name = value
+                request.session.flash(u'Updated category "%(name)s".' % request.matchdict)
+            else:
+                category = Category(name, value)
+                DBSession.add(category)
+                request.session.flash(u'Created category "%(name)s".' % request.matchdict)
+    except:
+        request.session.flash(u'Failed to update or create category "%(name)s".' % request.matchdict)
+    return HTTPFound(location=route_url('home', request))
+
 @view_config(permission='admin', route_name='update_match')
 def update_match(request):
     try:
