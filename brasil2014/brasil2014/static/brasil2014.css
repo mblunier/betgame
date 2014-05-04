@@ -14,7 +14,6 @@ table,caption,tbody,tfoot,thead,tr,th,td {
 }
 
 body {
-	//background: url("http://img.fifa.com/imgml/fifacom2/bg.png") repeat-x scroll 0 0 #DCDCDC;
 	background-color: #e0f8f7;
 	font-family: Verdana,Sans-Serif;
 	font-size: 12px;
@@ -68,7 +67,6 @@ ul, menu,dir {
 
 ol {
 	display: block;
-	/*list-style-type: decimal-leading-zero;*/
 	list-style-type: decimal;
 	margin: 1em 0;
 	padding-left: 40px;
@@ -158,15 +156,11 @@ h4 {
 html, body {
 	width: 1080px; 
 	height: 100%;
-	//background-image: url("background.jpg");
-	//background-repeat: repeat-y;
-	//background-attachment: fixed;
 }
 
 body {
 	margin: 0;
 	padding: 0;
-	/*background-color: #FFFFFF;*/
 	position: relative;
 	font: 16px/24px "Lucida Grande", Lucida, Verdana, sans-serif;
 }
@@ -196,7 +190,6 @@ body h6 {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
-	/*width: 100%;*/
 }
 
 th, td {
@@ -282,7 +275,6 @@ td.flag {
 	padding: 2px 10px 2px 10px;
         font-weight: bold;
         color: yellow;
-	float: left;
 }
 
 #login-form label {
@@ -293,7 +285,6 @@ td.flag {
 
 #login-form td {
 	text-align: right;
-	/*font-size: x-small;*/
 	margin: 0;
 	padding-top: 0;
 	padding-bottom: 0;
@@ -334,13 +325,6 @@ td.flag {
 #menu li a:hover {
 	border-bottom: 4px solid #d0d0ff;
 }
-
-/*
-#nav {
-	padding: 10px;
-	background: #808080;
-}
-*/
 
 #navigation {
 	height: 40px;
@@ -419,7 +403,6 @@ td.flag {
 	width: 100%;
 	color: #FFFFFF;
 	height: 40px;
-	/*position: absolute;*/
 	text-align: center;
 	line-height: 40px;
 	overflow: hidden;
@@ -436,6 +419,7 @@ td.flag {
 #footer {
 	bottom: 0;
 	background: none repeat scroll 0 0 transparent;
+	margin-top: 20px;
 }
 
 .header, .footer {
