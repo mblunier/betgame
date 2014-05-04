@@ -4,7 +4,7 @@
 from datetime import datetime
 
 PROJECT_TITLE = 'Unofficial Brasil 2014 Bet Game'
-ADMINS = [ 'admin', 'mb' ]
+ADMINS = [ 'admin' ]
 
 SCORINGS = [{   # [0]
     'exacthit': 12,
