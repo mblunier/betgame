@@ -646,6 +646,8 @@ def system_info(request):
         'sys.maxint': sys.maxint,
         'sys.maxsize': sys.maxsize
     }
+    with open('/proc/version') as f:
+        sysinfo['os.version'] = f.read().strip()
     with open('/proc/cpuinfo') as f:
         for line in f:
             info = line.strip().split(': ')
