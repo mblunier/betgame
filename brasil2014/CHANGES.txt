@@ -6,6 +6,14 @@
 - Exclude admins from player queries.
 - Added system info view.
 - HTML cleanup.
+- Handle empty or invalid upload files gracefully.
+- Using <strong> to emphasize important infos.
+- Removed unnecessary fields from restore form.
+- Enable nonav mode for player & category views.
+- Enhanced description of admin functions.
+- Provide 'nonav' argument for relevant views.
+- Suppress links in nonav mode.
+- Suppress 'Tips' column in nonav mode.
 
 
 0.8
