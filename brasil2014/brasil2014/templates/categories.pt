@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <table id="info-list">
+    <tr>
+      <th colspan="3"><span class="app-name">${project}</span> categories</th>
+    </tr>
+    <tr>
+      <th align="right">Mnemonic</th>
+      <th>&nbsp;</th>
+      <th align="left">Category</th>
+    </tr>
+    <tr tal:repeat="category categories">
+      <td align="right">${category.d_alias}</td>
+      <td align="center">=</td>
+      <td align="left">${category.d_name}</td>
+    </tr>
+  </table>
+</tal:block>
+
+</html>

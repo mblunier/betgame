@@ -97,14 +97,14 @@ if BET_POINTS is None or True:
 ITEMS_PER_PAGE = Setting.get('items_per_page')
 ITEMS_PER_PAGE = int(ITEMS_PER_PAGE.d_value) if ITEMS_PER_PAGE else 10
 
-#FIXME Have to restart game, if any of the above settings is changed
+#FIXME Have to restart, if any of the above settings is changed...
 
-def get_page_param(request, param='page'):
-    """ @return Numerical value of the 'page' parameter. """
+def get_int_param(request, param, default=None):
+    """ @return Numerical value of named parameter. """
     try:
         return int(request.params[param])
     except:
-        return 1
+        return default
 
 def login_form_view(request):
     return render('templates/login.pt',
@@ -190,12 +190,17 @@ def score_table(request):
     return { 'match_tips': match_tips,
              'navigation': navigation_view(request) }
 
+@view_config(permission='view', route_name='categories', renderer='templates/categories.pt')
+def view_categories(request):
+    return { 'project': PROJECT_TITLE,
+             'categories': Category.get_all(),
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request) }
+
 @view_config(permission='view', route_name='settings', renderer='templates/settings.pt')
 def view_settings(request):
-    return { 'settings': Setting.get_all(),
-             'project': PROJECT_TITLE,
-             'final_deadline': FINAL_DEADLINE,
-             'game_url': GAME_URL,
+    return { 'project': PROJECT_TITLE,
+             'settings': Setting.get_all(),
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
@@ -265,7 +270,7 @@ def logout(request):
 @view_config(permission='view', route_name='view_players', renderer='templates/players.pt')
 def view_players(request):
     url = webhelpers.paginate.PageURL_WebOb(request)
-    page = get_page_param(request)
+    page = get_int_param(request, param='page', default=1)
     players = webhelpers.paginate.Page(Player.ranking(),
                                        page=page,
                                        url=url,
@@ -280,7 +285,7 @@ def view_players(request):
 @view_config(permission='view', route_name='view_group_players', renderer='templates/group_players.pt')
 def view_group_players(request):
     category = request.matchdict['category']
-    page = get_page_param(request)
+    page = get_int_param(request, param='page', default=1)
     url = webhelpers.paginate.PageURL_WebOb(request)
     players = webhelpers.paginate.Page(Player.get_by_unit(category),
                                        page=page,
@@ -425,7 +430,7 @@ def view_match_tips(request):
     match_id = request.matchdict['match']
     match = Match.get_by_id(match_id)
     match_tips = [MatchTip(match, tip) for tip in Tip.get_match_tips(match_id)]
-    page = get_page_param(request)
+    page = get_int_param(request, param='page', default=1)
     url = webhelpers.paginate.PageURL_WebOb(request)
     tips = webhelpers.paginate.Page(match_tips,
                                     page=page,

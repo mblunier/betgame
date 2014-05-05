@@ -130,6 +130,10 @@ class Category(Base):
         self.d_name = name
 
     @classmethod
+    def get_all(cls):
+        return DBSession.query(cls).order_by(cls.d_name)
+
+    @classmethod
     def option_list(cls):
         return [(c.d_alias, c.d_name) for c in DBSession.query(cls).order_by(cls.d_name)]
 

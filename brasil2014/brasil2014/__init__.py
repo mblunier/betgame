@@ -54,6 +54,7 @@ def addroutes(config):
     config.add_route('logout', '/logout')
     config.add_route('register', '/register')
     config.add_route('results', '/results')
+    config.add_route('categories', '/categories')
     config.add_route('scoring', '/scoring')
     config.add_route('score_table', '/scoretable')
     config.add_route('settings', '/settings')
