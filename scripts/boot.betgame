@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# Copyright (c) 2014 by Rolotec AG
+# All rights reserved.
+### BEGIN INIT INFO
+# Provides:       betgame
+# Required-Start: $network $named $all
+# Should-Start:   
+# Required-Stop:  
+# Should-Stop:    
+# Default-Start:  2 3 5
+# Default-Stop:   0 1 6
+# Short-Description: betgame
+# Description:    Start the bet game server
+### END INIT INFO
+
+# User account running the game:
+BETUSER="pi"
+
+case "$1" in
+'stat')
+        su - $BETUSER -c "./stat betgame";
+        ;;
+
+'start')
+        echo "Starting betgame server ..."
+        su - $BETUSER -c "./start betgame";
+        ;;
+
+'stop')
+        echo "Stopping betgame server..."
+        su - $BETUSER -c "./stop betgame";
+        ;;
+
+*)
+        echo "Usage: $0 { start | stop }"
+        exit 1
+esac
+exit 0
