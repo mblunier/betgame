@@ -50,9 +50,9 @@ relative to the root):
 	is required after stage 1 and after every stage 2 match.
 
   /restore
-	Displays a form to specify a table name and a data file with saved
-	table contents. After submitting the form the file is uploaded and
-	its content replaces all items with matching keys.
+	Displays a form to specify a data file with saved table contents.
+	After submitting the form the file is uploaded and its content
+	replaces all entries with matching keys.
 
   /score/{id}/{score1}/{score2}
 	Specifies the score for the match with id {id}. Using -1 for the
