@@ -60,8 +60,8 @@ class Player(Base):
     d_unit = Column(String(10))
     d_points = Column(Integer)
 
-    tips = relationship('Tip', backref='player', cascade="all, delete, delete-orphan")
-    final_tip = relationship('Final', backref='final', cascade="all, delete, delete-orphan")
+    tips = relationship('Tip', backref='player', cascade='all, delete, delete-orphan')
+    final_tip = relationship('Final', backref='final', cascade='all, delete, delete-orphan')
 
     _password = Column('d_password', Unicode(60))
 
@@ -97,7 +97,9 @@ class Player(Base):
 
     @classmethod
     def get_by_unit(cls, unit):
-        return DBSession.query(cls).filter(cls.d_unit == unit, cls.d_alias.notin_(ADMINS)).order_by(cls.d_points.desc())
+        return DBSession.query(cls) \
+                        .filter(cls.d_unit == unit, cls.d_alias.notin_(ADMINS)) \
+                        .order_by(cls.d_points.desc())
 
     @classmethod
     def get_groups(cls):
@@ -106,11 +108,15 @@ class Player(Base):
         """
         return DBSession.query(cls, cls.d_unit, 
                                func.count(cls.d_alias).label('n_players'), 
-                               func.sum(cls.d_points).label('n_points')).filter(cls.d_alias.notin_(ADMINS)).group_by(cls.d_unit)
+                               func.sum(cls.d_points).label('n_points')) \
+                        .filter(cls.d_alias.notin_(ADMINS)) \
+                        .group_by(cls.d_unit)
 
     @classmethod
     def ranking(cls):
-        return DBSession.query(cls).filter(cls.d_alias.notin_(ADMINS)).order_by(cls.d_points.desc(), cls.d_alias)
+        return DBSession.query(cls) \
+                        .filter(cls.d_alias.notin_(ADMINS)) \
+                        .order_by(cls.d_points.desc(), cls.d_alias)
 
 
 class Category(Base):
@@ -180,8 +186,9 @@ class Team(Base):
 
     @classmethod
     def get_by_group(cls, group):
-        return DBSession.query(cls).filter(cls.d_group == group).\
-                                    order_by(cls.d_points.desc(), cls.d_shot.desc())
+        return DBSession.query(cls) \
+                        .filter(cls.d_group == group) \
+                        .order_by(cls.d_points.desc(), cls.d_shot.desc())
 
 
 class TeamGroup:
@@ -220,7 +227,11 @@ class Match(Base):
 
     @classmethod
     def get_upcoming(cls, start, num):
-        return DBSession.query(cls).filter(cls.d_begin > start).order_by(cls.d_begin).limit(num).all()
+        return DBSession.query(cls) \
+                        .filter(cls.d_begin > start) \
+                        .order_by(cls.d_begin) \
+                        .limit(num) \
+                        .all()
 
     @classmethod
     def get_by_id(cls, match_id):
@@ -229,9 +240,9 @@ class Match(Base):
     @classmethod
     def get_by_group(cls, group):
         group_teams = [team.d_id for team in Team.get_by_group(group)]
-        return DBSession.query(cls).filter(cls.d_team1.in_(group_teams)).\
-                                    filter(cls.d_team2.in_(group_teams)).\
-                                    order_by(cls.d_begin)
+        return DBSession.query(cls) \
+                        .filter(cls.d_team1.in_(group_teams), cls.d_team2.in_(group_teams)) \
+                        .order_by(cls.d_begin)
 
     @classmethod
     def get_final(cls):
@@ -246,7 +257,7 @@ class Match(Base):
     @classmethod
     def get_played(cls):
         """ Retrieve the list of played matches. """
-        return DBSession.query(cls).filter(cls.d_score1 != None).filter(cls.d_score2 != None)
+        return DBSession.query(cls).filter(cls.d_score1 != None, cls.d_score2 != None)
 
 
 class Tip(Base):
@@ -269,7 +280,9 @@ class Tip(Base):
 
     @classmethod
     def get_match_tips(cls, match):
-        return DBSession.query(cls).filter(cls.d_match == match).order_by(cls.d_player)
+        return DBSession.query(cls) \
+                        .filter(cls.d_match == match) \
+                        .order_by(cls.d_player)
 
     @classmethod
     def get_player_tips(cls, player):
@@ -277,8 +290,9 @@ class Tip(Base):
 
     @classmethod
     def get_player_tip(cls, player, match):
-        return DBSession.query(cls).filter(cls.d_player == player).\
-                                    filter(cls.d_match == match).first()
+        return DBSession.query(cls) \
+                        .filter(cls.d_player == player, cls.d_match == match) \
+                        .first()
 
 
 class Final(Base):
