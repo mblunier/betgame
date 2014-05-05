@@ -11,7 +11,7 @@ pass=${3:-"None"}
 cookies="$TMPDIR/cookies.txt"
 
 WGET="wget -v"
-DATADIR=`date +"%Y-%m-%d_%H%M"`
+DATADIR=`echo ${site} | tr '.:' '__'`@`date +"%Y-%m-%d_%H%M"`
 [ -d $DATADIR ] || mkdir $DATADIR
 
 wget --save-cookies $cookies --keep-session-cookies --load-cookies $cookies "${site}" \
