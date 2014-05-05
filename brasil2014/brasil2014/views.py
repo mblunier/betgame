@@ -509,7 +509,8 @@ def view_final_tip(request):
     player = request.matchdict['player']
     tip = Final.get_player_tip(player)
     return { 'tip': tip,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 
 # ----- Admin stuff -----
@@ -646,16 +647,23 @@ def db_restore(request):
     form = Form(request)
     if 'form.submitted' in request.POST:
         data = request.POST.get('data')
-        try:
+        #print 'data(initial): %s' % data
+        if data is not None:
+            data = data.file.read()
+            #print 'data(content, %d bytes): %s' % (len(data), data)
             if len(data) > 0:
-                query = load_table(data.file.read(), scoped_session=DBSession)
-                for obj in query:
-                    DBSession.merge(obj)
-                return HTTPFound(location=route_url('home', request))
+                try:
+                    query = load_table(data, scoped_session=DBSession)
+                    for obj in query:
+                        DBSession.merge(obj)
+                    request.session.flash(u'Restored successfully.')
+                    return HTTPFound(location=route_url('home', request))
+                except:
+                    request.session.flash(u'Not a valid backup file.')
             else:
-                request.session.flash(u'Please select a file.')
-        except:
-            request.session.flash(u'Not a valid backup file.')
+                request.session.flash(u'Empty backup file.')
+        else:
+            request.session.flash(u'Please select a file.')
     return { 'form': FormRenderer(form),
              'tables': [('categories', 'Categories'),
                         ('settings', 'Settings'),
