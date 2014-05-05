@@ -1,6 +1,16 @@
+0.9
+===
+- Enabled manipulating player categories.
+- Enable suppressing all navigation with 'nonav' suffix.
+- Made the number of items per page configurable.
+- Exclude admins from player queries.
+- Added system info view.
+- HTML cleanup.
+
+
 0.8
 ===
-- Updated documentation.
+- Updated admin documentation.
 - Enhanced description in forbidden view.
 - Added DB backup/restore.
 - Added forbidden & notfound templates.

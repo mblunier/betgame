@@ -127,6 +127,10 @@ class Category(Base):
     def option_list(cls):
         return [(c.d_alias, c.d_name) for c in DBSession.query(cls).order_by(cls.d_name)]
 
+    @classmethod
+    def get(cls, name):
+        return DBSession.query(cls).filter(cls.d_alias == name).first()
+
 
 class Setting(Base):
     """ Generic global configuration settings. """

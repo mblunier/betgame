@@ -40,6 +40,11 @@ relative to the root):
 	'tips' and 'final'. Their content should be saved as files to be
 	available for restoring.
 
+  /category/{name}/{value}
+	Creates or updates category {name}. When specifying 'DELETE' as {value}
+	the corresponding category is deleted unless there exist players with
+	this category. Any other {value} just updates or creates the category.
+
   /match/{id}/{team1}/{team2}
 	Specifies the team mnemonics for the stage 2 match with id {id}. This
 	is required after stage 1 and after every stage 2 match.
