@@ -1,0 +1,33 @@
+#!/usr/bin/perl -w
+
+$| = 1;
+
+$svc = "$ENV{HOME}/proc/svc";
+
+chdir $svc;
+@task = @ARGV ? @ARGV : <*>;
+
+foreach $task (@task) {
+    next if not -d "$svc/$task";
+    (print(" ($task: already stopped)\n"), next) if not isup($task);
+    print " stopping $task...";
+    `svc -dx $svc/$task`;
+    print waitfor($task) ? " done\n" : " timeout\n";
+}
+
+sub isup {
+    my $task = shift;
+    return (system("svok $svc/$task") eq 0);
+}
+
+sub waitfor {
+    my $task = shift;
+    my $end = time + 180;
+    my $dot = time + 5;
+    while (isup($task)) {
+        return 0 if time > $end;
+        (print("."), $dot = time + 5) if time > $dot;
+        sleep 1;
+    }
+    return 1;
+}

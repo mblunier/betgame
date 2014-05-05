@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd
+cd betgame
+source bin/activate
+exec pserve production.ini >betgame.log 2>&1

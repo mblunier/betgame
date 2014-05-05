@@ -1,0 +1,5 @@
+#!/bin/sh
+
+$HOME/stop $@
+sleep 3
+$HOME/start $@

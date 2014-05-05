@@ -1,0 +1,22 @@
+#!/usr/bin/perl -w
+
+$| = 1;
+
+$svc = "$ENV{HOME}/proc/svc";
+
+chdir $svc;
+@task = @ARGV ? @ARGV : <*>;
+
+foreach $task (@task) {
+    next if not -d "$svc/$task";
+    (print(" ($task: already running)\n"), next) if isup($task);
+    print " starting $task...\n";
+    chdir "$svc/$task";
+    system "supervise $svc/$task &";
+}
+
+
+sub isup {
+    my $task = shift;
+    return (system("svok $svc/$task") eq 0);
+}

@@ -1,0 +1,14 @@
+#!/usr/bin/perl -w
+
+$| = 1;
+
+$svc = "$ENV{HOME}/proc/svc";
+
+chdir $svc;
+@task = @ARGV ? @ARGV : <*>;
+
+foreach $task (@task) {
+    next if not -d "$svc/$task";
+    printf (" %-10s %s", "$task:", `svstat $svc/$task`) if -d "$svc/$task";
+}
+
