@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="app-welcome">
+    <span class="app-name">${project}</span> links.
+  </p>
+  <ul class="align-left">
+    <li><a href="${request.route_url('categories')}">Categories</a></li>
+    <li><a href="${request.route_url('help')}">Help</a></li>
+    <li><a href="${request.route_url('infoscreen')}">InfoScreen</a></li>
+    <li><a href="${request.route_url('db_restore')}">Restore DB Table</a></li>
+    <li><a href="${request.route_url('results')}">Results (JSON)</a></li>
+    <li><a href="${request.route_url('scoring')}">Scoring</a></li>
+    <li><a href="${request.route_url('score_table')}">Scoring Table</a></li>
+    <li><a href="${request.route_url('settings')}">Settings</a></li>
+    <li><a href="${request.route_url('system_info')}">System Info</a></li>
+    <li><a href="${request.route_url('too_late')}">Too Late</a></li>
+    <li><a href="${request.route_url('update_local')}">Update (local)</a></li>
+    <li><a href="${request.route_url('update_remote')}">Update (remote)</a></li>
+  </ul>
+</tal:block>
+
+</html>

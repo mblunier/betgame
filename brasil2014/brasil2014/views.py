@@ -161,6 +161,12 @@ def infoscreen(request):
              'navigation': None,
              'params': request.params }
 
+@view_config(permission='view', route_name='links', renderer='templates/links.pt')
+def view_links(request):
+    return { 'project': PROJECT_TITLE,
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request) }
+
 @view_config(permission='view', route_name='results', renderer='json')
 def results(request):
     """ Generate a list of scores for all played matches and the stage 2 team names. """
