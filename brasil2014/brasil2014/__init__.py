@@ -75,6 +75,7 @@ def addroutes(config):
     config.add_route('view_final_tips', '/final_tips')
     config.add_route('view_final_tip', '/final_tip/{player}')
     config.add_route('view_group_matches', '/group_matches/{group}')
+    config.add_route('view_stage2_matches', '/stage2_matches')
     config.add_route('view_matches', '/matches')
     config.add_route('view_match_tips', '/match_tips/{match}')
     config.add_route('view_upcoming_matches', '/upcoming/{num}')
