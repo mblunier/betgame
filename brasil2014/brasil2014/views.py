@@ -10,6 +10,7 @@ from properties import (
     BET_POINTS,
     FINAL_ID,
     FINAL_DEADLINE,
+    ADMINS,
     GROUP_IDS 
     )
 
@@ -113,8 +114,11 @@ def login_form_view(request):
 
 def navigation_view(request):
     if 'nonav' in request.params: return None
+    categories = Player.get_units()
     return render('templates/navigation.pt',
-                  { 'viewer_username': request.authenticated_userid,
+                  { 'categories': sorted(categories),
+                    'is_admin': request.authenticated_userid in ADMINS,
+                    'viewer_username': request.authenticated_userid,
                     'login_form': login_form_view(request) },
                   request)
 
@@ -379,16 +383,35 @@ def view_upcoming_matches(request):
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
 
-@view_config(permission='view', route_name='view_group_matches', renderer='templates/group_matches.pt', http_cache=0)
+@view_config(permission='view', route_name='view_group_matches', renderer='templates/matches.pt', http_cache=0)
 def view_group_matches(request):
     player = request.authenticated_userid
     group_id = request.matchdict['group']
     matches = Match.get_by_group(group_id).all()
     for match in matches:
+        if match.d_id == FINAL_ID:
+            final_tip = Final.get_player_tip(player)
+            match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
+        else:
+            match.tip = Tip.get_player_tip(player, match.d_id)
+    return { 'now': datetime.now(),
+             'matches': matches,
+             'final_id': FINAL_ID,
+             'final_deadline': FINAL_DEADLINE,
+             'viewer_username': player,
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
+
+@view_config(permission='view', route_name='view_stage2_matches', renderer='templates/matches.pt', http_cache=0)
+def view_stage2_matches(request):
+    player = request.authenticated_userid
+    matches = Match.get_stage2().all()
+    for match in matches:
         match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
-             'group_id': group_id,
              'matches': matches,
+             'final_id': FINAL_ID,
+             'final_deadline': FINAL_DEADLINE,
              'viewer_username': player,
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }

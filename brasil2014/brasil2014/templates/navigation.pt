@@ -1,13 +1,69 @@
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:tal="http://xml.zope.org/namespaces/tal" 
-     id="navigation">
+<div id="menu"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:tal="http://xml.zope.org/namespaces/tal">
   <ul>
-    <li><a href="${request.route_url('home')}">Home</a></li>
-    <li><a href="${request.route_url('view_team_groups')}">Teams</a></li>
-    <li><a href="${request.route_url('view_matches')}">Matches</a></li>
-    <li><a href="${request.route_url('view_players')}">Players</a></li>
-    <li><a href="${request.route_url('view_player_groups')}">Categories</a></li>
-    <li style="margin-left: 80px"><a href="${request.route_url('about')}">About</a></li>
+    <li class="topmenu">
+      <a href="${request.route_url('view_team_groups')}">Teams</a>
+      <ul>
+        <li class="submenu"><a href="${request.route_url('view_group_teams', group='A')}">Group A</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_teams', group='B')}">Group B</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_teams', group='C')}">Group C</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_teams', group='D')}">Group D</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_teams', group='E')}">Group E</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_teams', group='F')}">Group F</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_teams', group='G')}">Group G</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_teams', group='H')}">Group H</a></li>
+      </ul>
+    </li>
+    <li class="topmenu">
+      <a href="${request.route_url('view_matches')}">Matches</a>
+      <ul>
+        <li class="submenu"><a href="${request.route_url('view_upcoming_matches', num=10)}">Upcoming</a></li>
+        <!-- li class="separator">&nbsp;</li -->
+        <li class="submenu"><a href="${request.route_url('view_group_matches', group='A')}">Group A</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_matches', group='B')}">Group B</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_matches', group='C')}">Group C</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_matches', group='D')}">Group D</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_matches', group='E')}">Group E</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_matches', group='F')}">Group F</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_matches', group='G')}">Group G</a></li>
+        <li class="submenu"><a href="${request.route_url('view_group_matches', group='H')}">Group H</a></li>
+        <!-- li class="separator">&nbsp;</li -->
+        <li class="submenu"><a href="${request.route_url('view_stage2_matches')}">Stage 2</a></li>
+      </ul>
+    </li>
+    <li class="topmenu">
+      <a href="#">Ranking</a>
+      <ul>
+        <li class="submenu"><a href="${request.route_url('view_players')}">Individuals</a></li>
+        <li class="submenu"><a href="${request.route_url('view_player_groups')}">Teams</a></li>
+        <!-- li class="separator">&nbsp;</li -->
+        <li tal:repeat="category categories" class="submenu">
+          <a href="${request.route_url('view_group_players', category=category)}">${category}</a>
+	</li>
+      </ul>
+    </li>
+    <li tal:condition="is_admin" class="topmenu">
+      <a href="#">Admin</a>
+      <ul>
+        <li class="submenu"><a href="${request.route_url('update_local')}">Update (local)</a></li>
+        <li class="submenu"><a href="${request.route_url('update_remote')}">Update (remote)</a></li>
+        <li class="submenu"><a href="${request.route_url('db_restore')}">Restore</a></li>
+        <li class="submenu"><a href="${request.route_url('categories')}">Categories</a></li>
+        <li class="submenu"><a href="${request.route_url('settings')}">Settings</a></li>
+        <li class="submenu"><a href="${request.route_url('system_info')}">SysInfo</a></li>
+      </ul>
+    </li>
+    <li class="topmenu" style="margin-left: 80px">
+      <a href="${request.route_url('home')}">Help</a>
+      <ul>
+        <li class="submenu"><a href="${request.route_url('help')}">FAQ</a></li>
+        <li class="submenu"><a href="${request.route_url('scoring')}">Scoring</a></li>
+        <li tal:condition="is_admin" class="submenu"><a href="${request.route_url('links')}">Links</a></li>
+        <!-- li class="separator">&nbsp;</li -->
+        <li class="submenu"><a href="${request.route_url('about')}">About</a></li>
+      </ul>
+    </li>
   </ul>
 </div>
 <div id="user-info" tal:condition="viewer_username">
