@@ -383,7 +383,7 @@ def view_upcoming_matches(request):
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
 
-@view_config(permission='view', route_name='view_group_matches', renderer='templates/matches.pt', http_cache=0)
+@view_config(permission='view', route_name='view_group_matches', renderer='templates/group_matches.pt', http_cache=0)
 def view_group_matches(request):
     player = request.authenticated_userid
     group_id = request.matchdict['group']
@@ -396,6 +396,7 @@ def view_group_matches(request):
             match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
              'matches': matches,
+             'group_id': group_id,
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
              'viewer_username': player,
