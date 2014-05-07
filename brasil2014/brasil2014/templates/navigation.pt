@@ -19,7 +19,7 @@
       <a href="${request.route_url('view_matches')}">Matches</a>
       <ul>
         <li class="submenu"><a href="${request.route_url('view_upcoming_matches', num=10)}">Upcoming</a></li>
-        <li class="submenu separator">&nbsp;</li>
+        <li class="submenu"><a href="#"><hr></a></li>
         <li class="submenu"><a href="${request.route_url('view_group_matches', group='A')}">Group A</a></li>
         <li class="submenu"><a href="${request.route_url('view_group_matches', group='B')}">Group B</a></li>
         <li class="submenu"><a href="${request.route_url('view_group_matches', group='C')}">Group C</a></li>
@@ -28,7 +28,7 @@
         <li class="submenu"><a href="${request.route_url('view_group_matches', group='F')}">Group F</a></li>
         <li class="submenu"><a href="${request.route_url('view_group_matches', group='G')}">Group G</a></li>
         <li class="submenu"><a href="${request.route_url('view_group_matches', group='H')}">Group H</a></li>
-        <li class="submenu separator">&nbsp;</li>
+        <li class="submenu"><a href="#"><hr></a></li>
         <li class="submenu"><a href="${request.route_url('view_stage2_matches')}">Stage 2</a></li>
       </ul>
     </li>
@@ -37,7 +37,7 @@
       <ul>
         <li class="submenu"><a href="${request.route_url('view_players')}">Players</a></li>
         <li class="submenu"><a href="${request.route_url('view_player_groups')}">Teams</a></li>
-        <li class="submenu separator">&nbsp;</li>
+        <li class="submenu"><a href="#"><hr></a></li>
         <li tal:repeat="category categories" class="submenu">
           <a href="${request.route_url('view_group_players', category=category)}">${category}</a>
 	</li>
@@ -49,7 +49,7 @@
         <li class="submenu"><a href="${request.route_url('update_local')}">Update (local)</a></li>
         <li class="submenu"><a href="${request.route_url('update_remote')}">Update (remote)</a></li>
         <li class="submenu"><a href="${request.route_url('db_restore')}">Restore</a></li>
-        <li class="submenu separator">&nbsp;</li>
+        <li class="submenu"><a href="#"><hr></a></li>
         <li class="submenu"><a href="${request.route_url('infoscreen')}">InfoScreen</a></li>
         <li class="submenu"><a href="${request.route_url('categories')}">Categories</a></li>
         <li class="submenu"><a href="${request.route_url('settings')}">Settings</a></li>
