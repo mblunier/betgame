@@ -62,7 +62,7 @@
         <li class="submenu"><a href="${request.route_url('help')}">FAQ</a></li>
         <li class="submenu"><a href="${request.route_url('scoring')}">Scoring</a></li>
         <li class="submenu"><a href="${request.route_url('score_table')}">Scoring Table</a></li>
-        <li class="submenu separator">&nbsp;</li>
+        <li class="submenu"><a href="#"><hr></a></li>
         <li class="submenu"><a href="${request.route_url('about')}">About</a></li>
       </ul>
     </li>
