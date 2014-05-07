@@ -6,7 +6,7 @@
 <tal:block metal:fill-slot="content">
    <table id="match-list">
      <tr>
-        <th colspan="7">Group ${group_id} Matches</th>
+        <th colspan="7">Group ${group_id}</th>
      </tr>
      <tr>
        <th>Date</th>
