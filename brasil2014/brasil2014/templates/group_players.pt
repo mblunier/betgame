@@ -5,7 +5,7 @@
 
 <tal:block metal:fill-slot="content">
   <p class="app-welcome">
-    Ranking for category <span class="highlight-player">${category}</span>
+    Ranking for category <span class="app-name">${category}</span>
   </p>
   <table id="player-list">
   <tr>
