@@ -1,6 +1,7 @@
 0.10
 ====
-- Refactored navigation, using drop-down menus.
+- Use placeholders for login form fields.
+- Refactored navigation using drop-down menus with shadowing.
 - Added view for stage 2 matches.
 - Added '/categories' view.
 
