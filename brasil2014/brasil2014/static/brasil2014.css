@@ -268,10 +268,6 @@ td.flag {
 	width: 1002px;
 }
 
-#navigation {
-	height: 40px;
-}
-
 #message {
         background-color: #f3f781;
         border: #000000 1px solid;
@@ -291,10 +287,7 @@ td.flag {
 #login-form td {
 	text-align: right;
 	margin: 0;
-	padding-top: 0;
-	padding-bottom: 0;
-	padding-left: 5px;
-	padding-right: 5px;
+	padding: 0 5px 0 5px;
 }
 
 #menu {
@@ -314,36 +307,6 @@ td.flag {
 	float: left;
 }
 
-/*
-#menu li {
-	display: inline;
-	padding: 0em 0.7em 0em 0.7em;
-}
-
-#menu li a {
-	color: #3030ff;
-	font-weight: bold;
-	text-decoration: none;
-	//border-bottom: 1px dotted #ffffff;
-	font-size: 1.2em;
-}
-
-#menu li a.active {
-	border-bottom: 4px solid #e0e0ff;
-}
-
-#menu li a:hover {
-	border-bottom: 4px solid #d0d0ff;
-}
-
-#navigation ul {
-	list-style-type: none;
-	list-style-image: none;
-	margin: 0px;
-	padding: 0px;
-}
-*/
-
 .topmenu a {
 	float: left;
 	width: 120px;
@@ -356,13 +319,14 @@ td.flag {
 
 .topmenu a, .submenu a {
 	padding: 1px 5px;
-	border: 1px solid #5882FA;
+	/*border: 1px solid #5882FA;*/
+	border: 1px solid #FFFFFF;
 	border-collapse: collapse;
-	color: #0000F0;
+	/*color: #0000E0;*/
 	font-weight: bold;
 	text-decoration: none;
 	background-color: #CEF6F5;
-	margin: 0;  
+	margin: 0 0 1px 2px;  
 }
 
 .submenu a {
@@ -370,6 +334,13 @@ td.flag {
 	width: 120px;
 	position: relative;
 	clear: both; // special IE6
+}
+
+#menu .separator {
+	border-top: 0;
+	border-right: 0;
+	border-bottom: 1px solid #000000;
+	border-left: 0;
 }
 
 #menu a:hover, .topmenu.on a {
@@ -383,8 +354,7 @@ td.flag {
 }
 
 #user-info {
-	padding-top: 110px;
-	padding-right: 20px;
+	margin: 110px 80px 0 0;
 	float: right;
 }
 

@@ -15,9 +15,7 @@
 <body>
   <div id="top">
     <a class="trnLink" href="http://www.fifa.com/worldcup/index.html"> </a>
-    <div id="navigation">
-      <tal:block tal:replace="structure navigation" />
-    </div>
+    <tal:block tal:replace="structure navigation" />
   </div>
   <div id="middle">
     <div class="middle align-center">
