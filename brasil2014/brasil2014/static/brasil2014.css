@@ -271,11 +271,11 @@ td.flag {
 #message {
         background-color: #f3f781;
         border: #000000 1px solid;
-        margin: 10px 2px 2px 40px;
+        margin: 1i10px 2px 2px 40px;
 	padding: 2px 10px 2px 10px;
         font-weight: bold;
         color: yellow;
-	float: bottom;
+	float: left;
 }
 
 #login-form label {
@@ -322,11 +322,11 @@ td.flag {
 	/*border: 1px solid #5882FA;*/
 	border: 1px solid #FFFFFF;
 	border-collapse: collapse;
-	/*color: #0000E0;*/
 	font-weight: bold;
 	text-decoration: none;
 	background-color: #CEF6F5;
 	margin: 0 0 1px 2px;  
+	box-shadow: 5px 5px 20px 3px white;
 }
 
 .submenu a {
@@ -339,7 +339,7 @@ td.flag {
 #menu .separator {
 	border-top: 0;
 	border-right: 0;
-	border-bottom: 1px solid #000000;
+	border-bottom: 10px solid black;
 	border-left: 0;
 }
 
