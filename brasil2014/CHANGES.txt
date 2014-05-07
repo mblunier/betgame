@@ -1,5 +1,13 @@
+0.10
+====
+- Refactored navigation, using drop-down menus.
+- Added view for stage 2 matches.
+- Added '/categories' view.
+
+
 0.9
 ===
+- Added script for automatic DB backups.
 - Enabled manipulating player categories.
 - Enable suppressing all navigation with 'nonav' suffix.
 - Made the number of items per page configurable.
