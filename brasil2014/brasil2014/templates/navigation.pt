@@ -36,7 +36,7 @@
       <a href="#">Ranking</a>
       <ul>
         <li class="submenu"><a href="${request.route_url('view_players')}">Players</a></li>
-        <li class="submenu"><a href="${request.route_url('view_player_groups')}">Groups</a></li>
+        <li class="submenu"><a href="${request.route_url('view_player_groups')}">Categories</a></li>
         <li class="submenu"><a href="#"><hr></a></li>
         <li tal:repeat="category categories" class="submenu">
           <a href="${request.route_url('view_group_players', category=category)}">${category}</a>
@@ -51,7 +51,6 @@
         <li class="submenu"><a href="${request.route_url('db_restore')}">Restore</a></li>
         <li class="submenu"><a href="#"><hr></a></li>
         <li class="submenu"><a href="${request.route_url('infoscreen')}">InfoScreen</a></li>
-        <li class="submenu"><a href="${request.route_url('categories')}">Categories</a></li>
         <li class="submenu"><a href="${request.route_url('settings')}">Settings</a></li>
         <li class="submenu"><a href="${request.route_url('system_info')}">SysInfo</a></li>
       </ul>
@@ -60,6 +59,7 @@
       <a href="${request.route_url('home')}">Help</a>
       <ul>
         <li class="submenu"><a href="${request.route_url('help')}">FAQ</a></li>
+        <li class="submenu"><a href="${request.route_url('categories')}">Categories</a></li>
         <li class="submenu"><a href="${request.route_url('scoring')}">Scoring</a></li>
         <li class="submenu"><a href="${request.route_url('score_table')}">Scoring Table</a></li>
         <li class="submenu"><a href="#"><hr></a></li>
