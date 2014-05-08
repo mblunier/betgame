@@ -90,12 +90,7 @@ SCORINGS = [{   # [0]
     'twofinalists': 10,
     }]
 
-def sign(num):
-    if num < 0:
-        return -1
-    elif num > 0:
-        return 1
-    return 0
+sign = lambda num: cmp(num, 0)
 
 def get_betpoints(table):
     log.info('===== ...retrieving betpoints from table "%s"', str(table) if table else 'settings')
