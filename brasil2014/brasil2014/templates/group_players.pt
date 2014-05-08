@@ -4,7 +4,7 @@
       metal:use-macro="base">
 
 <tal:block metal:fill-slot="content">
-  <p class="app-welcome">
+  <p class="tabletop">
     Ranking for category <span class="app-name">${category}</span>
   </p>
   <table id="player-list">
@@ -28,7 +28,6 @@
   </tr>
   </table>
   <span tal:condition="not nonav" tal:replace="players.pager('$link_first $link_previous ~3~ $link_next $link_last')" />
-  <p tal:condition="not nonav" class="align-right"><input type="button" onClick="history.go(-1)" value=" Back "></p>
 </tal:block>
 
 </html>

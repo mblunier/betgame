@@ -199,15 +199,15 @@ th, td {
 }
 
 tr th {
-	background-color: #C0000C0;
+	background-color: #beebee;
 }
 
 tr:nth-child(even) {
-	background-color: #CEF6F5;
+	background-color: #e0f8f7;
 }
 
 tr:nth-child(odd) {
-	background-color: #E0F8F7;
+	background-color: #cef6f5;
 }
 
 td.flag {
@@ -218,7 +218,7 @@ td.flag {
 
 .flagsp {
         background: transparent url("/static/flagsp.png") no-repeat scroll;
-        border: 1px solid #CCCCCC;
+        border: 1px solid #cccccc;
         display: inline-block;
         height: 13px;
         overflow: hidden;
@@ -319,12 +319,11 @@ td.flag {
 
 .topmenu a, .submenu a {
 	padding: 1px 5px;
-	/*border: 1px solid #5882FA;*/
-	border: 1px solid #FFFFFF;
+	border: 1px solid #ffffff;
 	border-collapse: collapse;
 	font-weight: bold;
 	text-decoration: none;
-	background-color: #CEF6F5;
+	background-color: #cef6f5;
 	margin: 0 0 1px 2px;  
 	box-shadow: 5px 5px 20px 3px white;
 }
@@ -336,10 +335,12 @@ td.flag {
 	clear: both; // special IE6
 }
 
-#menu .separator {
+.submenu hr {
+	margin: 0;
+	padding: 1px;
 	border-top: 0;
 	border-right: 0;
-	border-bottom: 10px solid black;
+	border-bottom: 1px solid blue;
 	border-left: 0;
 }
 
@@ -372,7 +373,7 @@ td.flag {
 #info-list th {
 	width: auto;
 	margin-bottom: 5px;
-	border-bottom: 2px solid #FFFFFF;
+	border-bottom: 2px solid #ffffff;
 }
 
 #match-list td, #player-list td,
@@ -392,7 +393,7 @@ td.flag {
 }
 
 #total td {
-	border-top: 2px solid #FFFFFF;
+	border-top: 2px solid #ffffff;
 	font-weight: bold;
 }
 
@@ -405,7 +406,7 @@ td.flag {
 #final-bet th {
 	width: auto;
 	margin-bottom: 5px;
-	border-bottom: 2px solid #FFFFFF;
+	border-bottom: 2px solid #ffffff;
 }
 
 #final-bet td {
@@ -423,7 +424,7 @@ td.flag {
 
 #header, #footer {
 	width: 100%;
-	color: #FFFFFF;
+	color: #ffffff;
 	height: 40px;
 	text-align: center;
 	line-height: 40px;
@@ -441,7 +442,7 @@ td.flag {
 #footer {
 	bottom: 0;
 	background: none repeat scroll 0 0 transparent;
-	margin-top: 20px;
+	margin-top: 30px;
 }
 
 .header, .footer {
@@ -459,20 +460,20 @@ td.flag {
 }
 
 #top {
-	background: url("/static/trnHeader.jpg") no-repeat scroll 0 0 #CEF6F5;
-	color: #FFFFFF;
+	background: url("/static/trnHeader.jpg") no-repeat scroll 0 0 #cef6f5;
+	color: #ffffff;
 	height: 150px;
-	border-bottom: 2px solid #FFFFFF;
+	border-bottom: 2px solid #ffffff;
 }
 
 #top-small {
-	color: #FFFFFF;
+	color: #ffffff;
 	height: 60px;
 }
 
 #bottom {
 	color: #222;
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 }
 
 .top, .top-small, .middle, .bottom {
@@ -505,15 +506,21 @@ td.flag {
 	font-weight: bold;
 }
 
+.tabletop {
+	color: #8000ff;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 .highlight-player {
-	border: 1px dotted #e0c61b;
-	background-color: #81f7be;
-	/*font-style: italic;*/
+	border: 1px dotted #7c7e3d;
+	background-color: #f3f781;
 	font-weight: bold;
 }
 
 .bottom {
-	padding-top: 50px;
+	margin-top: 50px;
 }
 
 #left {
@@ -575,7 +582,7 @@ input[type=text], input[type=password] {
 }
 
 input[type=button], input[type=submit] {
-	background-color: #00E0F0;
+	background-color: #f3f781;
 	font-weight:bold;
 }
 

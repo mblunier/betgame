@@ -4,6 +4,9 @@
       metal:use-macro="base">
 
 <tal:block metal:fill-slot="content">
+  <p class="tabletop">
+    ${title}
+  </p>
  <table id="match-list">
    <tr>
      <th>Id</th>

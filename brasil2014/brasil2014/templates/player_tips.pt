@@ -4,7 +4,7 @@
       metal:use-macro="base">
 
 <tal:block metal:fill-slot="content">
-  <p class="app-welcome">
+  <p class="tabletop">
     <span class="app-name">${player.d_alias}'s</span> tips.
   </p>
   <table id="player-tips">

@@ -12,9 +12,9 @@
       <fieldset class="align-center">
         ${form.csrf_token()}
         ${form.select('d_team1', options=teams)}
-        ${form.text('d_score1', size=3)}
+        ${form.text('d_score1', size=3, style='width: 60px')}
          :
-        ${form.text('d_score2', size=3)}
+        ${form.text('d_score2', size=3, style='width: 60px')}
         ${form.select('d_team2', options=teams)}
         ${form.submit('form.submitted', ' OK ', class_='submit')}
         <br />
@@ -25,9 +25,10 @@
       </fieldset>
     ${form.end()}
   </div>
-  <p>
-    Hint: team order is irrelevant to earn points for the final tip (you could even select the same team twice).
-    But the score to calculate the match points is evaluated exactly in the chosen order.
+  <p style="margin-top: 30px">
+    <span class="app-name">Hint</span>: team order is irrelevant to earn points for the
+    final tip (you could even select the same team twice).
+   However, the score to calculate the match points is evaluated exactly in the chosen order.
   </p>
 </tal:block>
 

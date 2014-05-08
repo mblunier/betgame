@@ -12,11 +12,11 @@
   ${form.begin(request.route_url('match_bet', match=match.d_id))}
     <fieldset>
       ${form.csrf_token()}
-      ${form.text('d_score1', size=3)} : ${form.text('d_score2', size=3)}
+      ${form.text('d_score1', size=3, style='width: 60px')} : ${form.text('d_score2', size=3, style='width: 60px')}
+      ${form.submit('form.submitted', ' OK ', class_='submit')}
+      <br />
       ${form.errorlist('d_score1')}
       ${form.errorlist('d_score2')}
-      <br />
-      ${form.submit('form.submitted', ' OK ', class_='submit')}
     </fieldset>
   ${form.end()}
 </tal:block>
