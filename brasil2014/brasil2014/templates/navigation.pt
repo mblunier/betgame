@@ -35,7 +35,7 @@
     <li class="topmenu">
       <a href="#">Ranking</a>
       <ul>
-        <li class="submenu"><a href="${request.route_url('view_players')}">Players</a></li>
+        <li class="submenu"><a href="${request.route_url('view_players')}">Individual</a></li>
         <li class="submenu"><a href="${request.route_url('view_player_groups')}">Categories</a></li>
         <li class="submenu"><a href="#"><hr></a></li>
         <li tal:repeat="category categories" class="submenu">

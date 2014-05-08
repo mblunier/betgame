@@ -14,6 +14,7 @@
       <th>Played</th>
       <th>Goals</th>
       <th>Points</th>
+      <th tal:condition="not nonav">Matches</th>
     </tr>
     <tr tal:repeat="team teams">
       <td class="flag"><span class="flagsp flagsp_${team.d_id}" title="${team.d_name}">&nbsp;</span></td>
@@ -21,6 +22,7 @@
       <td>${team.d_played}</td>
       <td>${team.d_shot} : ${team.d_rcvd}</td>
       <td>${team.d_points}</td>
+      <td tal:condition="not nonav"><a href="${request.route_url('view_group_matches', group=team.d_group)}">View</a></td>
     </tr>
   </table>
 </tal:block>

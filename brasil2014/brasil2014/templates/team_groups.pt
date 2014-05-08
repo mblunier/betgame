@@ -4,11 +4,11 @@
       metal:use-macro="base">
 
 <tal:block metal:fill-slot="content">
-  <table id="group-list" tal:repeat="group groups">
-    <tr>
-      <th tal:condition="not nonav" colspan="6">Group ${group.group_id}</th>
-      <th tal:condition="nonav" colspan="5">Group ${group.group_id}</th>
-    </tr>
+  <div tal:repeat="group groups">
+  <p class="tabletop">
+      Group ${group.group_id}
+  </p>
+  <table id="group-list">
     <tr id="team-list">
       <th>&nbsp;</th>
       <th>&nbsp;</th>
@@ -26,6 +26,7 @@
       <td tal:condition="not nonav"><a href="${request.route_url('view_group_matches', group=group.group_id)}">View</a></td>
     </tr>
   </table>
+  </div>
 </tal:block>
 
 </html>

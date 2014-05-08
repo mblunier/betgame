@@ -4,9 +4,7 @@
       metal:use-macro="base">
 
 <tal:block metal:fill-slot="content">
-  <p class="app-welcome">
-    This is the <span class="app-name">${project}</span>.
-  </p>
+  <h3>This is the <span class="app-name">${project}</span>.</h3>
   <p style="margin-bottom: 30px">
     I don't have what you are looking for!
   </p>

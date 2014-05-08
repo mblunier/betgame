@@ -9,20 +9,20 @@
   </p>
   <div class="align-center">
     ${form.begin(request.route_url('final_bet'))}
-      <fieldset class="align-center">
-        ${form.csrf_token()}
-        ${form.select('d_team1', options=teams)}
-        ${form.text('d_score1', size=3, style='width: 60px')}
-         :
-        ${form.text('d_score2', size=3, style='width: 60px')}
-        ${form.select('d_team2', options=teams)}
-        ${form.submit('form.submitted', ' OK ', class_='submit')}
-        <br />
-        ${form.errorlist('d_team1')}
-        ${form.errorlist('d_score1')}
-        ${form.errorlist('d_score2')}
-        ${form.errorlist('d_team2')}
-      </fieldset>
+    <fieldset class="align-center">
+      ${form.csrf_token()}
+      ${form.select('d_team1', options=teams)}
+      ${form.text('d_score1', size=3, style='width: 60px')}
+       :
+      ${form.text('d_score2', size=3, style='width: 60px')}
+      ${form.select('d_team2', options=teams)}
+      ${form.submit('form.submitted', ' OK ', class_='submit')}
+      <br />
+      ${form.errorlist('d_team1')}
+      ${form.errorlist('d_score1')}
+      ${form.errorlist('d_score2')}
+      ${form.errorlist('d_team2')}
+    </fieldset>
     ${form.end()}
   </div>
   <p style="margin-top: 30px">
