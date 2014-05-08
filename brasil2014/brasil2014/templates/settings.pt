@@ -9,9 +9,9 @@
   </p>
   <table id="info-list">
     <tr>
-      <td>Setting</td>
-      <td>&nbsp;</td>
-      <td>Value</td>
+      <th>Setting</th>
+      <th>&nbsp;</th>
+      <th>Value</th>
     </tr>
     <tr tal:repeat="setting settings">
       <td align="right">${setting.d_name}</td>

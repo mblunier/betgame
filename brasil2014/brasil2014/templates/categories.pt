@@ -9,9 +9,9 @@
   </p>
   <table id="info-list">
     <tr>
-      <th>Mnemonic</td>
-      <th>&nbsp;</td>
-      <th>Name</td>
+      <th>Mnemonic</th>
+      <th>&nbsp;</th>
+      <th>Name</th>
     </tr>
     <tr tal:repeat="category categories">
       <td align="right">${category.d_alias}</td>
