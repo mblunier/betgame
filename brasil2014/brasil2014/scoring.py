@@ -2,12 +2,12 @@ import json
 
 from datetime import datetime
 from properties import (
-    FINAL_DEADLINE, 
-    BET_POINTS 
+    FINAL_DEADLINE
     )
 
 from .models import (
     DBSession,
+    Setting,
     Team,
     Player,
     Final,
@@ -18,6 +18,78 @@ from .models import (
 import logging
 log = logging.getLogger(__name__)
 
+# list of predefined scorings
+SCORINGS = [{   # [0]
+    'exacthit': 12,
+    'outcome': 7,
+    'missed': 0,
+    'sumgoals': 4,
+    'goaldiff': 2,
+    'onescore': 1,
+    'onefinalist': 20,
+    'twofinalists': 50,
+    },
+    {           # [1]
+    'exacthit': 10,
+    'outcome': 5,
+    'missed': 0,
+    'sumgoals': 3,
+    'goaldiff': 2,
+    'onescore': 1,
+    'onefinalist': 20,
+    'twofinalists': 30,
+    },
+    {           # [2]
+    'exacthit': 5,
+    'outcome': 4,
+    'missed': 0,
+    'sumgoals': 3,
+    'goaldiff': 2,
+    'onescore': 1,
+    'onefinalist': 10,
+    'twofinalists': 20,
+    },
+    {           # [3]
+    'exacthit': 10,
+    'outcome': 10,
+    'missed': 5,
+    'sumgoals': 3,
+    'goaldiff': 2,
+    'onescore': 1,
+    'onefinalist': 20,
+    'twofinalists': 50,
+    },
+    {           # [4]
+    'exacthit': 10,
+    'outcome': 5,
+    'missed': 2,
+    'sumgoals': 3,
+    'goaldiff': 2,
+    'onescore': 1,
+    'onefinalist': 10,
+    'twofinalists': 25,
+    },
+    {           # [5]
+    'exacthit': 10,
+    'outcome': 6,
+    'missed': 3,
+    'sumgoals': 3,
+    'goaldiff': 2,
+    'onescore': 1,
+    'onefinalist': 20,
+    'twofinalists': 50,
+    },
+    {           # [6], like [4] but with smaller numbers
+    'exacthit': 5,
+    'outcome': 3,
+    'missed': 1,
+    'sumgoals': 3,
+    'goaldiff': 2,
+    'onescore': 1,
+    'onefinalist': 5,
+    'twofinalists': 10,
+    }]
+
 def sign(num):
     if num < 0:
         return -1
@@ -25,12 +97,28 @@ def sign(num):
         return 1
     return 0
 
+def reload_betpoints(table=None):
+    return {
+            'exacthit': int(Setting.get('scoring_exacthit').d_value),
+            'goaldiff': int(Setting.get('scoring_goaldiff').d_value),
+            'missed': int(Setting.get('scoring_missed').d_value),
+            'onefinalist': int(Setting.get('scoring_onefinalist').d_value),
+            'onescore': int(Setting.get('scoring_onescore').d_value),
+            'outcome': int(Setting.get('scoring_outcome').d_value),
+            'sumgoals': int(Setting.get('scoring_sumgoals').d_value),
+            'twofinalists': int(Setting.get('scoring_twofinalists').d_value)
+           } if table is None else SCORINGS[table]
+
+BET_POINTS = reload_betpoints()
+
+
 class MatchTip:
     """ Associate a match tip with the respective match and calculate the resulting points. """
     def __init__(self, match, tip):
         self.match = match
         self.tip = tip
         self.points = evaluate_match_tip(match, tip)
+
 
 class FinalTip:
     """ Associate a final tip with the respective match and calculate the resulting points. """
@@ -40,7 +128,7 @@ class FinalTip:
         self.points = evaluate_final_tip(final, tip)
 
 
-def score_points_MB(initial, match, tip):
+def scoring_MB(initial, match, tip):
     """ Calculate score points the traditional way. """
     points = 0
     if (tip.d_score1 + tip.d_score2) == (match.d_score1 + match.d_score2):
@@ -53,19 +141,23 @@ def score_points_MB(initial, match, tip):
        points += BET_POINTS['onescore']
     return points
 
-def score_points_NO(initial, match, tip):
+
+def scoring_NO(initial, match, tip):
     """ Calculate score points the new way. """
     diff1 = abs(match.d_score1 - tip.d_score1)
     diff2 = abs(match.d_score2 - tip.d_score2)
     return initial + (match.d_score1 + match.d_score2) - (diff1 + diff2) * BET_POINTS['onescore']
 
-def score_points_NO2(initial, match, tip):
+
+def scoring_NO2(initial, match, tip):
     """ Calculate score points the newer way. """
     diff = abs(sign(match.d_score1 - match.d_score2) + sign(tip.d_score1 - tip.d_score2))
     return initial + diff * BET_POINTS['onescore']
 
+
 # select the scoring function
-score_points = score_points_NO
+scoring = scoring_NO
+
 
 def evaluate_match_tip(match, tip):
     """ Calculate score points for a single match. """
@@ -80,11 +172,12 @@ def evaluate_match_tip(match, tip):
         return 0
 
     if match.d_score1 == tip.d_score1 and match.d_score2 == tip.d_score2:
-        return score_points(BET_POINTS['exacthit'], match, tip)
+        return scoring(BET_POINTS['exacthit'], match, tip)
     elif sign(match.d_score1 - match.d_score2) == sign(tip.d_score1 - tip.d_score2):
-        return score_points(BET_POINTS['outcome'], match, tip)
+        return scoring(BET_POINTS['outcome'], match, tip)
     else:
-        return score_points(BET_POINTS['missed'], match, tip)
+        return scoring(BET_POINTS['missed'], match, tip)
+
 
 def evaluate_final_tip(final, final_tip):
     """ Calculate score points for the final team bet. """
@@ -106,6 +199,7 @@ def evaluate_final_tip(final, final_tip):
     tip = Tip(player=final_tip.d_player, match=final.d_id,
               score1=final_tip.d_score1, score2=final_tip.d_score2)
     return points + evaluate_match_tip(match, tip)
+
 
 def refresh_points():
     """ Update the points for all teams and players at once. """
@@ -219,6 +313,7 @@ def refresh_points():
                            match.d_id, match.d_team1, match.d_team2)
 
     log.info('===== updated all points & scores')
+
 
 def apply_results(data):
     """ Process the output generated by a 'results' view. """
