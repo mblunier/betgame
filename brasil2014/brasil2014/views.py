@@ -58,15 +58,18 @@ from .models import (
     Tip
     )
 
-from scoring import (
-    BET_POINTS,
-    MatchTip,
-    FinalTip,
-    apply_results,
-    reload_betpoints,
-    refresh_points,
-    sign
-    )
+if False:
+    from scoring import (
+        BET_POINTS,
+        MatchTip,
+        FinalTip,
+        apply_results,
+        reload_betpoints,
+        refresh_points,
+        sign
+        )
+import scoring
+
 
 # determine the local IP address to access this game
 remote_server = Setting.get('result_server')
@@ -175,7 +178,7 @@ def results(request):
 def scoring_view(request):
     return { 'project': PROJECT_TITLE,
              'num_matches': DBSession.query(Match).count(),
-             'scoring': BET_POINTS,
+             'scoring': scoring.BET_POINTS,
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='score_table', renderer='templates/score_table.pt')
@@ -184,7 +187,7 @@ def score_table(request):
     matches = [Match(0, datetime.now(), 'team1', 'team2', score1, score2) for (score1, score2) in match_scores]
     tip_scores = [(score1, score2) for score1 in range(0, 6) for score2 in range(0, 6)]
     tips = [Tip('none', 0, score1, score2) for (score1, score2) in tip_scores]
-    match_tips = [MatchTip(match, tip) for match in matches for tip in tips]
+    match_tips = [scoring.MatchTip(match, tip) for match in matches for tip in tips]
     return { 'match_tips': match_tips,
              'navigation': navigation_view(request) }
 
@@ -306,7 +309,7 @@ def view_player_groups(request):
     url = webhelpers.paginate.PageURL_WebOb(request)
     # sort groups descending by the average number of points per player
     groups = webhelpers.paginate.Page(sorted(groups,
-                                             lambda g1,g2: sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True),
+                                             lambda g1,g2: scoring.sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True),
                                       page=page,
                                       url=url,
                                       items_per_page=ITEMS_PER_PAGE)
@@ -335,7 +338,8 @@ def view_group_teams(request):
     teams = Team.get_by_group(group_id)
     return { 'group_id': group_id,
              'teams': teams,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 
 # ----- Match views -----
@@ -405,7 +409,11 @@ def view_stage2_matches(request):
     player = request.authenticated_userid
     matches = Match.get_stage2().all()
     for match in matches:
-        match.tip = Tip.get_player_tip(player, match.d_id)
+        if match.d_id == FINAL_ID:
+            final_tip = Final.get_player_tip(player)
+            match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
+        else:
+            match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
              'title': 'Stage 2 matches',
              'matches': matches,
@@ -457,7 +465,7 @@ def view_tips(request):
 def view_match_tips(request):
     match_id = request.matchdict['match']
     match = Match.get_by_id(match_id)
-    match_tips = [MatchTip(match, tip) for tip in Tip.get_match_tips(match_id)]
+    match_tips = [scoring.MatchTip(match, tip) for tip in Tip.get_match_tips(match_id)]
     page = get_int_param(request, param='page', default=1)
     url = webhelpers.paginate.PageURL_WebOb(request)
     tips = webhelpers.paginate.Page(match_tips,
@@ -477,11 +485,11 @@ def view_player_tips(request):
     tips = []
     for tip in Tip.get_player_tips(player_id):
         match = Match.get_by_id(tip.d_match)
-        tips.append(MatchTip(match, tip))
+        tips.append(scoring.MatchTip(match, tip))
     final = Match.get_final()
     final_tip = Final.get_player_tip(player_id)
     if final and final_tip:
-        tips.append(FinalTip(final, final_tip))
+        tips.append(scoring.FinalTip(final, final_tip))
     return { 'player': player,
              'tips': tips,
              'viewer_username': request.authenticated_userid,
@@ -530,7 +538,7 @@ def final_bet(request):
 @view_config(permission='view', route_name='view_final_tips', renderer='templates/final_tips.pt', http_cache=0)
 def view_final_tips(request):
     final = Match.get_final()
-    tips = [FinalTip(final, tip) for tip in Final.get_all()]
+    tips = [scoring.FinalTip(final, tip) for tip in Final.get_all()]
     return { 'final': final,
              'tips': tips,
              'viewer_username': request.authenticated_userid,
@@ -550,13 +558,13 @@ def view_final_tip(request):
 
 @view_config(permission='admin', route_name='update_local')
 def update_local(request):
-    refresh_points()
+    scoring.refresh_points()
     return HTTPFound(location=route_url('view_players', request))
 
 @view_config(permission='view', route_name='update_remote')
 def update_remote(request):
     try:
-        apply_results(urllib2.urlopen(RESULTPAGE).read())
+        scoring.apply_results(urllib2.urlopen(RESULTPAGE).read())
         return HTTPFound(location=route_url('view_players', request))
     except:
         return HTTPNotFound('Location <%s> is inaccessible.' % RESULTPAGE)
@@ -648,7 +656,7 @@ def update_setting(request):
             DBSession.add(setting)
             request.session.flash(u'Created setting "%(name)s".' % request.matchdict)
         if setting.d_name.startswith('scoring_'):
-            reload_betpoints()
+            scoring.reload_betpoints()
     except:
         request.session.flash(u'Failed to update or create setting "%(name)s".' % request.matchdict)
     return HTTPFound(location=route_url('settings', request))

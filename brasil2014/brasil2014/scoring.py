@@ -97,7 +97,8 @@ def sign(num):
         return 1
     return 0
 
-def reload_betpoints(table=None):
+def get_betpoints(table):
+    log.info('===== ...retrieving betpoints from table "%s"', str(table) if table else 'settings')
     return {
             'exacthit': int(Setting.get('scoring_exacthit').d_value),
             'goaldiff': int(Setting.get('scoring_goaldiff').d_value),
@@ -109,7 +110,13 @@ def reload_betpoints(table=None):
             'twofinalists': int(Setting.get('scoring_twofinalists').d_value)
            } if table is None else SCORINGS[table]
 
-BET_POINTS = reload_betpoints()
+BET_POINTS = None
+
+def reload_betpoints(table=None):
+    global BET_POINTS
+    BET_POINTS = get_betpoints(table)
+
+reload_betpoints()
 
 
 class MatchTip:
