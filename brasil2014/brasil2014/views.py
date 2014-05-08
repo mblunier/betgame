@@ -7,7 +7,6 @@ from datetime import date, datetime
 #TODO: replace the following definitions with values from the Setting table or from the .ini file
 from properties import (
     PROJECT_TITLE,
-    BET_POINTS,
     FINAL_ID,
     FINAL_DEADLINE,
     ADMINS,
@@ -47,7 +46,6 @@ from sqlalchemy.ext.serializer import (
     loads as load_table
     )
 
-
 from .models import (
     DBSession,
     Setting,
@@ -61,10 +59,12 @@ from .models import (
     )
 
 from scoring import (
+    BET_POINTS,
     MatchTip,
     FinalTip,
-    refresh_points,
     apply_results,
+    reload_betpoints,
+    refresh_points,
     sign
     )
 
@@ -82,18 +82,6 @@ try:
 except:
 	pass
 GAME_URL = 'http://%s:%d' % (local_host, local_port)
-
-if BET_POINTS is None or True:
-    BET_POINTS = {
-        'exacthit': int(Setting.get('scoring_exacthit').d_value),
-        'goaldiff': int(Setting.get('scoring_goaldiff').d_value),
-        'missed': int(Setting.get('scoring_missed').d_value),
-        'onefinalist': int(Setting.get('scoring_onefinalist').d_value),
-        'onescore': int(Setting.get('scoring_onescore').d_value),
-        'outcome': int(Setting.get('scoring_outcome').d_value),
-        'sumgoals': int(Setting.get('scoring_sumgoals').d_value),
-        'twofinalists': int(Setting.get('scoring_twofinalists').d_value)
-    }
 
 ITEMS_PER_PAGE = Setting.get('items_per_page')
 ITEMS_PER_PAGE = int(ITEMS_PER_PAGE.d_value) if ITEMS_PER_PAGE else 10
@@ -314,8 +302,14 @@ def view_player_groups(request):
     groups = Player.get_groups().all()
     if not groups:
         return HTTPNotFound('No player groups')
+    page = get_int_param(request, param='page', default=1)
+    url = webhelpers.paginate.PageURL_WebOb(request)
     # sort groups descending by the average number of points per player
-    groups = sorted(groups, lambda g1,g2: sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True)
+    groups = webhelpers.paginate.Page(sorted(groups,
+                                             lambda g1,g2: sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True),
+                                      page=page,
+                                      url=url,
+                                      items_per_page=ITEMS_PER_PAGE)
     return { 'groups': groups,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
@@ -357,6 +351,7 @@ def view_matches(request):
         else:
             match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
+             'title': 'Match schedule',
              'matches': matches,
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
@@ -376,6 +371,7 @@ def view_upcoming_matches(request):
         else:
             match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
+             'title': 'Upcoming matches',
              'matches': matches,
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
@@ -395,6 +391,7 @@ def view_group_matches(request):
         else:
             match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
+             'title': 'Group %s matches' % group_id,
              'matches': matches,
              'group_id': group_id,
              'final_id': FINAL_ID,
@@ -410,6 +407,7 @@ def view_stage2_matches(request):
     for match in matches:
         match.tip = Tip.get_player_tip(player, match.d_id)
     return { 'now': datetime.now(),
+             'title': 'Stage 2 matches',
              'matches': matches,
              'final_id': FINAL_ID,
              'final_deadline': FINAL_DEADLINE,
@@ -649,6 +647,8 @@ def update_setting(request):
             setting = Setting(name, value)
             DBSession.add(setting)
             request.session.flash(u'Created setting "%(name)s".' % request.matchdict)
+        if setting.d_name.startswith('scoring_'):
+            reload_betpoints()
     except:
         request.session.flash(u'Failed to update or create setting "%(name)s".' % request.matchdict)
     return HTTPFound(location=route_url('settings', request))
