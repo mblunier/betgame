@@ -93,17 +93,21 @@ SCORINGS = [{   # [0]
 sign = lambda num: cmp(num, 0)
 
 def get_betpoints(table):
-    log.info('===== ...retrieving betpoints from table "%s"', str(table) if table else 'settings')
-    return {
-            'exacthit': int(Setting.get('scoring_exacthit').d_value),
-            'goaldiff': int(Setting.get('scoring_goaldiff').d_value),
-            'missed': int(Setting.get('scoring_missed').d_value),
-            'onefinalist': int(Setting.get('scoring_onefinalist').d_value),
-            'onescore': int(Setting.get('scoring_onescore').d_value),
-            'outcome': int(Setting.get('scoring_outcome').d_value),
-            'sumgoals': int(Setting.get('scoring_sumgoals').d_value),
-            'twofinalists': int(Setting.get('scoring_twofinalists').d_value)
-           } if table is None else SCORINGS[table]
+    log.info('===== retrieving betpoints from table "%s"...', str(table) if table else 'settings')
+    try:
+        return {
+                'exacthit': int(Setting.get('scoring_exacthit').d_value),
+                'goaldiff': int(Setting.get('scoring_goaldiff').d_value),
+                'missed': int(Setting.get('scoring_missed').d_value),
+                'onefinalist': int(Setting.get('scoring_onefinalist').d_value),
+                'onescore': int(Setting.get('scoring_onescore').d_value),
+                'outcome': int(Setting.get('scoring_outcome').d_value),
+                'sumgoals': int(Setting.get('scoring_sumgoals').d_value),
+                'twofinalists': int(Setting.get('scoring_twofinalists').d_value)
+               } if table is None else SCORINGS[int(table)]
+    except:
+        log.error('===== ...failed, using hard-coded table"')
+        return SCORINGS[6]
 
 BET_POINTS = None
 

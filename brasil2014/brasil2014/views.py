@@ -86,8 +86,11 @@ except:
 	pass
 GAME_URL = 'http://%s:%d' % (local_host, local_port)
 
-ITEMS_PER_PAGE = Setting.get('items_per_page')
-ITEMS_PER_PAGE = int(ITEMS_PER_PAGE.d_value) if ITEMS_PER_PAGE else 10
+try:
+    ITEMS_PER_PAGE = Setting.get('items_per_page')
+    ITEMS_PER_PAGE = int(ITEMS_PER_PAGE.d_value) if ITEMS_PER_PAGE else 10
+except:
+    ITEMS_PER_PAGE = 10
 
 #FIXME Have to restart, if any of the above settings is changed...
 
