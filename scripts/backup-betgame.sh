@@ -3,7 +3,7 @@
 #set -x
 
 TMPDIR="/tmp/betgame"
-[ -d $TMPDIR ] || mkdir $TMPDIR
+[ -d $TMPDIR ] || mkdir -p $TMPDIR
 
 site=${1:-"127.0.0.1:8080"}
 name=${2:-"admin"}
@@ -11,8 +11,8 @@ pass=${3:-"None"}
 cookies="$TMPDIR/cookies.txt"
 
 WGET="wget -v"
-DATADIR=`echo ${site} | tr ':' '_'`@`date +"%Y-%m-%d_%H%M"`
-[ -d $DATADIR ] || mkdir $DATADIR
+DATADIR=$HOME/backup/`echo ${site} | tr ':' '_'`@`date +"%Y-%m-%d_%H%M"`
+[ -d $DATADIR ] || mkdir -p $DATADIR
 
 wget --save-cookies $cookies --keep-session-cookies --load-cookies $cookies "${site}" \
      -O $TMPDIR/login_form
