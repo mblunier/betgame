@@ -1,4 +1,6 @@
 """ Define some application-wide properties.
+
+TODO: move these to a config file.
 """
 
 from datetime import datetime
@@ -14,4 +16,3 @@ FINAL_ID = 64
 
 # deadline for final tips (the beginning of the second stage)
 FINAL_DEADLINE = datetime(2014,6,28, 18,00)
-

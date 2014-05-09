@@ -1,3 +1,20 @@
+0.11
+====
+- Updated maintenance description.
+- Enabled deletion of all settings except the scoring ones.
+- Store downloaded files to $HOME/backup.
+- Updated forbidden & notfound templates.
+- Redefined sign() function.
+- Removed unused styles.
+- Cleaned up page titles.
+- Fixed some unmatched table tags.
+- Unified page layouts.
+- Reload bet points when changing a scoring setting.
+- Enabled reloading of bet points.
+- Fixed message positioning & player highlighting.
+- Fixed separator in help menu.
+
+
 0.10
 ====
 - Use placeholders for login form fields.
