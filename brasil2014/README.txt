@@ -1,4 +1,4 @@
-brasil2014 README
+Brasil2014 README
 ==================
 
 Getting Started
@@ -22,6 +22,12 @@ Getting Started
 
 - Launch the service:
   $ pserve production.ini
+
+  In case the daemontools are available for the target platform there exist a
+  few scripts to start, stop and control the game. Initially copy the file
+  'scripts/run' to the directory $HOME/proc/svc/betgame. Then copy the
+  'start', 'stop', 'stat' and 'restart' scripts to $HOME. Thereafter the game
+  may be controlled by means of ~/(start|stop|stat|restart).
 
 - Open the URL http://<hostname_or_ip>:8080 in your preferred web browser.
 
@@ -59,7 +65,9 @@ relative to the root):
 	scores deletes the score. This is required after every match.
 
   /setting/{name}/{value}
-	Creates or updates a setting (see below).
+	Creates or updates a setting (see below). Settings may be deleted by
+	specifying 'DELETE' as {value}. Settings, whose name starts with
+	'scoring_' cannot be deleted.
 
   /sysinfo
   	Shows information about the server where the game is running.
@@ -123,4 +131,19 @@ keys are recognized:
   scoring_twofinalists (default: 10)
 	Number of points for guessing both finalists.
 
-All stored settings can be viewed via /settings.
+All stored settings can be viewed by admins via the /settings URL.
+
+
+Special views
+-------------
+The following views are not reachable via the links within the game.
+
+  /infoscreen
+	Displays a special view describing the access to the local game
+	instance.
+
+  /results
+	Returns all present match scores and stage 2 teams in JSON format.
+
+When adding '?nonav'  to any of the other views the navigation and all
+embedded hyperlinks are suppressed.
