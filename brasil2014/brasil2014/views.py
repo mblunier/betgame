@@ -595,7 +595,6 @@ def update_category(request):
                     DBSession.delete(category)
                     request.session.flash(u'Deleted category "%(name)s".' % request.matchdict)
             else:
-                category = Category(name, value)
                 request.session.flash(u'Category "%(name)s" does not exist.' % request.matchdict)
         else:
             if category:
@@ -648,15 +647,25 @@ def update_setting(request):
         name = request.matchdict['name']
         value = request.matchdict['value']
         setting = Setting.get(name)
-        if setting:
-            setting.d_value = value
-            request.session.flash(u'Updated setting "%(name)s".' % request.matchdict)
+        if value == 'DELETE':
+            if setting:
+                if setting.d_name.startswith('scoring_'):
+                    request.session.flash(u'Setting "%(name)s" cannot be deleted.' % request.matchdict)
+                else:
+                    DBSession.delete(setting)
+                    request.session.flash(u'Deleted setting "%(name)s".' % request.matchdict)
+            else:
+                request.session.flash(u'Setting "%(name)s" does not exist.' % request.matchdict)
         else:
-            setting = Setting(name, value)
-            DBSession.add(setting)
-            request.session.flash(u'Created setting "%(name)s".' % request.matchdict)
-        if setting.d_name.startswith('scoring_'):
-            scoring.reload_betpoints()
+            if setting:
+                setting.d_value = value
+                request.session.flash(u'Updated setting "%(name)s".' % request.matchdict)
+            else:
+                setting = Setting(name, value)
+                DBSession.add(setting)
+                request.session.flash(u'Created setting "%(name)s".' % request.matchdict)
+            if setting.d_name.startswith('scoring_'):
+                scoring.reload_betpoints()
     except:
         request.session.flash(u'Failed to update or create setting "%(name)s".' % request.matchdict)
     return HTTPFound(location=route_url('settings', request))
