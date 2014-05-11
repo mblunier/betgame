@@ -76,7 +76,7 @@ remote_server = Setting.get('result_server')
 RESULTSERVER = remote_server.d_value if remote_server else 'wm2014.rolotec.ch'
 RESULTPAGE = 'http://%s/results' % RESULTSERVER
 local_host = 'localhost'
-local_port = 8080   #TODO: extract port number from the application settings
+local_port = 8080   #TODO: extract port number from the server settings
 try:
     from socket import create_connection
     s = create_connection((RESULTSERVER, 80))
@@ -107,14 +107,12 @@ def login_form_view(request):
                   request)
 
 def navigation_view(request):
-    if 'nonav' in request.params: return None
-    categories = Player.get_units()
     return render('templates/navigation.pt',
-                  { 'categories': sorted(categories),
+                  { 'categories': sorted(Player.get_units()),
                     'is_admin': request.authenticated_userid in ADMINS,
                     'viewer_username': request.authenticated_userid,
                     'login_form': login_form_view(request) },
-                  request)
+                  request) if 'nonav' not in request.params else None
 
 @forbidden_view_config()
 def forbidden(request):
@@ -347,58 +345,18 @@ def view_group_teams(request):
 
 # ----- Match views -----
 
-@view_config(permission='view', route_name='view_matches', renderer='templates/matches.pt', http_cache=0)
-def view_matches(request):
-    player = request.authenticated_userid
-    matches = Match.get_all()
+def match_view(request, player, matches, title, group_id=None):
     for match in matches:
-        if match.d_id == FINAL_ID:
-            final_tip = Final.get_player_tip(player)
-            match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
+        if player:
+            if match.d_id == FINAL_ID:
+                final_tip = Final.get_player_tip(player)
+                match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
+            else:
+                match.tip = Tip.get_player_tip(player, match.d_id)
         else:
-            match.tip = Tip.get_player_tip(player, match.d_id)
+            match.tip = None
     return { 'now': datetime.now(),
-             'title': 'Match schedule',
-             'matches': matches,
-             'final_id': FINAL_ID,
-             'final_deadline': FINAL_DEADLINE,
-             'viewer_username': player,
-             'navigation': navigation_view(request),
-             'nonav': 'nonav' in request.params }
-
-@view_config(permission='view', route_name='view_upcoming_matches', renderer='templates/matches.pt', http_cache=0)
-def view_upcoming_matches(request):
-    player = request.authenticated_userid
-    num = request.matchdict['num']
-    matches = Match.get_upcoming(date.today(), num)
-    for match in matches:
-        if match.d_id == FINAL_ID:
-            final_tip = Final.get_player_tip(player)
-            match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
-        else:
-            match.tip = Tip.get_player_tip(player, match.d_id)
-    return { 'now': datetime.now(),
-             'title': 'Upcoming matches',
-             'matches': matches,
-             'final_id': FINAL_ID,
-             'final_deadline': FINAL_DEADLINE,
-             'viewer_username': player,
-             'navigation': navigation_view(request),
-             'nonav': 'nonav' in request.params }
-
-@view_config(permission='view', route_name='view_group_matches', renderer='templates/group_matches.pt', http_cache=0)
-def view_group_matches(request):
-    player = request.authenticated_userid
-    group_id = request.matchdict['group']
-    matches = Match.get_by_group(group_id).all()
-    for match in matches:
-        if match.d_id == FINAL_ID:
-            final_tip = Final.get_player_tip(player)
-            match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
-        else:
-            match.tip = Tip.get_player_tip(player, match.d_id)
-    return { 'now': datetime.now(),
-             'title': 'Group %s matches' % group_id,
+             'title': title,
              'matches': matches,
              'group_id': group_id,
              'final_id': FINAL_ID,
@@ -407,24 +365,31 @@ def view_group_matches(request):
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
 
+@view_config(permission='view', route_name='view_matches', renderer='templates/matches.pt', http_cache=0)
+def view_matches(request):
+    player = request.authenticated_userid
+    matches = Match.get_all()
+    return match_view(request, player, matches, 'Match schedule')
+
+@view_config(permission='view', route_name='view_upcoming_matches', renderer='templates/matches.pt', http_cache=0)
+def view_upcoming_matches(request):
+    player = request.authenticated_userid
+    num = request.matchdict['num']
+    matches = Match.get_upcoming(date.today(), num)
+    return match_view(request, player, matches, 'Upcoming matches')
+
+@view_config(permission='view', route_name='view_group_matches', renderer='templates/matches.pt', http_cache=0)
+def view_group_matches(request):
+    player = request.authenticated_userid
+    group_id = request.matchdict['group']
+    matches = Match.get_by_group(group_id).all()
+    return match_view(request, player, matches, 'Group %s matches' % group_id, group_id)
+
 @view_config(permission='view', route_name='view_stage2_matches', renderer='templates/matches.pt', http_cache=0)
 def view_stage2_matches(request):
     player = request.authenticated_userid
     matches = Match.get_stage2().all()
-    for match in matches:
-        if match.d_id == FINAL_ID:
-            final_tip = Final.get_player_tip(player)
-            match.tip = Tip(player, FINAL_ID, final_tip.d_score1, final_tip.d_score2) if final_tip else None
-        else:
-            match.tip = Tip.get_player_tip(player, match.d_id)
-    return { 'now': datetime.now(),
-             'title': 'Stage 2 matches',
-             'matches': matches,
-             'final_id': FINAL_ID,
-             'final_deadline': FINAL_DEADLINE,
-             'viewer_username': player,
-             'navigation': navigation_view(request),
-             'nonav': 'nonav' in request.params }
+    return match_view(request, player, matches, 'Stage 2 matches')
 
 
 # ----- Tip views -----
@@ -756,6 +721,9 @@ def system_info(request):
                 key = 'mem.%s' % info[0].strip() 
                 value = info[1].strip() if len(info) > 1 else '---'
                 sysinfo[key] = value
+    for key,value in request.registry.settings.iteritems():
+        key = 'ini.%s' % key 
+        sysinfo[key] = value
     return { 'sysinfo': sorted(sysinfo.items()),
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
