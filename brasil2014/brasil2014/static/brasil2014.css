@@ -439,7 +439,7 @@ td.flag {
 }
 
 .header, .footer {
-	width: 750px;
+	width: 850px;
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -470,7 +470,7 @@ td.flag {
 }
 
 .top, .top-small, .middle, .bottom {
-	width: 750px;
+	width: 850px;
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -516,17 +516,19 @@ td.flag {
 	margin-top: 50px;
 }
 
+/*
 #left {
-	width: 350px;
+	width: 150px;
 	float: left;
 	padding-right: 25px;
 }
 
 #right {
-	width: 350px;
+	width: 150px;
 	float: right;
 	padding-left: 25px;
 }
+*/
 
 .align-left {
 	text-align: left;
