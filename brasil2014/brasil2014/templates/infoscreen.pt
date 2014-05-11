@@ -22,7 +22,7 @@
     <li>
       For the profitable <a href="${request.route_url('final_bet')}">final bet</a> you also have to select
       the teams that will reach the final.
-      It is due until <strong tal:content="final_deadline.strftime('%d.%m.%Y %H:%M')"></strong>
+      It is due until <strong tal:content="final_deadline.strftime('%a, %d.%m.%Y %H:%M')"></strong>
       (the beginning of stage 2) <strong>and cannot be modified</strong>.
     </li>
   </ul>

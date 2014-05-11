@@ -7,7 +7,7 @@
   <p class="app-welcome">
     Enter your tip for match ${match.d_id}.<br />
     <b>${match.d_team1} : ${match.d_team2}</b><br />
-    <span tal:content="match.d_begin.strftime('%d.%m.%Y %H:%M')">Kickoff</span>
+    <span tal:content="match.d_begin.strftime('%a, %d.%m.%Y %H:%M')">Kickoff</span>
   </p>
   ${form.begin(request.route_url('match_bet', match=match.d_id))}
     <fieldset>

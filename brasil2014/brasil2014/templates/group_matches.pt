@@ -9,13 +9,15 @@
   </p>
   <table id="match-list">
     <tr>
+      <th>Id</th>
       <th>Date</th>
       <th colspan="3">Match</th>
       <th>Result</th>
       <th colspan="2">Tips</th>
     </tr>
     <tr tal:repeat="match matches">
-      <td tal:content="match.d_begin.strftime('%d.%m.%Y %H:%M')">Kickoff</td>
+      <td>${match.d_id}</td>
+      <td tal:content="match.d_begin.strftime('%a, %d.%m.%Y %H:%M')">Kickoff</td>
       <td><span class="flagsp flagsp_${match.d_team1}"> </span>&nbsp;</td>
       <td>${match.d_team1} : ${match.d_team2}</td>
       <td><span class="flagsp flagsp_${match.d_team2}"> </span></td>

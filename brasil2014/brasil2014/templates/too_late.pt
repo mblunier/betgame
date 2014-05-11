@@ -11,7 +11,7 @@
     Match tips can only be entered until the respective match has begun.
   </p>
   <p style=".align-left">
-    The final tip is due before the start of the quarter finals; i.e. <span tal:content="final_deadline.strftime('%d.%m.%Y %H:%M')" />.
+    The final tip is due before the start of the quarter finals; i.e. <span tal:content="final_deadline.strftime('%a, %d.%m.%Y %H:%M')" />.
   </p>
   <p tal:condition="not nonav" class="align-right"><input type="button" onClick="history.back()" value=" Back "></p>
 </tal:block>

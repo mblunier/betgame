@@ -11,7 +11,7 @@
   <p>
     <b>${final.d_team1} : ${final.d_team2}</b><br />
     <span tal:condition="final.d_score1 is None or final.d_score2 is None">
-      <span tal:content="final.d_begin.strftime('%d.%m.%Y %H:%M')">Kickoff</span>
+      <span tal:content="final.d_begin.strftime('%a, %d.%m.%Y %H:%M')">Kickoff</span>
     </span>
     <span tal:condition="final.d_score1 is not None and final.d_score2 is not None">
       <b>${final.d_score1} : ${final.d_score2}</b>
