@@ -9,13 +9,13 @@
     <dt>How do I register?</dt>
     <dd>To register you need a unique alias.
         The password prevents, that somebody may enter tips in your name, but don't use a precious password.
-        <span class="app-name">Make sure to remember your password since a forgotten password cannot be
-        restored and setting a new one is currently not possible...</span>
+        <strong>Make sure to remember your password since a forgotten password cannot be
+        restored and setting a new one is currently not possible...</strong>
         Entering a mail address is mandatory, but I promise it won't be abused beyond usual spamming.
         For statistical purposes each player may select its organizational unit/category.
         </dd>
     <dt>I can not register myself.</dt>
-    <dd>Do you see an <span class="error">error</span> message? Follow it.
+    <dd>Do you see an <strong>error</strong> message? Follow it.
         No message? Follow it anyway.
         </dd>
     <dt>I can not log in.</dt>
@@ -28,8 +28,8 @@
         Resistance is futile, you have been assimilated.
 	</dd>
     <dt>Something seems not to work correctly.</dt>
-    <dd>First, <a href="http://jargonwiki.com/wiki/RTFM">do this</a>, then assert, that the reason is not
-        <a href="http://jargonwiki.com/wiki/PEBKAC">this kind</a> of problem.
+    <dd>First, you should as always <a href="http://www.catb.org/jargon/html/R/RTFM.html">do this</a>.
+        Then assert, that the reason is not <a href="http://www.catb.org/jargon/html/P/PEBKAC.html">this kind</a> of problem.
         Despite the utmost care and although only the <a href="http://www.vim.org/">most advanced technology</a> was
 	applied for the development of this game - not to speak about the ridiculous consumption of resources - there
 	remains an extremely tiny chance of errors.
