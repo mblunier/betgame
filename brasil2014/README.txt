@@ -4,24 +4,29 @@ Brasil2014 README
 Getting Started
 ---------------
 
-- Follow the steps to setup a virtual Python environment as described
-  in 'DEVELOP.txt'.
+- Setup and activate a virtual Python environment (do this as a normal user!):
+	$ mkdir betgame
+	$ virtualenv --no-site-packages betgame
+	$ cd betgame
+	$ source bin/activate
 
 - Get a copy of the distributed game 'brasil2014-x.y.tar.gz'.
 
 - Install the game (this step must be repeated for every new release):
-  (betgame)$ easy_install path/to/brasil2014-x.y.tar.gz
+	(betgame)$ easy_install path/to/brasil2014-x.y.tar.gz
 
-- Edit the categories in '~/betgame/lib/python2.7/site-packages/brasil2014-x.y-py2.7.egg/brasil2014/scripts/initialize_db.py'.
+- Edit the categories in '~/betgame/lib/python2.7/site-packages/\
+    brasil2014-x.y-py2.7.egg/brasil2014/scripts/initialize_db.py'.
+  Categories may also be adapted later by the administrator (see below).
 
 - Extract the production.ini file from the archive and adapt it as desired
   (as port 80 is reserved for root the default port is 8080).
 
 - Initialize database content:
-  $ initialize_brasil2014_db production.ini
+	(betgame)$ initialize_brasil2014_db production.ini
 
 - Launch the service:
-  $ pserve production.ini
+	(betgame)$ pserve production.ini
 
   In case the daemontools are available for the target platform there exist a
   few scripts to start, stop and control the game. Initially copy the file
@@ -29,22 +34,32 @@ Getting Started
   'start', 'stop', 'stat' and 'restart' scripts to $HOME. Thereafter the game
   may be controlled by means of ~/(start|stop|stat|restart).
 
-- Open the URL http://<hostname_or_ip>:8080 in your preferred web browser.
+  The command to launch the service is then as follows:
+	(betgame)$ ~/start betgame
+
+- Open the URL http://<hostname_or_ip>:8080 (or whatever port number you
+  have chosen) in your preferred web browser.
 
 
 
 Administration
 --------------
 Some pages are restricted to the administrator(s) maintaining a betgame
-instance. Once everything is initialized most of the required steps can
-be automated. This chapter describes the available functions (all URLs
-relative to the root):
+instance. The "list" of administrator aliases is currently hard-coded in
+'properties.py'.
+Once everything is initialized most of the required steps can be automated.
+This chapter describes the available functions (all URLs relative to the root):
 
   /backup/{table}
 	Dumps the binary content of the indicated table. Available table
 	names are: 'categories', 'settings', 'players', 'matches', 'teams',
 	'tips' and 'final'. Their content should be saved as files to be
 	available for restoring.
+
+	The script 'backup-betgame.sh' is available to automate the backup of
+	all relevant tables from a betgame instance. By default the data is
+	retrieved from localhost:8080 but a different server (hostname or IP
+	plus port number) may be specified.
 
   /category/{name}/{value}
 	Creates or updates category {name}. When specifying 'DELETE' as {value}
@@ -67,7 +82,7 @@ relative to the root):
   /setting/{name}/{value}
 	Creates or updates a setting (see below). Settings may be deleted by
 	specifying 'DELETE' as {value}. Settings, whose name starts with
-	'scoring_' cannot be deleted.
+	'scoring_' cannot be deleted, however.
 
   /sysinfo
   	Shows information about the server where the game is running.
@@ -131,7 +146,8 @@ keys are recognized:
   scoring_twofinalists (default: 10)
 	Number of points for guessing both finalists.
 
-All stored settings can be viewed by admins via the /settings URL.
+Admins may view all stored settings via the /settings URL and modified
+via /setting/<name>/<value>.
 
 
 Special views
@@ -145,5 +161,5 @@ The following views are not reachable via the links within the game.
   /results
 	Returns all present match scores and stage 2 teams in JSON format.
 
-When adding '?nonav'  to any of the other views the navigation and all
-embedded hyperlinks are suppressed.
+When adding '?nonav'  to any of the views the navigation and all embedded
+hyperlinks are suppressed.
