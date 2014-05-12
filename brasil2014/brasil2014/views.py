@@ -574,7 +574,7 @@ def update_category(request):
                 request.session.flash(u'Created category "%(name)s".' % request.matchdict)
     except:
         request.session.flash(u'Failed to update or create category "%(name)s".' % request.matchdict)
-    return HTTPFound(location=route_url('home', request))
+    return HTTPFound(location=route_url('categories', request))
 
 @view_config(permission='admin', route_name='update_match')
 def update_match(request):
@@ -591,7 +591,7 @@ def update_match(request):
         return HTTPFound(location=route_url('view_matches', request))
     except:
         request.session.flash(u'Updating match teams failed.')
-        return HTTPFound(location=route_url('home', request))
+        return HTTPFound(location=route_url('view_matches', request))
 
 @view_config(permission='admin', route_name='update_score')
 def update_score(request):
@@ -607,7 +607,7 @@ def update_score(request):
         return HTTPFound(location=route_url('view_matches', request))
     except:
         request.session.flash(u'Updating score and points failed.')
-        return HTTPFound(location=route_url('home', request))
+        return HTTPFound(location=route_url('view_matches', request))
 
 @view_config(permission='admin', route_name='update_setting')
 def update_setting(request):
@@ -657,7 +657,7 @@ def db_backup(request):
         data = dump_table(DBSession.query(Final).all())
     else:
         return HTTPNotFound('Unknown table: %(table)s' % request.matchdict)
-    response = Response(headers={'mime-type': 'application/octet-stream'}, body=data)
+    response = Response(headers={ 'mime-type': 'application/octet-stream' }, body=data)
     response.content_length = len(data)
     response.content_disposition = 'attachment;filename="%(table)s.dat"' % request.matchdict
     return response
@@ -722,8 +722,7 @@ def system_info(request):
                 value = info[1].strip() if len(info) > 1 else '---'
                 sysinfo[key] = value
     for key,value in request.registry.settings.iteritems():
-        key = 'ini.%s' % key 
-        sysinfo[key] = value
+        sysinfo['ini.%s' % key] = value
     return { 'sysinfo': sorted(sysinfo.items()),
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
