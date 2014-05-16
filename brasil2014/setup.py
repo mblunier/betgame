@@ -24,7 +24,7 @@ requires = [
     ]
 
 setup(name='brasil2014',
-      version='0.11',
+      version='0.12',
       description='brasil2014',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -34,7 +34,7 @@ setup(name='brasil2014',
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ],
       author='Markus Blunier',
-      author_email='mb@rolotec.ch',
+      author_email='mblunier@gmx.ch',
       url='http://wm2014.rolotec.ch',
       keywords='web wsgi bfg pylons pyramid',
       packages=find_packages(),

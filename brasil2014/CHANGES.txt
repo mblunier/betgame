@@ -1,5 +1,12 @@
 0.12
 ====
+- Added ranking table by points.
+- Show details in NotFound view.
+- Enabled alphabetical team list.
+- Increased number of pagination links from 3 to 5.
+- Changed redirect location for match & score updates.
+- Fixed links to external jargon file.
+- Extended documentation.
 - Enlarged middle layout.
 - Prepend all dates with weekday.
 - Consolidated match views.
