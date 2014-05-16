@@ -37,7 +37,7 @@
     <td>${bet.points}</td>
   </tr>
   </table>
-  <span tal:replace="tips.pager('$link_first $link_previous ~3~ $link_next $link_last')" />
+  <span tal:replace="tips.pager('$link_first $link_previous ~5~ $link_next $link_last')" />
   <p tal:condition="not nonav" class="align-right"><input type="button" onClick="history.go(-2)" value=" Back "></p>
 </tal:block>
 
