@@ -100,6 +100,11 @@ class Player(Base):
                         .first()
 
     @classmethod
+    def get_by_rank(cls, points):
+        return DBSession.query(cls) \
+                        .filter(cls.d_points == points, cls.d_alias.notin_(ADMINS))
+
+    @classmethod
     def get_by_unit(cls, unit):
         return DBSession.query(cls) \
                         .filter(cls.d_unit == unit, cls.d_alias.notin_(ADMINS)) \
@@ -118,13 +123,24 @@ class Player(Base):
                                func.count(cls.d_alias).label('n_players'), 
                                func.sum(cls.d_points).label('n_points')) \
                         .filter(cls.d_alias.notin_(ADMINS)) \
-                        .group_by(cls.d_unit)
+                        .group_by(cls.d_unit).all()
 
     @classmethod
     def ranking(cls):
         return DBSession.query(cls) \
                         .filter(cls.d_alias.notin_(ADMINS)) \
                         .order_by(cls.d_points.desc(), cls.d_alias)
+
+
+class Rank(object):
+    """ Count the numbers of players having the same number of points. """
+    def __init__(self, position, points):
+        self.position = position
+        self.points = points
+        self.n_players = 0
+
+    def add_player(self):
+        self.n_players += 1
 
 
 class Category(Base):

@@ -50,6 +50,7 @@ from .models import (
     DBSession,
     Setting,
     Player,
+    Rank,
     Category,
     Team,
     TeamGroup,
@@ -58,16 +59,6 @@ from .models import (
     Tip
     )
 
-if False:
-    from scoring import (
-        BET_POINTS,
-        MatchTip,
-        FinalTip,
-        apply_results,
-        reload_betpoints,
-        refresh_points,
-        sign
-        )
 import scoring
 
 
@@ -302,6 +293,23 @@ def view_group_players(request):
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
 
+@view_config(permission='view', route_name='view_rank_players', renderer='templates/rank_players.pt')
+def view_rank_players(request):
+    points = request.matchdict['points']
+    page = get_int_param(request, param='page', default=1)
+    url = webhelpers.paginate.PageURL_WebOb(request)
+    players = webhelpers.paginate.Page(Player.get_by_rank(points),
+                                       page=page,
+                                       url=url,
+                                       items_per_page=ITEMS_PER_PAGE)
+    if not players:
+       raise HTTPNotFound('no players with %s points' % points)
+    return { 'points': points,
+             'players': players,
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
+
 @view_config(permission='view', route_name='view_player_groups', renderer='templates/player_groups.pt')
 def view_player_groups(request):
     groups = Player.get_groups()
@@ -316,6 +324,33 @@ def view_player_groups(request):
                                       url=url,
                                       items_per_page=ITEMS_PER_PAGE)
     return { 'groups': groups,
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
+
+@view_config(permission='view', route_name='view_ranking', renderer='templates/ranking.pt')
+def view_ranking(request):
+    url = webhelpers.paginate.PageURL_WebOb(request)
+    page = get_int_param(request, param='page', default=1)
+    ranks = []
+    rank = None
+    player_points = None
+    for player in Player.ranking():
+        if rank is None or player.d_points != rank.points:
+            rank = Rank(rank.position + 1 if rank else 1, player.d_points)
+            ranks.append(rank)
+        rank.add_player()
+        # remember the current user's points as reference to the ranking
+        if request.authenticated_userid == player.d_alias:
+            player_points = player.d_points
+    ranks = webhelpers.paginate.Page(ranks,
+                                     page=page,
+                                     url=url,
+                                     items_per_page=ITEMS_PER_PAGE)
+    if not ranks:
+        raise HTTPNotFound('no ranking yet')
+    return { 'ranks': ranks,
+             'player_points': player_points,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }

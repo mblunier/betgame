@@ -355,7 +355,7 @@ td.flag {
 #match-list, #player-list,
 #group-list, #team-list,
 #tip-list, #player-tips,
-#info-list {
+#info-list, #rank-list {
 	width: 100%;
 	margin-bottom: 20px;
 }
@@ -363,7 +363,7 @@ td.flag {
 #match-list th, #player-list th,
 #group-list th, #team-list th,
 #tip-list th, #player-tips th,
-#info-list th {
+#info-list th, #rank-list th {
 	width: auto;
 	margin-bottom: 5px;
 	border-bottom: 2px solid #ffffff;
@@ -372,7 +372,7 @@ td.flag {
 #match-list td, #player-list td,
 #group-list td, #team-list td, 
 #tip-list td, #player-tips td,
-#info-list td {
+#info-list td, #rank-list td {
 	width: auto;
 	margin: 0;
 	padding-top: 0;

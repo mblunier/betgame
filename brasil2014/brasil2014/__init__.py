@@ -84,6 +84,8 @@ def addroutes(config):
     config.add_route('view_group_teams', '/group_teams/{group}')
     config.add_route('view_player_groups', '/player_groups')
     config.add_route('view_player_tips', '/player_tips/{player}')
+    config.add_route('view_ranking', '/ranking')
+    config.add_route('view_rank_players', '/rank/{points}')
     config.add_route('view_team_groups', '/team_groups')
     config.add_route('view_teams', '/teams')
     config.add_route('view_tips', '/tips')

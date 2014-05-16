@@ -35,7 +35,7 @@
       </ul>
     </li>
     <li class="topmenu">
-      <a href="#">Ranking</a>
+      <a href="${request.route_url('view_ranking')}">Ranking</a>
       <ul>
         <li class="submenu"><a href="${request.route_url('view_players')}">Individual</a></li>
         <li class="submenu"><a href="${request.route_url('view_player_groups')}">Categories</a></li>

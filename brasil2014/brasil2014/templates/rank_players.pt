@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="tabletop">
+    Players having ${points} points
+  </p>
+  <table id="player-list">
+  <tr>
+    <th>Player</th>
+    <th tal:condition="not nonav">Tips</th>
+  </tr>
+  <tr tal:repeat="player players">
+    <!-- ${player.d_name} -->
+    <td tal:condition="viewer_username == player.d_alias" class="highlight-player">
+      <a href="mailto:${player.d_mail}">${player.d_alias}</a>
+    </td>
+    <td tal:condition="viewer_username != player.d_alias">
+      <a href="mailto:${player.d_mail}">${player.d_alias}</a>
+    </td>
+    <td tal:condition="not nonav"><a href="${request.route_url('view_player_tips', player=player.d_alias)}"> View </a></td>
+  </tr>
+  </table>
+  <span tal:condition="not nonav" tal:replace="players.pager('$link_first $link_previous ~5~ $link_next $link_last')" />
+</tal:block>
+
+</html>
