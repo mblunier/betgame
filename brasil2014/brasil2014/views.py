@@ -125,6 +125,7 @@ def forbidden(request):
 def notfound(request):
     return Response(body=render('templates/notfound.pt',
                                 { 'project': PROJECT_TITLE,
+                                  'detail': request.exception.detail if request.exception else "no details",
                                   'navigation': navigation_view(request) },
                                 request),
                     status='404 Not Found');
@@ -277,8 +278,8 @@ def view_players(request):
                                        page=page,
                                        url=url,
                                        items_per_page=ITEMS_PER_PAGE)
-    #if not players:
-    #    return HTTPNotFound('No players')
+    if not players:
+        raise HTTPNotFound('no players yet')
     return { 'players': players,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),
@@ -293,8 +294,8 @@ def view_group_players(request):
                                        page=page,
                                        url=url,
                                        items_per_page=ITEMS_PER_PAGE)
-    #if not players:
-    #   return HTTPNotFound('No players in this category')
+    if not players:
+       raise HTTPNotFound('no players in category %s' % category)
     return { 'category': category,
              'players': players,
              'viewer_username': request.authenticated_userid,
@@ -303,12 +304,12 @@ def view_group_players(request):
 
 @view_config(permission='view', route_name='view_player_groups', renderer='templates/player_groups.pt')
 def view_player_groups(request):
-    groups = Player.get_groups().all()
+    groups = Player.get_groups()
     if not groups:
-        return HTTPNotFound('No player groups')
+        raise HTTPNotFound('no player groups yet')
     page = get_int_param(request, param='page', default=1)
     url = webhelpers.paginate.PageURL_WebOb(request)
-    # sort groups descending by the average number of points per player
+    # sort groups by descending average number of points
     groups = webhelpers.paginate.Page(sorted(groups,
                                              lambda g1,g2: scoring.sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True),
                                       page=page,
@@ -316,29 +317,34 @@ def view_player_groups(request):
                                       items_per_page=ITEMS_PER_PAGE)
     return { 'groups': groups,
              'viewer_username': request.authenticated_userid,
-             'navigation': navigation_view(request) }
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
 
 
 # ----- Team/Group views -----
 
 @view_config(permission='view', route_name='view_teams', renderer='templates/teams.pt')
 def view_teams(request):
+    """ @obsolete """
     return { 'teams': Team.get_all(),
              'navigation': navigation_view(request) }
 
 @view_config(permission='view', route_name='view_team_groups', renderer='templates/team_groups.pt')
 def view_team_groups(request):
+    """ Show all teams of all groups. """
     groups = [TeamGroup(group_id, Team.get_by_group(group_id)) for group_id in GROUP_IDS]
     return { 'groups': groups,
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
 
-@view_config(permission='view', route_name='view_group_teams', renderer='templates/group_teams.pt')
+@view_config(permission='view', route_name='view_group_teams', renderer='templates/team_groups.pt')
 def view_group_teams(request):
+    """ Show the teams of a single group. """
     group_id = request.matchdict['group']
-    teams = Team.get_by_group(group_id)
-    return { 'group_id': group_id,
-             'teams': teams,
+    if group_id not in GROUP_IDS:
+        raise HTTPNotFound('invalid group id: %s' % group_id)
+    groups = [TeamGroup(group_id, Team.get_by_group(group_id))]
+    return { 'groups': groups,
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
 
@@ -535,7 +541,7 @@ def update_remote(request):
         scoring.apply_results(urllib2.urlopen(RESULTPAGE).read())
         return HTTPFound(location=route_url('view_players', request))
     except:
-        return HTTPNotFound('Location <%s> is inaccessible.' % RESULTPAGE)
+        raise HTTPNotFound('location <%s> is inaccessible.' % RESULTPAGE)
 
 @view_config(permission='admin', route_name='unregister')
 def unregister(request):
@@ -656,7 +662,7 @@ def db_backup(request):
     elif table == 'final':
         data = dump_table(DBSession.query(Final).all())
     else:
-        return HTTPNotFound('Unknown table: %(table)s' % request.matchdict)
+        raise HTTPNotFound('unknown table: %(table)s' % request.matchdict)
     response = Response(headers={ 'mime-type': 'application/octet-stream' }, body=data)
     response.content_length = len(data)
     response.content_disposition = 'attachment;filename="%(table)s.dat"' % request.matchdict
