@@ -4,6 +4,9 @@
       metal:use-macro="base">
 
 <tal:block metal:fill-slot="content">
+  <p class="tabletop">
+    Alphabetical team list
+  </p>
   <table id="team-list">
   <tr>
     <th>&nbsp;</th>
@@ -11,6 +14,7 @@
     <th>Group</th>
     <th>Played</th>
     <th>Goals</th>
+    <th>+/-</th>
     <th>Points</th>
   </tr>
   <tr tal:repeat="team teams">
@@ -19,6 +23,7 @@
     <td>${team.d_group}</td>
     <td>${team.d_played}</td>
     <td>${team.d_shot} : ${team.d_rcvd}</td>
+    <td><span tal:content="team.d_shot - team.d_rcvd" /></td>
     <td>${team.d_points}</td>
   </tr>
   </table>

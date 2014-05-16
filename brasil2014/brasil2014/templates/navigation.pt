@@ -5,6 +5,8 @@
     <li class="topmenu">
       <a href="${request.route_url('view_team_groups')}">Teams</a>
       <ul>
+        <li class="submenu"><a href="${request.route_url('view_teams')}">Alphabetical</a></li>
+        <li class="submenu"><a href="#"><hr></a></li>
         <li class="submenu"><a href="${request.route_url('view_group_teams', group='A')}">Group A</a></li>
         <li class="submenu"><a href="${request.route_url('view_group_teams', group='B')}">Group B</a></li>
         <li class="submenu"><a href="${request.route_url('view_group_teams', group='C')}">Group C</a></li>
