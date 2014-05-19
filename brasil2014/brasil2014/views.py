@@ -333,7 +333,8 @@ def view_ranking(request):
     url = webhelpers.paginate.PageURL_WebOb(request)
     page = get_int_param(request, param='page', default=1)
     ranks = Rank.get_all()
-    player_rank = Rank.get_position(player.d_points)
+    player = Player.get_by_username(request.authenticated_userid)
+    player_rank = Rank.get_position(player.d_points) if player else None
     ranks = webhelpers.paginate.Page(ranks,
                                      page=page,
                                      url=url,
@@ -341,7 +342,7 @@ def view_ranking(request):
     if not ranks:
         raise HTTPNotFound('no ranking yet')
     return { 'ranks': ranks,
-             'player_rank': player_rank.d_rank if player_rank else None,
+             'player_rank': player_rank.d_position if player_rank else None,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
