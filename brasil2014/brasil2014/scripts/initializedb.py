@@ -184,7 +184,7 @@ def main(argv=sys.argv):
     with transaction.manager:
         DBSession.add(Setting(name="result_server",        value="wm2014.rolotec.ch"))
         DBSession.add(Setting(name="admin_alias",          value="admin"))
-        DBSession.add(Setting(name="admin_mail",           value="mb@rolotec.ch"))
+        DBSession.add(Setting(name="admin_mail",           value="mblunier@gmx.ch"))
         DBSession.add(Setting(name="scoring_exacthit",     value="5"))
         DBSession.add(Setting(name="scoring_outcome",      value="3"))
         DBSession.add(Setting(name="scoring_missed",       value="1"))
