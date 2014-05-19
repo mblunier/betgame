@@ -94,6 +94,11 @@ class Player(Base):
                         .first() is not None
 
     @classmethod
+    def get_all(cls):
+        return DBSession.query(cls) \
+                        .filter(cls.d_alias.notin_(ADMINS)).all()
+
+    @classmethod
     def get_by_username(cls, username):
         return DBSession.query(cls) \
                         .filter(cls.d_alias == username) \
@@ -132,16 +137,30 @@ class Player(Base):
                         .order_by(cls.d_points.desc(), cls.d_alias)
 
 
-class Rank(object):
+class Rank(Base):
     """ Count the numbers of players having the same number of points. """
+    __tablename__ = 't_rank'
+    d_position = Column(Integer, primary_key=True)
+    d_points = Column(Integer)
+    d_players = Column(Integer)
+
     def __init__(self, position, points):
-        self.position = position
-        self.points = points
-        self.n_players = 0
+        self.d_position = position
+        self.d_points = points
+        self.d_players = 0
 
     def add_player(self):
-        self.n_players += 1
+        self.d_players += 1
 
+    @classmethod
+    def get_all(cls):
+        return DBSession.query(cls) \
+                        .order_by(cls.d_position)
+
+    @classmethod
+    def get_position(cls, points):
+        return DBSession.query(cls) \
+                        .filter(cls.d_points == points).first()
 
 class Category(Base):
     """ Player categories (e.g. organizational unit). """

@@ -15,11 +15,11 @@
     <th tal:condition="not nonav">&nbsp;</th>
   </tr>
   <tr tal:repeat="rank ranks">
-    <td>${rank.position}</td>
-    <td>${rank.points}</td>
-    <td tal:condition="rank.points == player_points" class="highlight-player">${rank.n_players}</td>
-    <td tal:condition="rank.points != player_points">${rank.n_players}</td>
-    <td tal:condition="not nonav"><a href="${request.route_url('view_rank_players', points=rank.points)}"> View </a></td>
+    <td>${rank.d_position}</td>
+    <td>${rank.d_points}</td>
+    <td tal:condition="rank.d_position == player_rank" class="highlight-player">${rank.d_players}</td>
+    <td tal:condition="rank.d_position != player_rank">${rank.d_players}</td>
+    <td tal:condition="not nonav"><a href="${request.route_url('view_rank_players', points=rank.d_points)}"> View </a></td>
   </tr>
   </table>
   <span tal:condition="not nonav" tal:replace="ranks.pager('$link_first $link_previous ~5~ $link_next $link_last')" />

@@ -332,17 +332,8 @@ def view_player_groups(request):
 def view_ranking(request):
     url = webhelpers.paginate.PageURL_WebOb(request)
     page = get_int_param(request, param='page', default=1)
-    ranks = []
-    rank = None
-    player_points = None
-    for player in Player.ranking():
-        if rank is None or player.d_points != rank.points:
-            rank = Rank(rank.position + 1 if rank else 1, player.d_points)
-            ranks.append(rank)
-        rank.add_player()
-        # remember the current user's points as reference to the ranking
-        if request.authenticated_userid == player.d_alias:
-            player_points = player.d_points
+    ranks = Rank.get_all()
+    player_rank = Rank.get_position(player.d_points)
     ranks = webhelpers.paginate.Page(ranks,
                                      page=page,
                                      url=url,
@@ -350,7 +341,7 @@ def view_ranking(request):
     if not ranks:
         raise HTTPNotFound('no ranking yet')
     return { 'ranks': ranks,
-             'player_points': player_points,
+             'player_rank': player_rank.d_rank if player_rank else None,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
