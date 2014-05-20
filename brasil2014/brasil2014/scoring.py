@@ -209,10 +209,15 @@ def evaluate_final_tip(final, final_tip):
 
 
 def update_ranking():
+    """ Update the rank table by grouping number of players having the same number of points. """
+    # empty table
+    num = Rank.delete_all()
+    log.info('===== deleted %d ranks', num)
+
     rank = None
     for player in Player.ranking():
         if rank is None or player.d_points != rank.d_points:
-            rank = Rank(rank.d_position + 1 if rank else 1, player.d_points)
+            rank = Rank(rank.d_position + rank.d_players if rank else 1, player.d_points)
             DBSession.add(rank)
         rank.add_player()
 

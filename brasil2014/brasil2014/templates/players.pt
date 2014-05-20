@@ -17,9 +17,9 @@
   </tr>
   <tr tal:repeat="player players">
     <!-- ${player.d_name} -->
-    <td><span tal:replace="players.first_item + repeat.player.index"/></td>
+    <td>${player.rank}</td>
     <td tal:condition="viewer_username == player.d_alias" class="highlight-player">
-      <a href="mailto:${player.d_mail}">${player.d_alias}</a>
+      <a tal:omit-tag="not:player.d_mail" href="mailto:${player.d_mail}">${player.d_alias}</a>
     </td>
     <td tal:condition="viewer_username != player.d_alias">
       <a tal:omit-tag="not:player.d_mail" href="mailto:${player.d_mail}">${player.d_alias}</a>

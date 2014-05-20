@@ -65,6 +65,9 @@ class Player(Base):
 
     _password = Column('d_password', Unicode(60))
 
+    # unmapped attributes
+    rank = None
+
     def _get_password(self):
         return self._password
 
@@ -134,14 +137,14 @@ class Player(Base):
     def ranking(cls):
         return DBSession.query(cls) \
                         .filter(cls.d_alias.notin_(ADMINS)) \
-                        .order_by(cls.d_points.desc(), cls.d_alias)
+                        .order_by(cls.d_points.desc(), cls.d_alias).all()
 
 
 class Rank(Base):
     """ Count the numbers of players having the same number of points. """
     __tablename__ = 't_rank'
     d_position = Column(Integer, primary_key=True)
-    d_points = Column(Integer)
+    d_points = Column(Integer, unique=True, nullable=False)
     d_players = Column(Integer)
 
     def __init__(self, position, points):
@@ -158,6 +161,11 @@ class Rank(Base):
                         .order_by(cls.d_position)
 
     @classmethod
+    def delete_all(cls):
+        return DBSession.query(cls) \
+                        .delete()
+
+    @classmethod
     def get_position(cls, points):
         return DBSession.query(cls) \
                         .filter(cls.d_points == points).first()
@@ -167,6 +175,9 @@ class Category(Base):
     __tablename__ = 't_category'
     d_alias = Column(String(20), primary_key=True)
     d_name = Column(Unicode(30))
+
+    # unmapped attributes
+    rank = None
 
     def __init__(self, alias, name):
         self.d_alias = alias

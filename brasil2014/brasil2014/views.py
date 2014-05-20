@@ -77,13 +77,26 @@ except:
 	pass
 GAME_URL = 'http://%s:%d' % (local_host, local_port)
 
-try:
-    ITEMS_PER_PAGE = Setting.get('items_per_page')
-    ITEMS_PER_PAGE = int(ITEMS_PER_PAGE.d_value) if ITEMS_PER_PAGE else 10
-except:
-    ITEMS_PER_PAGE = 10
 
-#FIXME Have to restart, if any of the above settings is changed...
+def items_per_page(request):
+    """ Determine the pagination unit. This unit is determined
+    as follows (in decreasing precedence):
+    - from the request parameter 'items_per_page'
+    - from the Setting table's entry named 'items_per_page'
+    If none of the above matches or cannot be converted to
+    an integer the default of 10 is returned.
+    """
+    try:
+       return int(request.matchdict['items_per_page'])
+    except:
+        try:
+            setting = Setting.get('items_per_page')
+            return int(setting.d_value)
+        except:
+            pass
+    else:
+        pass
+    return 10
 
 def get_int_param(request, param, default=None):
     """ @return Numerical value of named parameter. """
@@ -263,14 +276,26 @@ def logout(request):
 
 @view_config(permission='view', route_name='view_players', renderer='templates/players.pt')
 def view_players(request):
+    ranking = Player.ranking()
+    if not ranking:
+        raise HTTPNotFound('no players yet')
+    # Calculate every player's rank. Only the first player of each
+    # rank gets a rank number, for all others it is set to None.
+    rank = 1
+    points = None
+    for player in ranking:
+        if points is None or player.d_points != points:
+            player.rank = rank
+            points = player.d_points
+        rank += 1
+    #for player in ranking:
+    #    print'player %s with %d points = rank %s' % (player.d_alias, player.d_points, str(player.rank))
     url = webhelpers.paginate.PageURL_WebOb(request)
     page = get_int_param(request, param='page', default=1)
-    players = webhelpers.paginate.Page(Player.ranking(),
+    players = webhelpers.paginate.Page(ranking,
                                        page=page,
                                        url=url,
-                                       items_per_page=ITEMS_PER_PAGE)
-    if not players:
-        raise HTTPNotFound('no players yet')
+                                       items_per_page=items_per_page(request))
     return { 'players': players,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),
@@ -279,14 +304,15 @@ def view_players(request):
 @view_config(permission='view', route_name='view_group_players', renderer='templates/group_players.pt')
 def view_group_players(request):
     category = request.matchdict['category']
-    page = get_int_param(request, param='page', default=1)
-    url = webhelpers.paginate.PageURL_WebOb(request)
-    players = webhelpers.paginate.Page(Player.get_by_unit(category),
-                                       page=page,
-                                       url=url,
-                                       items_per_page=ITEMS_PER_PAGE)
+    players = Player.get_by_unit(category)
     if not players:
        raise HTTPNotFound('no players in category %s' % category)
+    page = get_int_param(request, param='page', default=1)
+    url = webhelpers.paginate.PageURL_WebOb(request)
+    players = webhelpers.paginate.Page(players,
+                                       page=page,
+                                       url=url,
+                                       items_per_page=items_per_page(request))
     return { 'category': category,
              'players': players,
              'viewer_username': request.authenticated_userid,
@@ -296,14 +322,15 @@ def view_group_players(request):
 @view_config(permission='view', route_name='view_rank_players', renderer='templates/rank_players.pt')
 def view_rank_players(request):
     points = request.matchdict['points']
-    page = get_int_param(request, param='page', default=1)
-    url = webhelpers.paginate.PageURL_WebOb(request)
-    players = webhelpers.paginate.Page(Player.get_by_rank(points),
-                                       page=page,
-                                       url=url,
-                                       items_per_page=ITEMS_PER_PAGE)
+    players = Player.get_by_rank(points)
     if not players:
        raise HTTPNotFound('no players with %s points' % points)
+    page = get_int_param(request, param='page', default=1)
+    url = webhelpers.paginate.PageURL_WebOb(request)
+    players = webhelpers.paginate.Page(players,
+                                       page=page,
+                                       url=url,
+                                       items_per_page=items_per_page(request))
     return { 'points': points,
              'players': players,
              'viewer_username': request.authenticated_userid,
@@ -318,11 +345,12 @@ def view_player_groups(request):
     page = get_int_param(request, param='page', default=1)
     url = webhelpers.paginate.PageURL_WebOb(request)
     # sort groups by descending average number of points
-    groups = webhelpers.paginate.Page(sorted(groups,
-                                             lambda g1,g2: scoring.sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True),
+    ranking = sorted(groups,
+                     lambda g1,g2: scoring.sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True)
+    groups = webhelpers.paginate.Page(ranking,
                                       page=page,
                                       url=url,
-                                      items_per_page=ITEMS_PER_PAGE)
+                                      items_per_page=items_per_page(request))
     return { 'groups': groups,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),
@@ -330,17 +358,17 @@ def view_player_groups(request):
 
 @view_config(permission='view', route_name='view_ranking', renderer='templates/ranking.pt')
 def view_ranking(request):
+    ranks = Rank.get_all()
+    if not ranks:
+        raise HTTPNotFound('no ranking yet')
     url = webhelpers.paginate.PageURL_WebOb(request)
     page = get_int_param(request, param='page', default=1)
-    ranks = Rank.get_all()
-    player = Player.get_by_username(request.authenticated_userid)
-    player_rank = Rank.get_position(player.d_points) if player else None
     ranks = webhelpers.paginate.Page(ranks,
                                      page=page,
                                      url=url,
-                                     items_per_page=ITEMS_PER_PAGE)
-    if not ranks:
-        raise HTTPNotFound('no ranking yet')
+                                     items_per_page=items_per_page(request))
+    player = Player.get_by_username(request.authenticated_userid)
+    player_rank = Rank.get_position(player.d_points) if player else None
     return { 'ranks': ranks,
              'player_rank': player_rank.d_position if player_rank else None,
              'viewer_username': request.authenticated_userid,
@@ -472,7 +500,7 @@ def view_match_tips(request):
     tips = webhelpers.paginate.Page(match_tips,
                                     page=page,
                                     url=url,
-                                    items_per_page=ITEMS_PER_PAGE)
+                                    items_per_page=items_per_page(request))
     return { 'match': match,
              'tips': tips,
              'viewer_username': request.authenticated_userid,
