@@ -1,8 +1,9 @@
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,
-p,blockquote,pre,a,abbr,acronym,address,big,cite,code,
-del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,
-tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,
-table,caption,tbody,tfoot,thead,tr,th,td {
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup,
+tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -14,7 +15,7 @@ table,caption,tbody,tfoot,thead,tr,th,td {
 }
 
 body {
-	background-color: #e0f8f7;
+	background-color: #E0F8F7;
 	font-family: Verdana,Sans-Serif;
 	font-size: 12px;
 	line-height: 1;
@@ -121,7 +122,7 @@ dt {
 
 p {
 	line-height: 1.5em;
-	color: #0000c0
+	color: #0000C0
 }
 
 h1 {
@@ -166,12 +167,12 @@ body {
 }
 
 a {
-	color: #7401df;
+	color: #7401DF;
 	text-decoration: none;
 }
 
 a:hover {
-	color: #df01d7;
+	color: #DF01D7;
 	text-decoration:underline;
 }
 
@@ -183,7 +184,7 @@ body h5,
 body h6 {
 	font-family: Lucida, Verdana, sans-serif;
 	font-weight: normal;
-	color: #0000c0;
+	color: #0000C0;
 	font-style: normal;
 }
 
@@ -199,15 +200,15 @@ th, td {
 }
 
 tr th {
-	background-color: #beebee;
+	background-color: #BEEBEE;
 }
 
 tr:nth-child(even) {
-	background-color: #e0f8f7;
+	background-color: #E0F8F7;
 }
 
 tr:nth-child(odd) {
-	background-color: #cef6f5;
+	background-color: #CEF6F5;
 }
 
 td.flag {
@@ -218,7 +219,7 @@ td.flag {
 
 .flagsp {
         background: transparent url("/static/flagsp.png") no-repeat scroll;
-        border: 1px solid #cccccc;
+        border: 1px solid #CCCCCC;
         display: inline-block;
         height: 13px;
         overflow: hidden;
@@ -269,7 +270,7 @@ td.flag {
 }
 
 #message {
-        background-color: #f3f781;
+        background-color: #F3F781;
         border: #000000 1px solid;
         margin: 110px 2px 2px 20px;
 	padding: 2px 10px 2px 10px;
@@ -312,11 +313,11 @@ td.flag {
 
 .topmenu a, .submenu a {
 	padding: 1px 5px;
-	border: 1px solid #ffffff;
+	border: 1px solid #FFFFFF;
 	border-collapse: collapse;
 	font-weight: bold;
 	text-decoration: none;
-	background-color: #cef6f5;
+	background-color: #CEF6F5;
 	margin: 0 0 1px 2px;  
 	box-shadow: 5px 5px 20px 3px white;
 }
@@ -339,7 +340,7 @@ td.flag {
 
 #menu a:hover, .topmenu.on a {
 	color: #4C4C4C;
-	background-color: #f3f781 !important;
+	background-color: #F3F781 !important;
 }
 
 .topmenu:hover ul {
@@ -366,7 +367,7 @@ td.flag {
 #info-list th, #rank-list th {
 	width: auto;
 	margin-bottom: 5px;
-	border-bottom: 2px solid #ffffff;
+	border-bottom: 2px solid #FFFFFF;
 }
 
 #match-list td, #player-list td,
@@ -386,7 +387,7 @@ td.flag {
 }
 
 #total td {
-	border-top: 2px solid #ffffff;
+	border-top: 2px solid #FFFFFF;
 	font-weight: bold;
 }
 
@@ -399,7 +400,7 @@ td.flag {
 #final-bet th {
 	width: auto;
 	margin-bottom: 5px;
-	border-bottom: 2px solid #ffffff;
+	border-bottom: 2px solid #FFFFFF;
 }
 
 #final-bet td {
@@ -417,7 +418,7 @@ td.flag {
 
 #header, #footer {
 	width: 100%;
-	color: #ffffff;
+	color: #FFFFFF;
 	height: 40px;
 	text-align: center;
 	line-height: 40px;
@@ -433,8 +434,7 @@ td.flag {
 }
 
 #footer {
-	bottom: 0;
-	background: none repeat scroll 0 0 transparent;
+	//bottom: 0;
 	margin-top: 30px;
 }
 
@@ -453,20 +453,20 @@ td.flag {
 }
 
 #top {
-	background: url("/static/trnHeader.jpg") no-repeat scroll 0 0 #cef6f5;
-	color: #ffffff;
+	background: url("/static/trnHeader.jpg") no-repeat scroll 0 0 #CEF6F5;
+	color: #FFFFFF;
 	height: 150px;
-	border-bottom: 2px solid #ffffff;
+	border-bottom: 2px solid #FFFFFF;
 }
 
 #top-small {
-	color: #ffffff;
+	color: #FFFFFF;
 	height: 60px;
 }
 
 #bottom {
 	color: #222;
-	background-color: #ffffff;
+	background-color: #FFFFFF;
 }
 
 .top, .top-small, .middle, .bottom {
@@ -491,24 +491,24 @@ td.flag {
 	margin-top: 25px;
 	margin-bottom: 25px;
 	font-size: 1.5em;
-	color:#0000c0;
+	color:#0000C0;
 }
 
 .app-name {
-	color: #8000ff;
+	color: #8000FF;
 	font-weight: bold;
 }
 
 .tabletop {
-	color: #8000ff;
+	color: #8000FF;
 	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
 .highlight-player {
-	border: 1px dotted #7c7e3d;
-	background-color: #f3f781;
+	border: 1px dotted #7C7E3D;
+	background-color: #F3F781;
 	font-weight: bold;
 }
 
@@ -566,7 +566,7 @@ fieldset {
 
 input {
 	color: #222;
-	border: 1px solid #ccc;
+	border: 1px solid #CCC;
 	font-family: sans-serif;
 	font-size: 12px;
 	line-height: 16px;
@@ -577,7 +577,7 @@ input[type=text], input[type=password] {
 }
 
 input[type=button], input[type=submit] {
-	background-color: #f3f781;
+	background-color: #F3F781;
 	font-weight:bold;
 }
 
