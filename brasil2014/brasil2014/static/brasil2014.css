@@ -434,7 +434,11 @@ td.flag {
 }
 
 #footer {
-	//bottom: 0;
+	background: #E0E0FF;
+	height: 20px;
+	position: fixed;
+	float: none;
+	bottom: 10px;
 	margin-top: 30px;
 }
 
@@ -465,8 +469,7 @@ td.flag {
 }
 
 #bottom {
-	color: #222;
-	background-color: #FFFFFF;
+	height: 20px;
 }
 
 .top, .top-small, .middle, .bottom {
@@ -500,7 +503,8 @@ td.flag {
 }
 
 .tabletop {
-	color: #8000FF;
+	color: #6600CC;
+	text-decoration: underline;
 	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 10px;

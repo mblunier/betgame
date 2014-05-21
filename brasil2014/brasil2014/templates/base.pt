@@ -22,6 +22,9 @@
       <tal:block metal:define-slot="content" />
     </div>
   </div>
+  <div id="bottom">
+    &nbsp;
+  </div>
   <div id="footer">
       <p>
         &copy; Copyleft 2014, Clueless Gaming Ltd.

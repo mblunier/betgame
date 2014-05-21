@@ -87,7 +87,7 @@ def items_per_page(request):
     an integer the default of 10 is returned.
     """
     try:
-       return int(request.matchdict['items_per_page'])
+       return int(request.params['items_per_page'])
     except:
         try:
             setting = Setting.get('items_per_page')
