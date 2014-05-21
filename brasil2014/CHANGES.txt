@@ -1,5 +1,14 @@
-0.12
-====
+V0.13
+=====
+- First release candidate.
+- CSS cleanup.
+- Fixed rank numbering.
+- Defined ranking table to map ranks with points.
+- Changed default contact mail address.
+
+
+V0.12
+=====
 - Added ranking table by points.
 - Show details in NotFound view.
 - Enabled alphabetical team list.
@@ -13,8 +22,8 @@
 - Handle non-numeric settings gracefully.
 
 
-0.11
-====
+V0.11
+=====
 - Updated maintenance description.
 - Enabled deletion of all settings except the scoring ones.
 - Store downloaded files to $HOME/backup.
@@ -30,16 +39,16 @@
 - Fixed separator in help menu.
 
 
-0.10
-====
+V0.10
+=====
 - Use placeholders for login form fields.
 - Refactored navigation using drop-down menus with shadowing.
 - Added view for stage 2 matches.
 - Added '/categories' view.
 
 
-0.9
-===
+V0.9
+====
 - Added script for automatic DB backups.
 - Enabled manipulating player categories.
 - Enable suppressing all navigation with 'nonav' suffix.
@@ -57,8 +66,8 @@
 - Suppress 'Tips' column in nonav mode.
 
 
-0.8
-===
+V0.8
+====
 - Updated admin documentation.
 - Enhanced description in forbidden view.
 - Added DB backup/restore.
@@ -69,8 +78,8 @@
 - Updated development environment setup description.
 
 
-0.7
-===
+V0.7
+====
 - Enabled non-interactive match view.
 - Determine result server & game URL from Setting table.
 - Removed unused routes, completed documentation.
@@ -89,8 +98,8 @@
 - Streamlined main & infoscreen views.
 
 
-0.6
-===
+V0.6
+====
 - Extended installation description.
 - Added infoscreen view.
 - Added query option 'nonav' to suppress navigation.
@@ -108,15 +117,15 @@
 - Enabled zebra stripes for tables.
 
 
-0.5
-===
+V0.5
+====
 - Added final bet link.
 - Enhanced scoring log.
 - Enabled remote & local updating.
 
 
-0.4
-===
+V0.4
+====
 - Enabled updating from remote server.
 - Restored team & score updates.
 - Code cleanup.
@@ -128,8 +137,8 @@
 - Completed package information.
 
 
-0.3
-===
+V0.3
+====
 - Enabled scoring logger.
 - Enabled result export/import in JSON format.
 - Changed button color.
@@ -138,8 +147,8 @@
 - Avoid deprecation warning by explitly setting hashalg='md5'.
 
 
-0.2
-===
+V0.2
+====
 - Replaced deprecated methods.
 - Use decorators to mark event handlers.
 - Updated initialization.
@@ -149,6 +158,6 @@
 - Create admin user during installation.
 
 
-0.1
-===
+V0.1
+====
 - Initial release for beta testing.
