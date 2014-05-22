@@ -19,7 +19,7 @@
      <!-- ${match} -->
      <td tal:condition="match.d_id != final_id">${match.d_id}</td>
      <td tal:condition="match.d_id == final_id">Final</td>
-     <td tal:content="match.d_begin.strftime('%a, %d.%m.%Y %H:%M')">Kickoff</td>
+     <td align="right" tal:content="match.d_begin.strftime('%a, %d.%m.%Y %H:%M')">Kickoff</td>
      <td><span class="flagsp flagsp_${match.d_team1}"> </span>&nbsp;</td>
      <td>${match.d_team1} : ${match.d_team2}</td>
      <td><span class="flagsp flagsp_${match.d_team2}"> </span></td>
