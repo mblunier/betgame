@@ -173,7 +173,7 @@ a {
 
 a:hover {
 	color: #DF01D7;
-	text-decoration:underline;
+	text-decoration: underline;
 }
 
 body h1,
@@ -504,7 +504,7 @@ td.flag {
 
 .tabletop {
 	color: #6600CC;
-	text-decoration: underline;
+	//text-decoration: underline;
 	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -582,7 +582,7 @@ input[type=text], input[type=password] {
 
 input[type=button], input[type=submit] {
 	background-color: #F3F781;
-	font-weight:bold;
+	font-weight: bold;
 }
 
 .error li {
