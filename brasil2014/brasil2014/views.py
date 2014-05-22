@@ -313,7 +313,9 @@ def view_group_players(request):
                                        page=page,
                                        url=url,
                                        items_per_page=items_per_page(request))
+    category_name = Category.get(category).d_name
     return { 'category': category,
+             'category_name': category_name,
              'players': players,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),
@@ -616,6 +618,7 @@ def update_category(request):
         value = request.matchdict['value']
         category = Category.get(name)
         if value == 'DELETE':
+            # delete category unless it is used by some players
             if category:
                 players = Player.get_by_unit(name)
                 if players and len(players.all()) > 0:
@@ -626,6 +629,7 @@ def update_category(request):
             else:
                 request.session.flash(u'Category "%(name)s" does not exist.' % request.matchdict)
         else:
+            # update/create category
             if category:
                 category.d_name = value
                 request.session.flash(u'Updated category "%(name)s".' % request.matchdict)
