@@ -7,11 +7,11 @@
   <p class="app-welcome">
     Too late, sorry!
   </p>
-  <p style=".align-left">
+  <p class="align-left">
     Match tips can only be entered until the respective match has begun.
   </p>
-  <p style=".align-left">
-    The final tip is due before the start of the quarter finals; i.e. <span tal:content="final_deadline.strftime('%a, %d.%m.%Y %H:%M')" />.
+  <p class="align-left">
+    The final tip is due before the start of the quarter finals; i.e. <strong><span tal:content="final_deadline.strftime('%a, %d.%m.%Y %H:%M')" /></strong>.
   </p>
   <p tal:condition="not nonav" class="align-right"><input type="button" onClick="history.back()" value=" Back "></p>
 </tal:block>
