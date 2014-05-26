@@ -93,8 +93,7 @@ class Player(Base):
     @classmethod
     def exists(cls, username):
         return DBSession.query(cls) \
-                        .filter(cls.d_alias == username) \
-                        .first() is not None
+                        .filter(cls.d_alias == username).first() is not None
 
     @classmethod
     def get_all(cls):
@@ -104,8 +103,7 @@ class Player(Base):
     @classmethod
     def get_by_username(cls, username):
         return DBSession.query(cls) \
-                        .filter(cls.d_alias == username) \
-                        .first()
+                        .filter(cls.d_alias == username).first()
 
     @classmethod
     def get_by_rank(cls, points):
@@ -120,7 +118,8 @@ class Player(Base):
 
     @classmethod
     def get_units(cls):
-        return set(player.d_unit for player in DBSession.query(cls).filter(cls.d_alias.notin_(ADMINS)).all())
+        return set(player.d_unit for player in DBSession.query(cls) \
+                                                        .filter(cls.d_alias.notin_(ADMINS)).all())
 
     @classmethod
     def get_groups(cls):
@@ -138,6 +137,34 @@ class Player(Base):
         return DBSession.query(cls) \
                         .filter(cls.d_alias.notin_(ADMINS)) \
                         .order_by(cls.d_points.desc(), cls.d_alias).all()
+
+
+class Category(Base):
+    """ Player categories (e.g. organizational unit). """
+    __tablename__ = 't_category'
+    d_alias = Column(String(20), primary_key=True)
+    d_name = Column(Unicode(30))
+
+    # unmapped attributes
+    rank = None
+
+    def __init__(self, alias, name):
+        self.d_alias = alias
+        self.d_name = name
+
+    @classmethod
+    def get_all(cls):
+        return DBSession.query(cls) \
+                        .order_by(cls.d_name)
+
+    @classmethod
+    def option_list(cls):
+        return [(c.d_alias, c.d_name) for c in DBSession.query(cls).order_by(cls.d_name)]
+
+    @classmethod
+    def get(cls, name):
+        return DBSession.query(cls) \
+                        .filter(cls.d_alias == name).first()
 
 
 class Rank(Base):
@@ -170,34 +197,6 @@ class Rank(Base):
         return DBSession.query(cls) \
                         .filter(cls.d_points == points).first()
 
-class Category(Base):
-    """ Player categories (e.g. organizational unit). """
-    __tablename__ = 't_category'
-    d_alias = Column(String(20), primary_key=True)
-    d_name = Column(Unicode(30))
-
-    # unmapped attributes
-    rank = None
-
-    def __init__(self, alias, name):
-        self.d_alias = alias
-        self.d_name = name
-
-    @classmethod
-    def get_all(cls):
-        return DBSession.query(cls) \
-                        .order_by(cls.d_name)
-
-    @classmethod
-    def option_list(cls):
-        return [(c.d_alias, c.d_name) for c in DBSession.query(cls).order_by(cls.d_name)]
-
-    @classmethod
-    def get(cls, name):
-        return DBSession.query(cls) \
-                        .filter(cls.d_alias == name) \
-                        .first()
-
 
 class Setting(Base):
     """ Generic global configuration settings. """
@@ -216,8 +215,7 @@ class Setting(Base):
     @classmethod
     def get(cls, name):
         return DBSession.query(cls) \
-                        .filter(cls.d_name == name) \
-                        .first()
+                        .filter(cls.d_name == name).first()
 
 
 class Team(Base):
@@ -247,8 +245,7 @@ class Team(Base):
     @classmethod
     def get_by_id(cls, id):
         return DBSession.query(cls) \
-                        .filter(cls.d_id == id) \
-                        .first()
+                        .filter(cls.d_id == id).first()
 
     @classmethod
     def get_by_group(cls, group):
@@ -302,14 +299,12 @@ class Match(Base):
         return DBSession.query(cls) \
                         .filter(cls.d_begin > start) \
                         .order_by(cls.d_begin) \
-                        .limit(num) \
-                        .all()
+                        .limit(num).all()
 
     @classmethod
     def get_by_id(cls, match_id):
         return DBSession.query(cls) \
-                        .filter(cls.d_id == match_id) \
-                        .first()
+                        .filter(cls.d_id == match_id).first()
 
     @classmethod
     def get_by_group(cls, group):
@@ -328,8 +323,7 @@ class Match(Base):
     def get_final(cls):
         """ Retrieve final match. """
         return DBSession.query(cls) \
-                        .filter(cls.d_id == FINAL_ID) \
-                        .first()    # .one()
+                        .filter(cls.d_id == FINAL_ID).first()    # .one()
 
 
 class Tip(Base):
@@ -365,8 +359,7 @@ class Tip(Base):
     @classmethod
     def get_player_tip(cls, player, match):
         return DBSession.query(cls) \
-                        .filter(cls.d_player == player, cls.d_match == match) \
-                        .first()
+                        .filter(cls.d_player == player, cls.d_match == match).first()
 
 
 class Final(Base):
@@ -392,5 +385,4 @@ class Final(Base):
     @classmethod
     def get_player_tip(cls, player):
         return DBSession.query(cls) \
-                        .filter(cls.d_player == player) \
-                        .first()
+                        .filter(cls.d_player == player).first()
