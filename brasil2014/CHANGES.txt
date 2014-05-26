@@ -1,6 +1,16 @@
-V0.13
+V0.14 (RC2)
 =====
-- First release candidate.
+- Added 'player_info' view.
+- Fixed style spec in 'too_late' view.
+- Restored 'Admin' category.
+- Right-align kickoff times.
+- Disabled underlining table captions.
+- Show category names along with aliases.
+- Fixed items_per_page evaluation.
+
+
+V0.13 (RC1)
+=====
 - CSS cleanup.
 - Fixed rank numbering.
 - Defined ranking table to map ranks with points.
