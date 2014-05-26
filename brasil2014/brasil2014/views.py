@@ -85,10 +85,12 @@ def items_per_page(request):
     - from the Setting table's entry named 'items_per_page'
     If none of the above matches or cannot be converted to
     an integer the default of 10 is returned.
+    @return Number of items per page, default 10.
     """
     try:
+        # expect exception, if param is missing or has a non-numeric value
        return int(request.params['items_per_page'])
-    except:
+    except: 
         try:
             setting = Setting.get('items_per_page')
             return int(setting.d_value)
@@ -303,18 +305,19 @@ def view_players(request):
 
 @view_config(permission='view', route_name='view_group_players', renderer='templates/group_players.pt')
 def view_group_players(request):
-    category = request.matchdict['category']
-    players = Player.get_by_unit(category)
+    category_id = request.matchdict['category']
+    players = Player.get_by_unit(category_id)
     if not players:
-       raise HTTPNotFound('no players in category %s' % category)
+       raise HTTPNotFound('no players in category %s' % category_id)
     page = get_int_param(request, param='page', default=1)
     url = webhelpers.paginate.PageURL_WebOb(request)
     players = webhelpers.paginate.Page(players,
                                        page=page,
                                        url=url,
                                        items_per_page=items_per_page(request))
-    category_name = Category.get(category).d_name
-    return { 'category': category,
+    category = Category.get(category_id)
+    category_name = category.d_name if category else category_id
+    return { 'category': category_id,
              'category_name': category_name,
              'players': players,
              'viewer_username': request.authenticated_userid,
@@ -372,6 +375,16 @@ def view_ranking(request):
     player = Player.get_by_username(request.authenticated_userid)
     player_rank = Rank.get_position(player.d_points) if player else None
     return { 'ranks': ranks,
+             'player_rank': player_rank.d_position if player_rank else None,
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
+
+@view_config(permission='view', route_name='view_player_info', renderer='templates/player_info.pt')
+def view_player_info(request):
+    player = Player.get_by_username(request.authenticated_userid)
+    player_rank = Rank.get_position(player.d_points) if player else None
+    return { 'player': player,
              'player_rank': player_rank.d_position if player_rank else None,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),

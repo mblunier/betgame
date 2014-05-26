@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="tabletop">
+    Info for player <span class="app-name">${player.d_alias}</span>.
+  </p>
+  <table id="info-list">
+  <tr>
+    <td class="align-right">Name:</td>
+    <td class="align-left">${player.d_name}</td>
+  </tr>
+  <tr>
+    <td class="align-right">Category:</td>
+    <td class="align-left">${player.d_unit}</td>
+  </tr>
+  <tr>
+    <td class="align-right">Mail:</td>
+    <td class="align-left">${player.d_mail}</td>
+  </tr>
+  <tr>
+    <td class="align-right">Points:</td>
+    <td class="align-left">${player.d_points}</td>
+  </tr>
+  <tr>
+    <td class="align-right">Rank:</td>
+    <td class="align-left">${player_rank}</td>
+  </tr>
+  </table>
+</tal:block>
+
+</html>
