@@ -51,6 +51,7 @@ def main(argv=sys.argv):
 
     # player categories (org. units)
     with transaction.manager:
+        DBSession.add(Category(alias="Admin",       name="Administration"))
         DBSession.add(Category(alias="B+S",         name="Operation & Support"))
         DBSession.add(Category(alias="Marketing",   name="Marketing"))
         DBSession.add(Category(alias="Projects",    name="Projects"))
