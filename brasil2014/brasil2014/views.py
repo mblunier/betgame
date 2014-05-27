@@ -380,13 +380,25 @@ def view_ranking(request):
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
 
-@view_config(permission='view', route_name='view_player_info', renderer='templates/player_info.pt')
+class PlayerInfo(formencode.Schema):
+    allow_extra_fields = True
+    name = formencode.validators.String(not_empty=True)
+    mail = formencode.validators.Email(resolve_domain=False, not_empty=True)
+
+@view_config(permission='post', route_name='player_info', renderer='templates/player_info.pt')
 def view_player_info(request):
     player = Player.get_by_username(request.authenticated_userid)
+    form = Form(request, schema=PlayerInfo, obj=player)
+    if 'form.submitted' in request.POST and form.validate():
+        player.d_name = form.data['name']
+        player.d_mail = form.data['mail']
+        player.d_unit = form.data['category']
     player_rank = Rank.get_position(player.d_points) if player else None
-    return { 'player': player,
+    return { 'form': FormRenderer(form),
+             'player': player,
              'player_rank': player_rank.d_position if player_rank else None,
              'viewer_username': request.authenticated_userid,
+             'categories': Category.option_list(),
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
 
