@@ -124,7 +124,7 @@ class Player(Base):
     @classmethod
     def get_groups(cls):
         """ Retrieve player groups.
-        @return List of tuples: (d_unit, n_players, n_points)
+        @return List of tuples: (player, d_unit, n_players, n_points)
         """
         return DBSession.query(cls, cls.d_unit, 
                                func.count(cls.d_alias).label('n_players'), 
@@ -147,6 +147,8 @@ class Category(Base):
 
     # unmapped attributes
     rank = None
+    points = None
+    players = None
 
     def __init__(self, alias, name):
         self.d_alias = alias

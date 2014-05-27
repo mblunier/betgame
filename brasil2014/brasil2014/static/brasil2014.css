@@ -353,7 +353,8 @@ td.flag {
 	float: right;
 }
 
-#match-list, #player-list,
+#match-list, 
+#player-list, #category-list,
 #group-list, #team-list,
 #tip-list, #player-tips,
 #info-list, #rank-list {
@@ -361,7 +362,8 @@ td.flag {
 	margin-bottom: 20px;
 }
 
-#match-list th, #player-list th,
+#match-list th, 
+#player-list th, #category-list th,
 #group-list th, #team-list th,
 #tip-list th, #player-tips th,
 #info-list th, #rank-list th {
@@ -370,7 +372,8 @@ td.flag {
 	border-bottom: 2px solid #FFFFFF;
 }
 
-#match-list td, #player-list td,
+#match-list td,
+#player-list td, #category-list td,
 #group-list td, #team-list td, 
 #tip-list td, #player-tips td,
 #info-list td, #rank-list td {

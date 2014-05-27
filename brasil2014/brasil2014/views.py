@@ -347,16 +347,26 @@ def view_player_groups(request):
     groups = Player.get_groups()
     if not groups:
         raise HTTPNotFound('no player groups yet')
+    # sort categories by descending average number of points
+    ranking = []
+    rank = 1
+    points = None
+    for group in sorted(groups, lambda g1,g2: scoring.sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True):
+        category = Category(group[1], 'Category %s' % group[1])
+        category.players = int(group[2])
+        category.points = float(group[3]) / category.players
+        if points is None or category.points != points:
+            category.rank = rank
+            points = category.points
+        ranking.append(category)
+        rank += 1
     page = get_int_param(request, param='page', default=1)
     url = webhelpers.paginate.PageURL_WebOb(request)
-    # sort groups by descending average number of points
-    ranking = sorted(groups,
-                     lambda g1,g2: scoring.sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True)
-    groups = webhelpers.paginate.Page(ranking,
-                                      page=page,
-                                      url=url,
-                                      items_per_page=items_per_page(request))
-    return { 'groups': groups,
+    categories = webhelpers.paginate.Page(ranking,
+                                          page=page,
+                                          url=url,
+                                          items_per_page=items_per_page(request))
+    return { 'categories': categories,
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request),
              'nonav': 'nonav' in request.params }
@@ -408,7 +418,7 @@ def view_player_info(request):
 
 @view_config(permission='view', route_name='view_teams', renderer='templates/teams.pt')
 def view_teams(request):
-    """ @obsolete """
+    """ Alphabetical team list. """
     return { 'teams': Team.get_all(),
              'navigation': navigation_view(request) }
 

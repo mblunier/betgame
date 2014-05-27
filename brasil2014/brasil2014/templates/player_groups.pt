@@ -7,21 +7,21 @@
   <p class="tabletop">
     Category ranking
   </p>
-  <table id="player-list">
+  <table id="category-list">
   <tr>
     <th>Rank</th>
     <th>Category</th>
     <th>Players</th>
     <th>Points (avg.)</th>
   </tr>
-  <tr tal:repeat="group groups">
-    <td>${repeat.group.number}</td>
-    <td><a href="${request.route_url('view_group_players', category=group.d_unit)}">${group.d_unit}</a></td>
-    <td>${group.n_players}</td>
-    <td><span tal:replace="'{0:.1f}'.format(float(group.n_points) / group.n_players)"/></td>
+  <tr tal:repeat="category categories">
+    <td>${category.rank}</td>
+    <td><a href="${request.route_url('view_group_players', category=category.d_alias)}">${category.d_alias}</a></td>
+    <td>${category.players}</td>
+    <td><span tal:replace="'{0:.1f}'.format(float(category.points))"/></td>
   </tr>
   </table>
-  <span tal:condition="not nonav" tal:replace="groups.pager('$link_first $link_previous ~5~ $link_next $link_last')" />
+  <span tal:condition="not nonav" tal:replace="categories.pager('$link_first $link_previous ~5~ $link_next $link_last')" />
 </tal:block>
 
 </html>
