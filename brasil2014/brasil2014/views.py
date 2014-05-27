@@ -393,6 +393,7 @@ def view_player_info(request):
         player.d_name = form.data['name']
         player.d_mail = form.data['mail']
         player.d_unit = form.data['category']
+        request.session.flash(u'Player information has been updated.')
     player_rank = Rank.get_position(player.d_points) if player else None
     return { 'form': FormRenderer(form),
              'player': player,
