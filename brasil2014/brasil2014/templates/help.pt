@@ -21,6 +21,10 @@
     <dt>I can not log in.</dt>
     <dd>Does your browser accept cookies? If not, you should let it accept cookies at least from this site.
         </dd>
+    <dt>How do I change my personal information?</dt>
+    <dd>After logging in select 'Options' from the 'Help' menu and you will see a form where you can change
+        your name and mail address as well as the category.
+	</dd>
     <dt>What's this browser thing?</dt>
     <dd>In contrast to common understanding a browser is not intended to display internet pages, but merely to
         recognize people with lots of spare time and willing to participate in games like this one.
