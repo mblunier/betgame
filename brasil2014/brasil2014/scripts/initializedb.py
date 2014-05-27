@@ -53,9 +53,10 @@ def main(argv=sys.argv):
     with transaction.manager:
         DBSession.add(Category(alias="Admin",       name="Administration"))
         DBSession.add(Category(alias="B+S",         name="Operation & Support"))
-        DBSession.add(Category(alias="Marketing",   name="Marketing"))
+        DBSession.add(Category(alias="MktProd",     name="Marketing & Products"))
+        #DBSession.add(Category(alias="Marketing",   name="Marketing"))
         DBSession.add(Category(alias="Projects",    name="Projects"))
-        DBSession.add(Category(alias="Products",    name="Products"))
+        #DBSession.add(Category(alias="Products",    name="Products"))
         DBSession.add(Category(alias="QA",          name="Quality Assurance"))
         DBSession.add(Category(alias="Sales",       name="Sales"))
         DBSession.add(Category(alias="Security",    name="Information Security"))
