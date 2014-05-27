@@ -15,10 +15,10 @@
   <tr tal:repeat="player players">
     <!-- ${player.d_name} -->
     <td tal:condition="viewer_username == player.d_alias" class="highlight-player">
-      <a href="mailto:${player.d_mail}">${player.d_alias}</a>
+      <a href="mailto:${player.d_mail}">${player.d_alias}</a> (${player.d_name})
     </td>
     <td tal:condition="viewer_username != player.d_alias">
-      <a href="mailto:${player.d_mail}">${player.d_alias}</a>
+      <a href="mailto:${player.d_mail}">${player.d_alias}</a> (${player.d_name})
     </td>
     <td tal:condition="not nonav"><a href="${request.route_url('view_player_tips', player=player.d_alias)}"> View </a></td>
   </tr>

@@ -5,7 +5,7 @@
 
 <tal:block metal:fill-slot="content">
   <p class="tabletop">
-    <span class="app-name">${player.d_alias}'s</span> tips.
+    <span class="app-name">${player.d_alias}'s</span> (${player.d_name}) tips.
   </p>
   <table id="player-tips">
   <tr>
