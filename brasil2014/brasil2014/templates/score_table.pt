@@ -8,16 +8,16 @@
     Scoring Table
   </p>
   <table id="match-list">
-    <tr>
-      <th>Match</th>
-      <th>Tip</th>
-      <th>Points</th>
-    </tr>
-    <tr tal:repeat="item match_tips">
-      <td>${item.match.d_score1} : ${item.match.d_score2}</td>
-      <td>${item.tip.d_score1} : ${item.tip.d_score2}</td>
-      <td>${item.points}</td>
-    </tr>
+  <tr>
+    <th>Match</th>
+    <th>Tip</th>
+    <th>Points</th>
+  </tr>
+  <tr tal:repeat="item match_tips">
+    <td>${item.match.d_score1} : ${item.match.d_score2}</td>
+    <td>${item.tip.d_score1} : ${item.tip.d_score2}</td>
+    <td>${item.points}</td>
+  </tr>
   </table>
 </tal:block>
 

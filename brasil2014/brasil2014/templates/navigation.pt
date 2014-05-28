@@ -52,18 +52,21 @@
         <li class="submenu"><a href="${request.route_url('update_remote')}">Update (remote)</a></li>
         <li class="submenu"><a href="${request.route_url('db_restore')}">Restore</a></li>
         <li class="submenu"><a href="#"><hr></a></li>
+        <li class="submenu"><a href="${request.route_url('categories')}">Categories</a></li>
         <li class="submenu"><a href="${request.route_url('infoscreen')}">InfoScreen</a></li>
+        <li class="submenu"><a href="${request.route_url('results')}">Results (JSON)</a></li>
+        <li class="submenu"><a href="${request.route_url('score_table')}">Scoring Table</a></li>
         <li class="submenu"><a href="${request.route_url('settings')}">Settings</a></li>
-        <li class="submenu"><a href="${request.route_url('system_info')}">SysInfo</a></li>
+        <li class="submenu"><a href="${request.route_url('system_info')}">System Info</a></li>
+        <li class="submenu"><a href="${request.route_url('tips')}">Tips</a></li>
+    	<li class="submenu"><a href="${request.route_url('too_late')}">Too Late</a></li>
       </ul>
     </li>
     <li class="topmenu" style="float: right; margin-right: 80px">
       <a href="${request.route_url('home')}">Help</a>
       <ul>
         <li class="submenu"><a href="${request.route_url('help')}">FAQ</a></li>
-        <li class="submenu"><a href="${request.route_url('categories')}">Categories</a></li>
         <li class="submenu"><a href="${request.route_url('scoring')}">Scoring</a></li>
-        <li class="submenu"><a href="${request.route_url('score_table')}">Scoring Table</a></li>
         <li tal:condition="viewer_username" class="submenu"><a href="${request.route_url('player_info')}">Options</a></li>
         <li class="submenu"><a href="#"><hr></a></li>
         <li class="submenu"><a href="${request.route_url('about')}">About</a></li>

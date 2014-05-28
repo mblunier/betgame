@@ -9,22 +9,22 @@
       Group ${group.group_id}
   </p>
   <table id="group-list">
-    <tr id="team-list">
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>Played</th>
-      <th>Goals</th>
-      <th>Points</th>
-      <th tal:condition="not nonav">Matches</th>
-    </tr>
-    <tr tal:repeat="team group.teams">
-      <td class="flag"><span class="flagsp flagsp_${team.d_id}" title="${team.d_name}">&nbsp;</span></td>
-      <td style="width: 40%; text-align:left">${team.d_name} (${team.d_id})</td>
-      <td>${team.d_played}</td>
-      <td>${team.d_shot} : ${team.d_rcvd}</td>
-      <td>${team.d_points}</td>
-      <td tal:condition="not nonav"><a href="${request.route_url('view_group_matches', group=group.group_id)}">View</a></td>
-    </tr>
+  <tr id="team-list">
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>Played</th>
+    <th>Goals</th>
+    <th>Points</th>
+    <th tal:condition="not nonav">Matches</th>
+  </tr>
+  <tr tal:repeat="team group.teams">
+    <td class="flag"><span class="flagsp flagsp_${team.d_id}" title="${team.d_name}">&nbsp;</span></td>
+    <td style="width: 40%; text-align:left">${team.d_name} (${team.d_id})</td>
+    <td>${team.d_played}</td>
+    <td>${team.d_shot} : ${team.d_rcvd}</td>
+    <td>${team.d_points}</td>
+    <td tal:condition="not nonav"><a href="${request.route_url('view_group_matches', group=group.group_id)}">View</a></td>
+  </tr>
   </table>
   </div>
 </tal:block>

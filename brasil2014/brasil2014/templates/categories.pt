@@ -8,16 +8,16 @@
     Categories
   </p>
   <table id="info-list">
-    <tr>
-      <th>Mnemonic</th>
-      <th>&nbsp;</th>
-      <th>Name</th>
-    </tr>
-    <tr tal:repeat="category categories">
-      <td align="right">${category.d_alias}</td>
-      <td align="center">=</td>
-      <td align="left">${category.d_name}</td>
-    </tr>
+  <tr>
+    <th>Mnemonic</th>
+    <th>&nbsp;</th>
+    <th>Name</th>
+  </tr>
+  <tr tal:repeat="category categories">
+    <td align="right">${category.d_alias}</td>
+    <td align="center">=</td>
+    <td align="left">${category.d_name}</td>
+  </tr>
   </table>
 </tal:block>
 

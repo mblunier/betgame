@@ -8,16 +8,16 @@
     System info
   </p>
   <table id="info-list">
-    <tr>
-      <th>Info</th>
-      <th>&nbsp;</th>
-      <th>Value</th>
-    </tr>
-    <tr tal:repeat="info sysinfo">
-      <td align="right">${info[0]}</td>
-      <td align="center">=</td>
-      <td align="left">${info[1]}</td>
-    </tr>
+  <tr>
+    <th>Info</th>
+    <th>&nbsp;</th>
+    <th>Value</th>
+  </tr>
+  <tr tal:repeat="info sysinfo">
+    <td align="right">${info[0]}</td>
+    <td align="center">=</td>
+    <td align="left">${info[1]}</td>
+  </tr>
   </table>
 </tal:block>
 

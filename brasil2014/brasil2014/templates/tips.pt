@@ -4,6 +4,9 @@
       metal:use-macro="base">
 
 <tal:block metal:fill-slot="content">
+  <p class="tabletop">
+    Match tips
+  </p>
   <table id="tip-list">
   <tr>
     <th>Match</th>
@@ -12,8 +15,7 @@
   </tr>
   <tr tal:repeat="tip tips">
     <td>${tip.d_match}</td>
-    <td tal:condition="tip.d_player == viewer_username" class="highlight-player">${tip.d_player}</td>
-    <td tal:condition="tip.d_player != viewer_username">${tip.d_player}</td>
+    <td>${tip.d_player}</td>
     <td>${tip.d_score1} : ${tip.d_score2}</td>
   </tr>
   </table>

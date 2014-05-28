@@ -8,16 +8,16 @@
     Betgame settings
   </p>
   <table id="info-list">
-    <tr>
-      <th>Setting</th>
-      <th>&nbsp;</th>
-      <th>Value</th>
-    </tr>
-    <tr tal:repeat="setting settings">
-      <td align="right">${setting.d_name}</td>
-      <td align="center">=</td>
-      <td align="left">${setting.d_value}</td>
-    </tr>
+  <tr>
+    <th>Setting</th>
+    <th>&nbsp;</th>
+    <th>Value</th>
+  </tr>
+  <tr tal:repeat="setting settings">
+    <td align="right">${setting.d_name}</td>
+    <td align="center">=</td>
+    <td align="left">${setting.d_value}</td>
+  </tr>
   </table>
 </tal:block>
 
