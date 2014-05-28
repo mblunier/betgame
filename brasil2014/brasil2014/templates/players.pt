@@ -19,10 +19,10 @@
     <!-- ${player.d_name} -->
     <td>${player.rank}</td>
     <td tal:condition="viewer_username == player.d_alias" class="highlight-player">
-      <a tal:omit-tag="not:player.d_mail" href="mailto:${player.d_mail}">${player.d_alias}</a> (${player.d_name})
+      <a tal:omit-tag="not:player.d_mail" href="mailto:${player.d_mail}">${player.d_name}</a>
     </td>
     <td tal:condition="viewer_username != player.d_alias">
-      <a tal:omit-tag="not:player.d_mail" href="mailto:${player.d_mail}">${player.d_alias}</a> (${player.d_name})
+      <a tal:omit-tag="not:player.d_mail" href="mailto:${player.d_mail}">${player.d_name}</a>
     </td>
     <td><a href="${request.route_url('view_group_players', category=player.d_unit)}">${player.d_unit}</a></td>
     <td>${player.d_points}</td>

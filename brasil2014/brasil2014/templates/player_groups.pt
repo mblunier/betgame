@@ -16,7 +16,7 @@
   </tr>
   <tr tal:repeat="category categories">
     <td>${category.rank}</td>
-    <td><a href="${request.route_url('view_group_players', category=category.d_alias)}">${category.d_alias}</a></td>
+    <td><a href="${request.route_url('view_group_players', category=category.d_alias)}">${category.d_name}</a></td>
     <td>${category.players}</td>
     <td><span tal:replace="'{0:.1f}'.format(float(category.points))"/></td>
   </tr>

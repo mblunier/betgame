@@ -352,7 +352,7 @@ def view_player_groups(request):
     rank = 1
     points = None
     for group in sorted(groups, lambda g1,g2: scoring.sign((float(g1[3]) / g1[2]) - (float(g2[3]) / g2[2])), reverse=True):
-        category = Category(group[1], 'Category %s' % group[1])
+        category = Category(group[1], Category.get(group[1]).d_name)
         category.players = int(group[2])
         category.points = float(group[3]) / category.players
         if points is None or category.points != points:
