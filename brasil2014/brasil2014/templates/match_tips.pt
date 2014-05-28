@@ -21,10 +21,10 @@
   </tr>
   <tr tal:repeat="bet tips">
     <td tal:condition="bet.tip.d_player == viewer_username" class="highlight-player">
-      <a href="${request.route_url('view_player_tips', player=bet.tip.d_player)}">${bet.tip.d_player}</a>
+      <a href="${request.route_url('view_player_tips', player=bet.tip.d_player)}">${bet.player.d_name}</a>
     </td>
     <td tal:condition="bet.tip.d_player != viewer_username">
-      <a href="${request.route_url('view_player_tips', player=bet.tip.d_player)}">${bet.tip.d_player}</a>
+      <a href="${request.route_url('view_player_tips', player=bet.tip.d_player)}">${bet.player.d_name}</a>
     </td>
     <td>
       <span tal:condition="match.d_score1 == bet.tip.d_score1 and match.d_score2 == bet.tip.d_score2">

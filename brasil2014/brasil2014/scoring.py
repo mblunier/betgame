@@ -124,6 +124,7 @@ class MatchTip:
     def __init__(self, match, tip):
         self.match = match
         self.tip = tip
+        self.player = Player.get_by_username(tip.d_player)
         self.points = evaluate_match_tip(match, tip)
 
 
@@ -132,6 +133,7 @@ class FinalTip:
     def __init__(self, final, tip):
         self.match = final
         self.tip = tip
+        self.player = Player.get_by_username(tip.d_player)
         self.points = evaluate_final_tip(final, tip)
 
 

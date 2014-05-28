@@ -27,8 +27,8 @@
   </tr>
   <tr tal:repeat="bet tips">
     <td><span tal:replace="repeat.bet.number"/></td>
-    <td tal:condition="bet.tip.d_player == viewer_username" class="highlight-player">${bet.tip.d_player}</td>
-    <td tal:condition="bet.tip.d_player != viewer_username">${bet.tip.d_player}</td>
+    <td tal:condition="bet.tip.d_player == viewer_username" class="highlight-player">${bet.player.d_name}</td>
+    <td tal:condition="bet.tip.d_player != viewer_username">${bet.player.d_name}</td>
     <td>${bet.tip.d_team1} : ${bet.tip.d_team2}</td>
     <td>${bet.tip.d_score1} : ${bet.tip.d_score2}</td>
     <td>${bet.points}</td>
