@@ -1,3 +1,9 @@
+V1.00
+=====
+- Use transparent background for copyright info.
+- Display category & player names instead of aliases.
+
+
 V0.15 (RC3)
 =====
 - Extended category ranking.
