@@ -48,18 +48,17 @@
     <li tal:condition="is_admin" class="topmenu">
       <a href="#">Admin</a>
       <ul>
-        <li class="submenu"><a href="${request.route_url('update_local')}">Update (local)</a></li>
-        <li class="submenu"><a href="${request.route_url('update_remote')}">Update (remote)</a></li>
-        <li class="submenu"><a href="${request.route_url('db_restore')}">Restore</a></li>
-        <li class="submenu"><a href="#"><hr></a></li>
         <li class="submenu"><a href="${request.route_url('categories')}">Categories</a></li>
         <li class="submenu"><a href="${request.route_url('infoscreen')}">InfoScreen</a></li>
+        <li class="submenu"><a href="${request.route_url('db_restore')}">Restore</a></li>
         <li class="submenu"><a href="${request.route_url('results')}">Results (JSON)</a></li>
         <li class="submenu"><a href="${request.route_url('score_table')}">Scoring Table</a></li>
         <li class="submenu"><a href="${request.route_url('settings')}">Settings</a></li>
         <li class="submenu"><a href="${request.route_url('system_info')}">System Info</a></li>
         <li class="submenu"><a href="${request.route_url('tips')}">Tips</a></li>
     	<li class="submenu"><a href="${request.route_url('too_late')}">Too Late</a></li>
+        <li class="submenu"><a href="${request.route_url('update_local')}">Update (local)</a></li>
+        <li class="submenu"><a href="${request.route_url('update_remote')}">Update (remote)</a></li>
       </ul>
     </li>
     <li class="topmenu" style="float: right; margin-right: 80px">
