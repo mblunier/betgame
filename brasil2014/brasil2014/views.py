@@ -164,12 +164,6 @@ def infoscreen(request):
              'navigation': None,
              'params': request.params }
 
-@view_config(permission='view', route_name='links', renderer='templates/links.pt')
-def view_links(request):
-    return { 'project': PROJECT_TITLE,
-             'viewer_username': request.authenticated_userid,
-             'navigation': navigation_view(request) }
-
 @view_config(permission='view', route_name='results', renderer='json')
 def results(request):
     """ Generate a list of scores for all played matches and the stage 2 team names. """
@@ -522,12 +516,6 @@ def match_bet(request):
              'form': FormRenderer(form),
              'navigation': navigation_view(request) }
 
-@view_config(permission='view', route_name='view_tips', renderer='templates/tips.pt', http_cache=0)
-def view_tips(request):
-    return { 'tips': Tip.get_all(),
-             'viewer_username': request.authenticated_userid,
-             'navigation': navigation_view(request) }
-
 @view_config(permission='view', route_name='view_match_tips', renderer='templates/match_tips.pt', http_cache=0)
 def view_match_tips(request):
     match_id = request.matchdict['match']
@@ -622,6 +610,12 @@ def view_final_tip(request):
 
 
 # ----- Admin stuff -----
+
+@view_config(permission='admin', route_name='tips', renderer='templates/tips.pt', http_cache=0)
+def view_tips(request):
+    return { 'tips': Tip.get_all(),
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request) }
 
 @view_config(permission='admin', route_name='update_local')
 def update_local(request):
@@ -765,10 +759,8 @@ def db_backup(request):
 
 @view_config(permission='admin', route_name='db_restore', renderer='templates/restore.pt')
 def db_restore(request):
-    form = Form(request)
     if 'form.submitted' in request.POST:
         data = request.POST.get('data')
-        #print 'data(initial): %s' % data
         if data is not None:
             data = data.file.read()
             #print 'data(content, %d bytes): %s' % (len(data), data)
@@ -777,7 +769,7 @@ def db_restore(request):
                     query = load_table(data, scoped_session=DBSession)
                     for obj in query:
                         DBSession.merge(obj)
-                    request.session.flash(u'Restored successfully.')
+                    request.session.flash(u'Restore succeeded.')
                     return HTTPFound(location=route_url('home', request))
                 except:
                     request.session.flash(u'Not a valid backup file.')
@@ -785,15 +777,8 @@ def db_restore(request):
                 request.session.flash(u'Empty backup file.')
         else:
             request.session.flash(u'Please select a file.')
+    form = Form(request)
     return { 'form': FormRenderer(form),
-             'tables': [('categories', 'Categories'),
-                        ('settings', 'Settings'),
-                        ('players', 'Players'),
-                        ('matches', 'Matches'),
-                        ('teams', 'Teams'),
-                        ('tips', 'Tips'),
-                        ('final', 'Final')],
-             'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
 @view_config(permission='admin', route_name='system_info', renderer='templates/sysinfo.pt')
