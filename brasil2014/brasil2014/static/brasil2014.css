@@ -437,7 +437,7 @@ td.flag {
 }
 
 #footer {
-	background: #E0E0FF;
+	background: rgba(224, 224, 255, 0.5);
 	height: 20px;
 	position: fixed;
 	float: none;
