@@ -33,4 +33,4 @@ wget --keep-session-cookies --save-cookies $cookies --load-cookies $cookies "htt
 wget --keep-session-cookies --save-cookies $cookies --load-cookies $cookies "http://${site}/backup/tips" -O tips.dat
 wget --keep-session-cookies --save-cookies $cookies --load-cookies $cookies "http://${site}/backup/final" -O final.dat
 
-git ci -a -m'$(date +"%Y-%m-%d_%H%M")'
+git ci -a -m`date +"%Y-%m-%d_%H%M"`
