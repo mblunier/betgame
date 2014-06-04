@@ -40,6 +40,9 @@ Getting Started
 - Open the URL http://<hostname_or_ip>:8080 (or whatever port number you
   have chosen) in your preferred web browser.
 
+- In order to operate the game behind a proxy enable the virtual host config
+  from 'wm2014.conf'. Afterwards the game can be accessed via the virtual
+  hostname without explicit port number.
 
 
 Administration
@@ -47,8 +50,9 @@ Administration
 Some pages are restricted to the administrator(s) maintaining a betgame
 instance. The "list" of administrator aliases is currently hard-coded in
 'properties.py'.
+
 Once everything is initialized most of the required steps can be automated.
-This chapter describes the available functions (all URLs relative to the root):
+This chapter describes the available functions (all URLs relative to the root URL):
 
   /backup/{table}
 	Dumps the binary content of the indicated table. Available table
@@ -89,6 +93,7 @@ This chapter describes the available functions (all URLs relative to the root):
 
   /unregister/{alias}
 	Deletes the player {alias} together with all related data from the DB.
+	THIS CANNOT BE UNDONE!
 
   /update_local
 	Updates all team & player points according to the locally stored match
@@ -101,13 +106,32 @@ This chapter describes the available functions (all URLs relative to the root):
 	the local instance up to date.
 
 
+Special views
+-------------
+The following views are not directly reachable via the links within the game:
+
+  /infoscreen
+	Displays a special view describing the access to the local game
+	instance.
+
+  /results
+	Returns all present match scores and stage 2 teams in JSON format.
+
+  /settings
+	Shows the list of all defined settings and their values.
+
+When adding '?nonav'  to any view the navigation and all embedded hyperlinks
+are suppressed.
+
+
 Settings
 --------
 Some aspects of the game are customizable via the Setting table. The following
 keys are recognized:
 
   admin_alias (default: admin)
-	The alias of the admin user.
+	The alias of the admin user. Note, that the admin user is excluded
+	from the game and does not occur in any of the rankings.
 
   admin_mail (default: admin@rolotec.ch)
 	The contact mail shown on the help page.
@@ -117,7 +141,9 @@ keys are recognized:
 	betgame where results are entered may be used.
 
   items_per_page
-	The number of items shown on pages with pagination.
+	The number of items shown on pages with pagination. The configured
+	value may be overridden when specifying it as an URL parameter; e.g.
+	<http://hostname/players?items_per_page=20>.
 
   scoring_exacthit (default: 5)
 	The number of points for an exact hit.
@@ -146,20 +172,15 @@ keys are recognized:
   scoring_twofinalists (default: 10)
 	Number of points for guessing both finalists.
 
-Admins may view all stored settings via the /settings URL and modified
+Admins may view all stored settings via the /settings URL and modify each one
 via /setting/<name>/<value>.
 
+For the scoring evaluation the module 'scoring.py' contains several methods to
+evaluate the number of points for a given match and tip. The signature of
+these functions is as follows:
 
-Special views
--------------
-The following views are not reachable via the links within the game.
+    def scoring(initial, match, tip):
+        return points
 
-  /infoscreen
-	Displays a special view describing the access to the local game
-	instance.
-
-  /results
-	Returns all present match scores and stage 2 teams in JSON format.
-
-When adding '?nonav'  to any of the views the navigation and all embedded
-hyperlinks are suppressed.
+When changing the scoring function the template 'scoring.pt' needs to be
+adapted as well.

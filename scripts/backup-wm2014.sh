@@ -26,6 +26,7 @@ wget --save-cookies $cookies --keep-session-cookies --load-cookies $cookies \
      --post-data="form.submitted&_csrf=$csrf&alias=$name&password=$pass" "http://${site}/login" \
      -O /dev/null
 
+wget --keep-session-cookies --save-cookies $cookies --load-cookies $cookies "http://${site}/update_local" -O /dev/null
 wget --keep-session-cookies --save-cookies $cookies --load-cookies $cookies "http://${site}/backup/categories" -O categories.dat
 wget --keep-session-cookies --save-cookies $cookies --load-cookies $cookies "http://${site}/backup/settings" -O settings.dat
 wget --keep-session-cookies --save-cookies $cookies --load-cookies $cookies "http://${site}/backup/matches" -O matches.dat

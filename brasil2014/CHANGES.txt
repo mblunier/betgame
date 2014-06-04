@@ -1,3 +1,12 @@
+V1.01
+=====
+- Added dedicated backup scripts for wm2014.rolotec.ch & localhost:6543.
+- Sort admin menu alphabetically.
+- Reorganized routes.
+- Cleaned up templates.
+- Add player for every tip.
+
+
 V1.00
 =====
 - Use transparent background for copyright info.
