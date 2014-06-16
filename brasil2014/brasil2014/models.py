@@ -253,7 +253,7 @@ class Team(Base):
     def get_by_group(cls, group):
         return DBSession.query(cls) \
                         .filter(cls.d_group == group) \
-                        .order_by(cls.d_points.desc(), (cls.d_shot - cls.d_rcvd).desc())
+                        .order_by(cls.d_points.desc(), (cls.d_shot - cls.d_rcvd).desc(), cls.d_shot.desc())
 
 
 class TeamGroup:
