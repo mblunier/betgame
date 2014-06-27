@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+
+<tal:block metal:fill-slot="content">
+  <p class="tabletop">
+    Mailing
+  </p>
+  <table id="info-list">
+  <tr>
+    <td><a href="mailto:${everybody}">Everybody</a></td>
+  </tr>
+  <tr tal:repeat="category categories">
+    <td><a href="mailto:${categories[category]}">${category}</a></td>
+  </tr>
+  </table>
+</tal:block>
+
+</html>

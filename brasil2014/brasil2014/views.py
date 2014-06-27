@@ -630,6 +630,24 @@ def update_remote(request):
     except:
         raise HTTPNotFound('location <%s> is inaccessible.' % RESULTPAGE)
 
+@view_config(permission='admin', route_name='mailing', renderer='templates/mailing.pt')
+def mailing(request):
+    groups = Player.get_groups()
+    if not groups:
+        raise HTTPNotFound('no player groups yet')
+    everybody = []
+    categories = {}
+    for group in sorted(groups):
+        players = Player.get_by_unit(group.d_unit)
+        addrs = [player.d_mail for player in players]
+        categories[group.d_unit] = ";".join(addrs)
+        everybody.extend(addrs)
+    return { 'everybody': ";".join(everybody),
+             'categories': categories,
+             'viewer_username': request.authenticated_userid,
+             'navigation': navigation_view(request),
+             'nonav': 'nonav' in request.params }
+
 @view_config(permission='admin', route_name='unregister')
 def unregister(request):
     alias = request.matchdict['alias']

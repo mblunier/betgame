@@ -1,3 +1,9 @@
+V1.02
+=====
+- Add option to extract mail addresses.
+- Fixed team order sorting by goal difference & shot goals.
+
+
 V1.01
 =====
 - Added dedicated backup scripts for wm2014.rolotec.ch & localhost:6543.

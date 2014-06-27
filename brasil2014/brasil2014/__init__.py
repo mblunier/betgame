@@ -51,6 +51,7 @@ def addroutes(config):
     config.add_route('home', '/')
     config.add_route('categories', '/categories')
     config.add_route('infoscreen', '/infoscreen')
+    config.add_route('mailing', '/mailing')
     config.add_route('scoring', '/scoring')
     config.add_route('score_table', '/scoretable')
     config.add_route('login', '/login')

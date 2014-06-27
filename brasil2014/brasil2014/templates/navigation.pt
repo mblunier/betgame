@@ -50,6 +50,7 @@
       <ul>
         <li class="submenu"><a href="${request.route_url('categories')}">Categories</a></li>
         <li class="submenu"><a href="${request.route_url('infoscreen')}">InfoScreen</a></li>
+        <li class="submenu"><a href="${request.route_url('mailing')}">Mailing</a></li>
         <li class="submenu"><a href="${request.route_url('db_restore')}">Restore</a></li>
         <li class="submenu"><a href="${request.route_url('results')}">Results (JSON)</a></li>
         <li class="submenu"><a href="${request.route_url('score_table')}">Scoring Table</a></li>
