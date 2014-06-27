@@ -24,7 +24,7 @@ requires = [
     ]
 
 setup(name='brasil2014',
-      version='1.01',
+      version='1.02',
       description='brasil2014',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
