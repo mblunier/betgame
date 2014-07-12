@@ -7,6 +7,7 @@
   <p class="app-welcome">
     Welcome to the <span class="app-name">${project}</span>.
   </p>
+  <div tal:condition='not game_over'>
   <p style="margin-bottom: 30px">
     Please read the following sections carefully.
   </p>
@@ -37,6 +38,19 @@
       In case you are not interested in playing please follow <a href="http://www.warmduscher-abc.ch/">this link</a>.
     </li>
   </ul>
+  </div>
+  <div tal:condition='game_over'>
+  <p style="margin-bottom: 30px">
+    The games are over!
+  </p>
+  <p>
+    Thanks to all <a href="${request.route_url('view_ranking')}">participants</a> and
+    congratulations to the <a href="${request.route_url('view_ranking')}">winner</a>.
+  </p>
+  <p>
+    Please check back in 2 years for the <a href="http://www.uefa.com/uefaeuro/finals/index.html">UEFA EURO2016</a>.
+  </p>
+  </div>
 </tal:block>
 
 </html>

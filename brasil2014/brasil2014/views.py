@@ -141,6 +141,7 @@ def view_game(request):
     return { 'project': PROJECT_TITLE,
              'game_url': GAME_URL,
              'final_deadline': FINAL_DEADLINE,
+             'game_over': datetime.now() >= datetime(2014,7,14),
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
