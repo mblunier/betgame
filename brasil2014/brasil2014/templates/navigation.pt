@@ -80,7 +80,7 @@
 </div>
 <div id="user-info" tal:condition="not viewer_username">
   <tal::replace content="structure login_form" />
-  <div class="align-right">
+  <div class="align-right" tal:condition="not game_over">
     Not a bettor yet? <a href="${request.route_url('register')}">Register here</a>.
   </div>
 </div>

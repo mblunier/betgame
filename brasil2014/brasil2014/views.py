@@ -107,6 +107,9 @@ def get_int_param(request, param, default=None):
     except:
         return default
 
+def game_over():
+    return datetime.now() >= datetime(2014,7,14)
+
 def login_form_view(request):
     return render('templates/login.pt',
                   { 'loggedin': request.authenticated_userid },
@@ -115,6 +118,7 @@ def login_form_view(request):
 def navigation_view(request):
     return render('templates/navigation.pt',
                   { 'categories': sorted(Player.get_units()),
+                    'game_over': game_over(),
                     'is_admin': request.authenticated_userid in ADMINS,
                     'viewer_username': request.authenticated_userid,
                     'login_form': login_form_view(request) },
@@ -141,7 +145,7 @@ def view_game(request):
     return { 'project': PROJECT_TITLE,
              'game_url': GAME_URL,
              'final_deadline': FINAL_DEADLINE,
-             'game_over': datetime.now() >= datetime(2014,7,14),
+             'game_over': game_over(),
              'viewer_username': request.authenticated_userid,
              'navigation': navigation_view(request) }
 
