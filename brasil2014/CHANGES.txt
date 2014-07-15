@@ -1,3 +1,14 @@
+V1.04
+=====
+- Disabled registration after game is over.
+
+
+V1.03
+=====
+- Added 'game over' view.
+- Mirror the copyright symbol.
+
+
 V1.02
 =====
 - Add option to extract mail addresses.
