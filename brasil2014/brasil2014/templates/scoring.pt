@@ -8,9 +8,9 @@
   <ol class="align-left">
     <li>A correct outcome (1|X|2) gives ${scoring['outcome']} points, with
         an additional <span tal:replace="scoring['exacthit'] - scoring['outcome']"> points for the exact score.</li>
-    <li>A mispredicted outcome earns ${scoring['missed']} points just for entering a bet.</li>
+    <li tal:condition="scoring['missed'] != 0">A mispredicted outcome earns ${scoring['missed']} points just for entering a bet.</li>
 <!-- scoring mb:
-    <li>The following points are then added independently:</li>
+    <li tal:condition="scoring['sumgoals'] != 0">The following points are then added independently:</li>
     <ul>
       <li>Correct total number of goals: +${scoring['sumgoals']} points.</li>
       <li>Correct goal difference: +${scoring['goaldiff']} points.</li>
@@ -30,7 +30,7 @@
 <!-- scoring mb:
     <li>The maximum number of points is ${num_matches} x (${scoring['exacthit']} + ${scoring['sumgoals']} + ${scoring['goaldiff']} + ${scoring['onescore']}
         + ${scoring['onescore']}) + ${scoring['twofinalists']} =
-	<span tal:replace="num_matches * (scoring['exacthit'] + scoring['sumgoals'] + scoring['goaldiff'] + scoring['onescore'] + scoring['onescore']) + scoring['twofinalists']" /> points.
+	<span tal:replace="64 * (scoring['exacthit'] + scoring['sumgoals'] + scoring['goaldiff'] + scoring['onescore'] + scoring['onescore']) + scoring['twofinalists']"> </span> points.
  	<b>Everybody reaching this score will be automatically excluded from further bet games</b>.</li>
  -->
 

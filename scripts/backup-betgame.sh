@@ -2,15 +2,16 @@
 
 #set -x
 
-TMPDIR="/tmp/betgame"
-[ -d $TMPDIR ] || mkdir -p $TMPDIR
-
 site=${1:-"127.0.0.1:8080"}
 name=${2:-"admin"}
 pass=${3:-"None"}
-cookies="$TMPDIR/cookies.txt"
 
 WGET="wget -v"
+TMPDIR="/tmp/betgame"
+[ -d $TMPDIR ] || mkdir -p $TMPDIR
+
+cookies="$TMPDIR/cookies.txt"
+
 DATADIR=$HOME/backup/`echo ${site} | tr ':' '_'`@`date +"%Y-%m-%d_%H%M"`
 [ -d $DATADIR ] || mkdir -p $DATADIR
 
